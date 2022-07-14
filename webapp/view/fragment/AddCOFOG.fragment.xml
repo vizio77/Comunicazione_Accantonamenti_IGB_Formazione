@@ -1,0 +1,39 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:u="sap.ui.unified" xmlns:uxap="sap.uxap">
+	<Dialog title="{i18n>fragmentAddCOFOG}" contentWidth="40%" contentHeight="auto">
+		<content>
+			<f:SimpleForm  editable="true" singleContainerFullSize="false" adjustLabelSpan="false"
+				layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" emptySpanXL="2" emptySpanL="0" emptySpanM="2"
+				emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1">
+				<f:content>
+					<core:Title/>
+					<Label text="{i18n>liv1}" labelFor="idSottostrumento" />
+					<Input id="idSottostrumento" width="auto" showValueHelp="true" editable="false" required="false" 
+							 value="{modelPosFin>/Sottostrumento}" />
+                    
+                    <Label text="{i18n>liv2}" labelFor="idEsercizio" />
+                    <Input id="idEsercizio" width="auto" value="" enabled="true" editable="false" />
+                    
+                    <Label text="{i18n>liv3}" labelFor="idPosFin" visible="{visibleCheckModel>/visiblePosFin}" />
+					<Input id="idPosFin" value="" required="false" width="auto" showValueHelp="true"
+							valueHelpOnly="true"  visible="{visibleCheckModel>/visiblePosFin}"  valueHelpRequest="onOpenSearchCOFOG" />
+
+					 <Label text="{i18n>descrizione}" visible="{visibleCheckModel>/visiblePosFin}" />
+					<Input value="" required="false" width="auto" editable="false"
+							 valueHelpRequest="onPosFin"  visible="{visibleCheckModel>/visiblePosFin}" />
+
+					<Label text="{i18n>percent}" visible="{visibleCheckModel>/visiblePosFin}" />
+					<Input value="" required="true" width="auto" editable="true"
+							   visible="{visibleCheckModel>/visiblePosFin}" />
+				
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		 <beginButton>
+			<Button press="handlecloseCOFOG" type="Emphasized" text="{i18n>close}"/>
+		</beginButton> 
+		<endButton>
+            <Button press="addCOFOG" type="Emphasized" text="{i18n>aggiungi}"></Button>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

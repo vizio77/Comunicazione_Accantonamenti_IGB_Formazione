@@ -1,0 +1,32 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+>
+<TableSelectDialog title="Cerca Autorizzazione Collegata" search="" confirm="handleConfirmAuthCollegata" cancel=".onClose"
+		items="{modelPosFin>/elencoAuthCollegata/}">
+		<columns>
+			<Column width="20rem">
+				<header>
+					<Text text="Descrizione compatta"/>
+				</header>
+			</Column>
+            <Column width="8rem">
+				<header>
+					<Text text="Cod. Cls."/>
+				</header>
+			</Column>
+			<Column width="8rem">
+				<header>
+					<Text text="Tipo Legame"/>
+				</header>
+			</Column>
+		</columns>
+		<ColumnListItem>
+			<cells>
+				<Text text="{modelPosFin>desc}"/>
+                <Text text="{modelPosFin>codeCls}"/>
+				<Text text="{modelPosFin>tipo}"/>
+			</cells>
+		</ColumnListItem>
+	</TableSelectDialog>
+</c:FragmentDefinition>

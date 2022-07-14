@@ -1,0 +1,62 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+>
+    <TableSelectDialog
+        growing="true"
+        multiSelect="false"
+        noDataText=""
+        rememberSelections="false"
+        showClearButton="false"
+        title="Cerca"
+        items="{modelPosFin>/helpValueAzione/}"
+        confirm="onPressChoiceTableAzione"
+    >
+        <columns>
+            <Column width="8rem">
+                <Text text="Azione" />
+            </Column>
+            <Column width="12rem">
+                <Text text="Descr. Azione"/>
+            </Column>
+            <Column  width="8rem">
+                <Text text="Amm."/>
+            </Column>
+            <Column  width="12rem">
+                <Text text="Descr. Ammin."/>
+            </Column>
+            <Column  width="8rem">
+                <Text text="Missione"/>
+            </Column>
+            <Column width="12rem">
+                <Text text="descMissione"/>
+            </Column>
+            <Column  width="8rem">
+                <Text text="Programma"/>
+            </Column>
+            <Column width="12rem">
+                <Text text="descProgramma"/>
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem type="Active">
+                <cells>          
+                    <Text text="{modelPosFin>VALORE}"/>
+                    <Text text="{modelPosFin>DESCRIZIONE}"/>
+                    <Text text="{modelPosFin>AMMINISTRAZIONE}"/>
+                    <Text text="{modelPosFin>DESCR_AMMINISTRAZIONE}"/>
+                    <Text text="{modelPosFin>MISSIONE}"/>
+                    <Text text="{modelPosFin>DESCR_MISSIONE}"/>
+                    <Text text="{modelPosFin>PROGRAMMA}"/>
+                    <Text text="{modelPosFin>DESCR_PROGRAMMA}"/>
+                </cells>
+                <!-- <customData>
+                    <c:CustomData key="{homeModel>VALORE}" value="{homeModel>DESCRIZIONE}" writeToDom="false" />
+                </customData> -->
+            </ColumnListItem>
+        </items>
+         <customData>
+            <c:CustomData key="AZIONE" value="DESC_AZIONE" writeToDom="false" />
+        </customData>
+    </TableSelectDialog>
+</c:FragmentDefinition>

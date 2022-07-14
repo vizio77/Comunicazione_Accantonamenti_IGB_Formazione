@@ -1,0 +1,63 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+>
+<Dialog  title="{i18n>cercaSottostrumento}" contentWidth="50%" contentHeight="50%" id="HVSottostrumento">
+    <content>
+        <f:SimpleForm id="formInserimentoSottoStrumento" editable="true" singleContainerFullSize="false" adjustLabelSpan="false"
+            layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" emptySpanXL="2" emptySpanL="0" emptySpanM="2"
+            emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1">
+            <f:content>
+                <Label text="{i18n>formSottostrumento}" labelFor="idformSottoStr"/>
+				<Input id="idformSottoStr" value="{modelHome>/formSottostrumento/codice_sstr}" width="70%" showValueHelp="false"/>
+                <Label text="{i18n>TipoSottoStr}" labelFor="idformStTipologia"/>
+				<!-- <Input id="idformStTipologia" value="{modelHome>/formSottostrumento/tipologia}" width="70%" showValueHelp="true"/> -->
+                <Select id="idformStTipologia"  width="70%"  selectedKey="{modelHome>/formSottostrumento/tipologia}" items="{
+                    path: 'modelHome>/formSottostrumento/tipologieSet/',
+                    sorter: { path: 'modelHome>StatFase' }
+                }">
+                    <c:Item key="{modelHome>TipoSstr}" text="{modelHome>NomeTipoSstr}" />
+                </Select>
+                <Label text="{i18n>EspContabile}" labelFor="idformStEspCont"/>
+                    <!-- value="{modelHome>/formSottostrumento/esposizione_contabile}" -->
+				<Select id="idformStEspCont"  width="70%"  selectedKey="{modelHome>/formSottostrumento/esposizione_contabile}">
+                    <c:Item key="" text="" />
+                    <c:Item key="0" text="Normale" />
+                    <c:Item key="8" text="Rimodulazione FL" />
+                </Select>
+                <Label text="{i18n>descrizione}" labelFor="idFormStDescr"/>
+				<Input id="idFormStDescr" value="{modelHome>/formSottostrumento/descrizione_sstr}" width="70%"/>
+                <Label text="{i18n>Visibilita}" labelFor="idFormStVisibilita"/>
+                <!-- value="{modelHome>/formSottostrumento/visibilita}" -->
+				<Select id="idFormStVisibilita" selectedKey="{modelHome>/formSottostrumento/visibilita}" width="70%">
+                    <c:Item key="" text="" />
+                    <c:Item key="0" text="Bilancio" />
+                </Select>
+                <Label text="{i18n>ambito}" labelFor="idFormStAmm"/>
+				<Input id="idFormStAmm" value="{modelHome>/formSottostrumento/amministrazione}" width="70%" showValueHelp="true"/>
+            </f:content>
+        </f:SimpleForm>
+    </content>
+    <!-- <beginButton>
+        <Button press="onClose" type="Emphasized" text="{i18n>close}"></Button>
+    </beginButton>
+    <endButton>
+        <Button press="onPressConfSottoStrumento" type="Emphasized" text="{i18n>conf}"/>
+    </endButton> -->
+    <buttons>
+        <Button press="onClose" type="Emphasized" text="{i18n>close}">
+            <customData>
+                <c:CustomData key="resetFiltri" value="formSottostrumento"/>
+                <c:CustomData key="HVSottostrumento" value="oDialogHVSottoStrumento"/>
+            </customData>
+        </Button>
+        <Button press="onResetVHSstr" type="Emphasized" text="{i18n>Resetta}">
+            <customData>
+                <c:CustomData key="resetFiltri" value="formSottostrumento"/>
+            </customData>
+        </Button>
+        <Button press="onPressConfSottoStrumento" type="Emphasized" text="{i18n>Cerca}"/>
+    </buttons>
+</Dialog>
+</c:FragmentDefinition>

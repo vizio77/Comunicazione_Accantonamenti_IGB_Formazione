@@ -1,0 +1,68 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+>
+<TableSelectDialog title="Cerca Autorizzazione" search="" confirm="handleConfirmAuth" cancel=".onClose"
+		items="{modelPosFin>/elencoAuth/}">
+		<columns>
+			<Column width="14rem">
+				<header>
+					<Text text="Descrizione compatta"/>
+				</header>
+			</Column>
+			<Column width="8rem">
+				<header>
+					<Text text="Attivazione"/>
+				</header>
+			</Column>
+			<Column width="8rem">
+				<header>
+					<Text text="Scadenza"/>
+				</header>
+			</Column>
+			<Column width="8rem">
+				<header>
+					<Text text="Classificazione"/>
+				</header>
+			</Column>
+			<Column width="8rem">
+				<header>
+					<Text text="Natura"/>
+				</header>
+			</Column>
+			<Column width="8rem">
+				<header>
+					<Text text="Disponibilità 2023"/>
+				</header>
+			</Column>
+			<Column width="8rem">
+				<header>
+					<Text text="Disponibilità 2024"/>
+				</header>
+			</Column>
+			<Column width="8rem">
+				<header>
+					<Text text="Disponibilità 2025"/>
+				</header>
+			</Column>
+			<Column width="8rem">
+				<header>
+					<Text text=""/>
+				</header>
+			</Column>
+		</columns>
+		<ColumnListItem>
+			<cells>
+				<Text text="{modelPosFin>desc}"/>
+				<Text text="{modelPosFin>attivazione}"/>
+				<Text text="{modelPosFin>scadenza}"/>
+				<Text text="{modelPosFin>classificazione}"/>
+				<Text text="{modelPosFin>natura}"/>
+				<Text text="{modelPosFin>DISP1}"/>
+				<Text text="{modelPosFin>DISP2}"/>
+				<Text text="{modelPosFin>DISP3}"/>
+				<Text text="{modelPosFin>BASE}"/>
+			</cells>
+		</ColumnListItem>
+	</TableSelectDialog>
+</c:FragmentDefinition>

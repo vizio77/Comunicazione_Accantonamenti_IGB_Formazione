@@ -1,0 +1,108 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:u="sap.ui.unified" xmlns:uxap="sap.uxap">
+	<Dialog  title="{i18n>cercaPosFin}" contentWidth="80%" contentHeight="60%">
+		<content>
+			<f:SimpleForm id="formInserimentoPosFin" editable="true" singleContainerFullSize="false" adjustLabelSpan="false"
+				layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" emptySpanXL="2" emptySpanL="0" emptySpanM="2"
+				emptySpanS="0" columnsXL="2" columnsL="2" columnsM="1">
+				<f:content>
+					<core:Title/>
+					<Label text="{i18n>labelPosFin}" labelFor="idAmmPosizioneFin"/>
+					<Input id="idAmmPosizioneFin" value="{modelPosFin>/form/POSIZIONE_FINANZIARIA}" width="70%" showValueHelp="false"/>
+					<Label text="{i18n>Amministrazione}" labelFor="idAmmFraa"/>
+					<Input id="idAmmFraa" value="{modelPosFin>/form/AMMINISTRAZIONE}" width="70%" showValueHelp="true"
+						valueHelpRequest="onPressMatchCodeFragment">
+                        <customData>
+                            <core:CustomData
+                                key="Amm"
+                                value="HelpValueAmm"
+                                writeToDom="false"
+                            >
+                                
+                            </core:CustomData>
+                        </customData>
+                    </Input>
+					<Label text="{i18n>mission}" labelFor="idMiss"/>
+					<Input id="idMiss" value="{modelPosFin>/form/MISSIONE}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
+                        <customData>
+                            <core:CustomData key="Miss" value="HelpValueMissioni" writeToDom="false"/>
+                        </customData>
+                    </Input>
+					<Label text="{i18n>programma}" labelFor="idProgFs"/>
+					<Input id="idProgFs" value="{modelPosFin>/form/PROGRAMMA}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
+                        <customData>
+                            <core:CustomData key="Prog" value="HelpValueProgramma" writeToDom="false"/>
+                        </customData>
+                    </Input>
+					<Label text="{i18n>azione}" labelFor="idAzioneF"/>
+					<Input id="idAzioneF" value="{modelPosFin>/form/AZIONE}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
+                    <customData>
+                            <core:CustomData key="Azione" value="HelpValueAzione" writeToDom="false"/>
+                        </customData>
+                    </Input>
+					<Label text="{i18n>Capitolo}" labelFor="idCapitoloF"/>
+					<Input id="idCapitoloF" value="{modelPosFin>/form/CAPITOLO}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
+                    <customData>
+                            <core:CustomData key="Capitolo" value="HelpValueCapitolo" writeToDom="false"/>
+                        </customData>
+                    </Input>
+					<Label text="{i18n>Pg}" labelFor="idPgF"/>
+					<Input id="idPgF" value="{modelPosFin>/form/PG}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
+                    <customData>
+                            <core:CustomData key="PG" value="HelpValuePg" writeToDom="false"/>
+                        </customData>
+                    </Input>
+					<Label text="{i18n>categoria}" labelFor="idCategoriaF"/>
+					<Input id="idCategoriaF" value="{modelPosFin>/form/CATEGORIA}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
+						<customData>
+                            <core:CustomData key="Categoria" value="HelpValueCategoria" writeToDom="false"/>
+                        </customData>
+                    </Input>
+					<Label text="{i18n>ce}" labelFor="idCeF"/>
+					<Input id="idCeF" value="{modelPosFin>/form/CE2}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragmentTable"/>
+					<Label text="{i18n>ce3}" labelFor="idCe3F"/>
+					<Input id="idCe3F" value="{modelPosFin>/form/CE3}" width="70%" showValueHelp="true"/>
+					<!-- <Label text="{i18n>gestContratto}" labelFor="idGestContrF"/>
+					<Input id="idGestContrF" value="{modelPosFin>/form/GEST_CONTRATTO}" width="70%" showValueHelp="true"
+						valueHelpRequest="onPressMatchCodeFragment">
+						<customData>
+                            <core:CustomData key="GestioneContratto" value="HelpValueGestioneContratto" writeToDom="false"/>
+                        </customData>
+                    </Input> -->
+					<core:Title/>
+					<Label text="{i18n>maxRis}" labelFor="idMaxRis"/>
+					<Input id="idMaxRis" value="{modelPosFin>/form/MAX_RICERCA}" width="80%"/>
+					<Label text="{i18n>descAmm}" labelFor="idDescAmmF"/>
+					<Input id="idDescAmmF" value="{modelPosFin>/form/DESCRIZIONE_AMM}" width="80%" editable="true"/>
+					<Label text="{i18n>descrMissione}" labelFor="idDescMissF"/>
+					<Input id="idDescMissF" value="{modelPosFin>/form/DESCRIZIONE_MISSIONE}" width="80%" editable="true"/>
+					<Label text="{i18n>descrProgramma}" labelFor="idDescProgF"/>
+					<Input id="idDescProgF" value="{modelPosFin>/form/DESC_PROGRAMMA}" width="80%" editable="true"/>
+					<Label text="{i18n>descrAzione}" labelFor="idDescAzioneF"/>
+					<Input id="idDescAzioneF" value="{modelPosFin>/form/DESC_AZIONE}" width="80%" editable="true"/>
+					<Label text="{i18n>descrCapitolo}" labelFor="idDescCapitoloF"/>
+					<Input id="idDescCapitoloF" value="{modelPosFin>/form/DESC_CAPITOLO}" width="80%" editable="true"/>
+					<Label text="{i18n>descrPg}" labelFor="idDescrPgF"/>
+					<Input id="idDescrPgF" value="{modelPosFin>/form/DESC_PG}" width="80%" editable="true"/>
+					<Label text="{i18n>descrCategoria}" labelFor="idDescCategoria"/>
+					<Input id="idDescCategoria" value="{modelPosFin>/form/DESCR_CATEGORIA}" width="80%" editable="true"/>
+					<Label text="{i18n>descrCe}" labelFor="idDescCeF"/>
+					<Input id="idDescCeF" value="{modelPosFin>/form/DESC_CE2}" width="80%" editable="true"/>
+					<Label text="{i18n>descrCe3}" labelFor="idDescCe3F"/>
+					<Input id="idDescCe3F" value="{modelPosFin>/form/DESC_CE3}" width="80%" editable="true"/>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<!-- <beginButton>
+			<Button press="onClose" type="Emphasized" text="{i18n>close}"></Button>
+		</beginButton>
+		<endButton>
+			<Button press="onPressConfPosFin" type="Emphasized" text="{i18n>Cerca}"/>
+		</endButton> -->
+		<buttons>
+			<Button press="onClose" type="Emphasized" text="{i18n>close}"></Button>
+			<Button press="onClose" type="Emphasized" text="{i18n>Resetta}"></Button>
+			<Button press="onPressConfPosFin" type="Emphasized" text="{i18n>Cerca}"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

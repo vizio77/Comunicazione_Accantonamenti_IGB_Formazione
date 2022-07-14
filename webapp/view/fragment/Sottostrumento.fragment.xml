@@ -1,0 +1,60 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:u="sap.ui.unified" xmlns:uxap="sap.uxap">
+	<Dialog id="idTableSStr" title="{i18n>Sottostrumento}" contentWidth="70%" contentHeight="90%">
+		<content>
+			<l:VerticalLayout width="100%">
+				<l:content>
+					<Table id="idTableSottostrumento2" inset="false" items="{sottostrumentiModel>/}" mode="SingleSelectLeft" selectionChange="onScegliSottostrumento"
+                        sticky="ColumnHeaders,HeaderToolbar,InfoToolbar">
+						<columns>
+                            <Column width="auto">
+								<Text text="{i18n>TipoSottoStr}" class="boldCss"/>
+							</Column>
+							<Column width="auto">
+								<Text text="{i18n>Numero}" class="boldCss"/>
+							</Column>
+                            <Column width="auto">
+								<Text text="{i18n>AnnoFaseSottoStr}" class="boldCss"/>
+							</Column>
+							<Column width="auto">
+								<Text text="{i18n>DescrSottostrumento}" class="boldCss"/>
+							</Column>
+							<Column width="auto">
+								<Text text="{i18n>Stato}" class="boldCss"/>
+							</Column>
+							<Column width="auto">
+								<Text text="{i18n>Visibilita}" class="boldCss"/>
+							</Column>
+							<Column width="auto">
+								<Text text="{i18n>EspContabile}" class="boldCss"/>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem vAlign="Middle" visible="{= ${sottostrumentiModel>IdSstr} !== '1487' }">
+								<cells>
+                                    <Text text="{sottostrumentiModel>TestoTipo}"/>
+									<Text text="{sottostrumentiModel>IdSstr}"/>
+									<Text text="{sottostrumentiModel>FkEseStrAnnoEse}"/>
+									<Text text="{sottostrumentiModel>DescrEstesa}"/>
+									<Text text="{sottostrumentiModel>Stato}"/>
+									<Text text="Bilancio"/>
+									<Text text="{= ${sottostrumentiModel>StatEsposizione} === '0' ? 'Normale' : 'Rimodulazione FL'}"/> 
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</l:content>
+			</l:VerticalLayout>
+		</content>
+		<beginButton>
+			<Button press="onClose"  type="Emphasized" text="{i18n>close}">
+				<customData>
+					<core:CustomData key="HVSottostrumento" value="_oDialog"/>
+				</customData>
+			</Button>
+		</beginButton>
+		<endButton>
+			<Button press="onPressConfermaSottostrumento" type="Emphasized" text="{i18n>conf}"></Button>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

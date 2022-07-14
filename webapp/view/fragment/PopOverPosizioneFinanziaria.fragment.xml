@@ -1,0 +1,52 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover title="{modelPosFin>/posFin}" class="sapUiContentPadding" placement="Bottom" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+		<content>
+			<l:VerticalLayout class="sapUiSmallMargin">
+				<!-- <ObjectStatus title="Amministrazione" text="A020" class="textBold"/>
+				<ObjectStatus title="Missione" text="32" class="textBold"/>
+				<ObjectStatus title="Programma" text="07" class="textBold"/>
+				<ObjectStatus title="Azione" text="01" class="textBold"/>
+				<ObjectStatus title="Capitolo" text="1001" class="textBold"/>
+				<ObjectStatus title="PG" text="01" class="textBold"/>
+				<ObjectStatus title="Categoria" text="01" class="textBold"/>
+				<ObjectStatus title="C.E.2" text="01" class="textBold"/>
+				<ObjectStatus title="C.E.3" text="01" class="textBold"/> -->
+                <ObjectStatus title="Amministrazione" text="A020" class="textBold"/>
+                <ObjectStatus title="Capitolo" text="1001" class="textBold"/>
+                <ObjectStatus title="PG" text="01" class="textBold"/>
+                <ObjectStatus title="Missione" text="32" class="textBold"/>
+                <ObjectStatus title="Programma" text="07" class="textBold"/>
+                <ObjectStatus title="Azione" text="01" class="textBold"/>
+                <ObjectStatus title="Categoria" text="01" class="textBold"/>
+                <ObjectStatus title="C.E.2" text="01" class="textBold"/>
+				<ObjectStatus title="C.E.3" text="01" class="textBold"/>
+			</l:VerticalLayout>
+			<l:VerticalLayout class="sapUiSmallMargin">
+                <ObjectStatus title="Desc. Amm" text="MINISTERO DELL'ECONOMIA E DELLE FINANZE" class="textBold"/>
+                <ObjectStatus title="Desc. Capitolo" text="STIPENDI ED ALTRI ASSEGNI FISSI AL MINISTRO E AI S" class="textBold"/>
+                <ObjectStatus title="Desc. PG" text="COMPONENTE NETTA." class="textBold"/>
+                <ObjectStatus title="Desc. Missione" text="Ministro e Sottosegretari di Stato" class="textBold"/>
+                <ObjectStatus title="Desc. Programma" text="Promozione dell'efficienza energetica" class="textBold"/>
+                <ObjectStatus title="Desc. Azione" text="Spese di personale per il programma" class="textBold"/>
+                <ObjectStatus title="Desc. Categoria" text="REDDITI DA LAVORO DIPENDENTE" class="textBold"/>
+                <ObjectStatus title="Desc. Ce2" text="STIPENDI" class="textBold"/>
+				<ObjectStatus title="Desc. Ce3" text="STIPENDI" class="textBold"/>
+				<!-- <ObjectStatus title="Desc. Amm" text="MINISTERO DELL'ECONOMIA E DELLE FINANZE" class="textBold"/>
+				<ObjectStatus title="Desc. Missione" text="Ministro e Sottosegretari di Stato" class="textBold"/>
+				<ObjectStatus title="Desc. Programma" text="Promozione dell'efficienza energetica" class="textBold"/>
+				<ObjectStatus title="Desc. Azione" text="Spese di personale per il programma" class="textBold"/>
+				<ObjectStatus title="Desc. Capitolo" text="STIPENDI ED ALTRI ASSEGNI FISSI AL MINISTRO E AI S" class="textBold"/>
+				<ObjectStatus title="Desc. PG" text="COMPONENTE NETTA." class="textBold"/>
+				<ObjectStatus title="Desc. Categoria" text="REDDITI DA LAVORO DIPENDENTE" class="textBold"/>
+				<ObjectStatus title="Desc. Ce2" text="STIPENDI" class="textBold"/>
+				<ObjectStatus title="Desc. Ce3" text="STIPENDI" class="textBold"/> -->
+			</l:VerticalLayout>
+		</content>
+		<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+			</OverflowToolbar>
+		</footer>
+		<!--<Image src="{ProductPicUrl}" width="15em" densityAware="false"/>-->
+	</Popover>
+</core:FragmentDefinition>

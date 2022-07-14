@@ -1,0 +1,125 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<TableSelectDialog title="Cerca" search="handleSearchFinan" confirm="handleCloseFinan" cancel="handleCloseFinan"
+		items="{modelPosFin>/elencoPosFin/}">
+		<columns>
+			<Column width="14rem">
+				<header>
+					<Text text="{i18n>labelPosFin}"/>
+				</header>
+			</Column>
+			<Column width="8rem">
+				<header>
+					<Text text="{i18n>Amministrazione}"/>
+				</header>
+			</Column>
+			<Column width="12rem">
+				<header>
+					<Text text="{i18n>descAmm}"/>
+				</header>
+			</Column>
+			<Column width="5rem">
+				<header>
+					<Text text="{i18n>mission}"/>
+				</header>
+			</Column>
+			<Column width="12rem">
+				<header>
+					<Text text="{i18n>descrMissione}"/>
+				</header>
+			</Column>
+			<Column width="7rem">
+				<header>
+					<Text text="{i18n>programma}"/>
+				</header>
+			</Column>
+			<Column width="12rem">
+				<header>
+					<Text text="{i18n>descrProgramma}"/>
+				</header>
+			</Column>
+			<Column width="5rem">
+				<header>
+					<Text text="{i18n>azione}"/>
+				</header>
+			</Column>
+			<Column width="12rem">
+				<header>
+					<Text text="{i18n>descrAzione}"/>
+				</header>
+			</Column>
+			<Column width="5rem">
+				<header>
+					<Text text="{i18n>Capitolo}"/>
+				</header>
+			</Column>
+			<Column width="12rem">
+				<header>
+					<Text text="{i18n>descrCapitolo}"/>
+				</header>
+			</Column>
+			<Column width="5rem">
+				<header>
+					<Text text="{i18n>Pg}"/>
+				</header>
+			</Column>
+			<Column width="12rem">
+				<header>
+					<Text text="{i18n>descrPg}"/>
+				</header>
+			</Column>
+			<Column width="5rem">
+				<header>
+					<Text text="{i18n>categoria}"/>
+				</header>
+			</Column>
+			<Column width="12rem">
+				<header>
+					<Text text="{i18n>descrCategoria}"/>
+				</header>
+			</Column>
+			<Column width="5rem">
+				<header>
+					<Text text="{i18n>ce}"/>
+				</header>
+			</Column>
+			<Column width="12rem">
+				<header>
+					<Text text="{i18n>descrCe}"/>
+				</header>
+			</Column>
+			<Column width="5rem">
+				<header>
+					<Text text="{i18n>ce3}"/>
+				</header>
+			</Column>
+			<Column width="12rem">
+				<header>
+					<Text text="{i18n>descrCe3}"/>
+				</header>
+			</Column>
+		</columns>
+		<ColumnListItem>
+			<cells>
+				<Text text="{modelPosFin>POSIZIONE_FINANZIARIA}"/>
+				<Text text="{modelPosFin>AMMINISTAZIONE}"/>
+				<Text text="{modelPosFin>DESC_AMMINISTAZIONE}"/>
+				<Text text="{modelPosFin>MISSIONE}"/>
+				<Text text="{modelPosFin>DESC_MISSIONE}"/>
+				<Text text="{modelPosFin>PROGRAMMA}"/>
+				<Text text="{modelPosFin>DESC_PROGRAMMA}"/>
+				<Text text="{modelPosFin>AZIONE}"/>
+				<Text text="{modelPosFin>DESC_AZIONE}"/>
+				<Text text="{modelPosFin>CAPITOLO}"/>
+				<Text text="{modelPosFin>DESC_CAPITOLO}"/>
+				<Text text="{modelPosFin>PG}"/>
+				<Text text="{modelPosFin>DESC_PG_ESTESA}"/>
+				<Text text="{modelPosFin>CATEGORIA}"/>
+				<Text text="{modelPosFin>DESC_CATEGORIA}"/>
+				<Text text="{modelPosFin>CE2}"/>
+				<Text text="{modelPosFin>DESC_CE2}"/>
+				<Text text="{modelPosFin>CE3}"/>
+				<Text text="{modelPosFin>DESC_CE3}"/>
+			</cells>
+		</ColumnListItem>
+	</TableSelectDialog>
+</core:FragmentDefinition>
