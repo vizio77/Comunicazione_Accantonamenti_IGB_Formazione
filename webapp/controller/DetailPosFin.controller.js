@@ -4,62 +4,34 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"sap/ui/core/Fragment",
-	"sap/m/MessageBox",
-	"./BaseController"
-], function(Controller, JSONModel, Filter, FilterOperator, Fragment, MessageBox, BaseController) {
+	"sap/m/MessageBox"
+], function(Controller, JSONModel, Filter, FilterOperator, Fragment, MessageBox) {
 	"use strict";
 
-	return BaseController.extend("zsap.com.r3.cobi.s4.gestposfin.controller.HomePosFin", {
+	return Controller.extend("zsap.com.r3.cobi.s4.gestposfin.controller.DetailPosFin", {
 		/**
 		 * @override
 		 */
 		onInit: async function() {
-			this.getOwnerComponent().setModel(new JSONModel({faseRicerca: true, infoSottoStrumento: {}}),"modelPosFin")
-			this.getOwnerComponent().setModel(new JSONModel({FieldPosEnabled: false, Esercizio:(new Date(new Date().setFullYear(new Date().getFullYear() + 1))).getFullYear().toString()}),"modelFilterHome")
-			// this.getView().getModel("modelPosFin").setProperty("/onAvvio",false)
-			let itemsMock = await this.loadJSONTest("/model/data_mock.json");
-			this.getOwnerComponent().getModel("modelPosFin").setProperty("/",itemsMock)
-			this.getOwnerComponent().getModel("modelPosFin").setProperty("/initialDetail",true)
-			this.getOwnerComponent().getModel("modelPosFin").setProperty("/form",{})
-			// this.getOwnerComponent().getModel("modelPosFin").setProperty("/formSottostrumento",{
-			// 	tipologia: null,
-			// 	tipologieSet: [],
-			// 	codice_sstr: null,
-			// 	esposizione_contabileSet: [],
-			// 	esposizione_contabile: null,
-			// 	descrizione_sstr: null,
-			// 	visibilitaSet: [],
-			// 	visibilita: null,
-			// 	dominio_sstrSet: [],
-			// 	dominio_sstr: null
-			// })
-			//var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			this.oRouter.getRoute("HomePosFin").attachPatternMatched(this._onObjectMatched, this);
-		//	this.handleCreateInizialFilter();
-			//this.initData();
-		},
-		_onObjectMatched: function (oEvent) {
-			const oKeySStr = oEvent.getParameter("arguments")
-			const oModel = this.getView().getModel("sapHanaS2");
-			this.getView().setBusy(true)
-			let sUrl = `/Gest_fasi_sstrSet(Fikrs='${oKeySStr.Fikrs}',CodiceStrumento='${oKeySStr.CodiceStrumento}'`+
-						`,CodiceStrumentoOri='${oKeySStr.CodiceStrumentoOri}',CodiceSottostrumento='${oKeySStr.CodiceSottostrumento}',Datbis=datetime'${new Date(oKeySStr.Datbis).toISOString()}')`
-			oModel.read(sUrl,{
-				success: (oData, res) => {
-					let modelPosFin = this.getView().getModel("modelPosFin")
-					//modelPosFin.setProperty("/sottostrumento", `${oData.}`)
-				}
-			})
-			debugger
+			/* this.getOwnerComponent().setModel(new JSONModel({faseRicerca: true, infoSottoStrumento: {}}),"modelHome")
+			let itemsMock = await this.loadJSONTest("/webapp/model/data_mock.json");
+			// this.getOwnerComponent().getModel("modelHome").setProperty("/onAvvio",false)
+			 this.getOwnerComponent().getModel("modelHome").setProperty("/initialDetail",true)
+			this.getOwnerComponent().getModel("modelHome").setProperty("/",itemsMock)
+			this.getOwnerComponent().getModel("modelHome").setProperty("/form",{})
+			
+
+			this.handleCreateInizialFilter();
+			this.initData(); */
+			let modelHome = this.getOwnerComponent().getModel("modelHome")
+			modelHome.setProperty("/CompetenzaAuth", {})
 		},
 		onSottostrumento: function () {
-			var oModel = this.getView().getModel("sapHanaS2");
+			var oModel = this.getOwnerComponent().getModel("sapHanaS2");
 			var Dateto = new Date(new Date().getFullYear(), 11, 31);
 			Dateto.setHours(2);
 			var sottostrumentiModel = new JSONModel();
 			var oView = this.getView();
-			//filtri standard
 			var _filters = [
 				new Filter({
 					path: "Dateto",
@@ -75,44 +47,14 @@ sap.ui.define([
 					path: "TestoTipo",
 					operator: FilterOperator.EQ,
 					value1: "VLV"
-				}),
-				new Filter({
-					path: "StatStatus",
-					operator: FilterOperator.EQ,
-					value1: "1"
 				})
 			];
-			//filtri in da form di sottostrumento
-			let modelHome = this.getView().getModel("modelPosFin") //.getProperty("/formSottostrumento")
-			if(modelHome.getProperty("/formSottostrumento/esposizione_contabile")){
-				_filters.push(new Filter({
-					path: "StatEsposizione",
-					operator: FilterOperator.EQ,
-					value1: modelHome.getProperty("/formSottostrumento/esposizione_contabile")
-				}),)
-			}
-			if(modelHome.getProperty("/formSottostrumento/sottostrumento")){
-				_filters.push(new Filter({
-					path: "IdSstr",
-					operator: FilterOperator.EQ,
-					value1: modelHome.getProperty("/formSottostrumento/sottostrumento")
-				}),)
-			}
-			if(modelHome.getProperty("/formSottostrumento/descrizione")){
-				_filters.push(new Filter({
-					path: "DescrEstesa",
-					operator: FilterOperator.EQ,
-					value1: modelHome.getProperty("/formSottostrumento/descrizione")
-				}),)
-			}
-			//
 			oModel.read("/Gest_PosFin_SottostrumentoSet", {
 				filters: _filters,
 				success: function(oData, response) {
 					oData.results = oData.results.map((item) => {
 						item.FkEseStrAnnoEse = Number(item.FkEseStrAnnoEse) + 1
 						item.EseAnnoEse = Number(item.EseAnnoEse) + 1
-						item.Stato = "Aperto"
 						return item
 					})
 					sottostrumentiModel.setData(oData.results);
@@ -125,7 +67,7 @@ sap.ui.define([
 			});
 			if(!this._oDialog){
 				this._oDialog = sap.ui.xmlfragment(
-					"zsap.com.r3.cobi.s4.gestposfin.view.fragment.Sottostrumento",
+					"zgestposfinzgestposfin.view.fragment.Sottostrumento",
 					this);
 				this._oDialog.setModel("sottostrumentiModel");
 				this.getView().addDependent(this._oDialog);
@@ -135,42 +77,23 @@ sap.ui.define([
 			}
 		},
 		onClose: function (oEvent) {
-			if(oEvent.getSource().getCustomData().length){
-				this.__resetFiltri(oEvent.getSource().getCustomData().filter(item => item.getKey() === "resetFiltri"))
-			}   
-			let sDialog = oEvent.getSource().getCustomData().find(item => item.getKey() === "HVSottostrumento").getValue()
-			this[sDialog].close()
-			this[sDialog].destroy()
-			this[sDialog] = null
+			oEvent.getSource().getParent().close()
 		},
 		onPressConfermaSottostrumento: function (oEvent) {
 			let modelSottoStrumenti = this.getView().getModel("sottostrumentiModel")
-			let modelHome = this.getView().getModel("modelPosFin")
+			let modelHome = this.getView().getModel("modelHome")
 			let idTableStr = sap.ui.getCore().byId("idTableSottostrumento2")
 			let selectedPath = sap.ui.getCore().byId("idTableSottostrumento2").getSelectedContextPaths()[0]
 			let selectedItem = modelSottoStrumenti.getProperty(selectedPath)
-
 			modelHome.setProperty("/Sottostrumento", `${selectedItem.TestoTipo} - ${selectedItem.IdSstr} - ${selectedItem.EseAnnoEse}`)
 			modelHome.setProperty("/infoSottoStrumento", selectedItem)
 			modelHome.setProperty("/esercizio", Number(selectedItem.EseAnnoEse) + 1)
-
-			//lt setto anche il model filter home per recuperare tutto nella prima schermata
-			let modelFilterHome = this.getView().getModel("modelFilterHome")
-			modelFilterHome.setProperty("/Sottostrumento", `${selectedItem.TestoTipo} - ${selectedItem.IdSstr}`)
-			//lt elimino l'anno all'interno della selezione del sottostrumento
-			//modelFilterHome.setProperty("/Sottostrumento", `${selectedItem.TestoTipo} - ${selectedItem.IdSstr} - ${selectedItem.EseAnnoEse}`)
-			modelFilterHome.setProperty("/infoSottoStrumento", selectedItem)
-			modelFilterHome.setProperty("/esercizio", Number(selectedItem.EseAnnoEse) + 1)
-			//setto nel modello filtro anche l'abilitazione o meno del campo pos finanziaria
-			modelFilterHome.setProperty("/FieldPosEnabled", true)
-
-			this.oDialogHVSottoStrumento.close();
 			oEvent.getSource().getParent().close()
 		},
 		onPosFin: function () {
 			if(!this.oDialogPosFin) {
 				Fragment.load({
-					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.PosFinHelp",
+					name:"zgestposfinzgestposfin.view.fragment.PosFinHelp",
 					controller: this
 				}).then(oDialog => {
 					this.oDialogPosFin = oDialog;
@@ -185,10 +108,9 @@ sap.ui.define([
 			const {key, value} = oEvent.getSource().getCustomData()[0].mProperties
 			if(!this[value]) {
 				Fragment.load({
-					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment." + value,
+					name:"zgestposfinzgestposfin.view.fragment." + value,
 					controller: this
 				}).then(oDialog => {
-					this.__getValueHelpData(key)
 					this[value] = oDialog;
 					this.getView().addDependent(oDialog);
 					this[value].open();
@@ -205,13 +127,13 @@ sap.ui.define([
 			});
 		  },
 		  onPressChoiceStandardlist: function (oEvent) {
-			let homeModel = this.getView().getModel("modelPosFin")
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
 			const {key, value} = oEvent.getSource().getCustomData()[0].mProperties 
 			homeModel.setProperty("/form/" + key, oEvent.getParameter("selectedItem").getProperty("title"))
 			homeModel.setProperty("/form/" + value, oEvent.getParameter("selectedItem").getProperty("description"))
 		},
 		onPressChoiceTableProgramma: function (oEvent) {
-			let homeModel = this.getView().getModel("modelPosFin")
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
 			const {key, value} = oEvent.getSource().getCustomData()[0].mProperties 
 			let item = homeModel.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath())
 			homeModel.setProperty("/form/" + key,  item.VALORE)
@@ -220,7 +142,7 @@ sap.ui.define([
 			homeModel.setProperty("/form/DESCRIZIONE_MISSIONE", item.DESCR_MISSIONE)
 		},
 		  onPressChoiceTableAzione: function (oEvent) {
-			let homeModel = this.getView().getModel("modelPosFin")
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
 			const {key, value} = oEvent.getSource().getCustomData()[0].mProperties 
 			let item = homeModel.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath())
 			homeModel.setProperty("/form/" + key,  item.VALORE)
@@ -233,7 +155,7 @@ sap.ui.define([
 			homeModel.setProperty("/form/DESCRIZIONE_AMM", item.DESCR_AMMINISTRAZIONE)
 		},
 		  onPressChoiceTableCapitolo: function (oEvent) {
-			let homeModel = this.getView().getModel("modelPosFin")
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
 			const {key, value} = oEvent.getSource().getCustomData()[0].mProperties 
 			let item = homeModel.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath())
 			homeModel.setProperty("/form/" + key,  item.CAPITOLO)
@@ -242,7 +164,7 @@ sap.ui.define([
 			homeModel.setProperty("/form/DESCRIZIONE_AMM", item.DESCR_AMMINISTRAZIONE)
 		},
 		  onPressChoiceTablePG: function (oEvent) {
-			let homeModel = this.getView().getModel("modelPosFin")
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
 			const {key, value} = oEvent.getSource().getCustomData()[0].mProperties 
 			let item = homeModel.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath())
 			homeModel.setProperty("/form/" + key,  item.PG)
@@ -253,7 +175,7 @@ sap.ui.define([
 			homeModel.setProperty("/form/DESC_CAPITOLO", item.DESCR_CAPITOLO)
 		},
 		  onPressChoiceTableCategoria: function (oEvent) {
-			let homeModel = this.getView().getModel("modelPosFin")
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
 			const {key, value} = oEvent.getSource().getCustomData()[0].mProperties 
 			let item = homeModel.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath())
 			homeModel.setProperty("/form/" + key,  item.VALORE)
@@ -264,7 +186,7 @@ sap.ui.define([
 		onPressConfPosFin: function () {
 			if(!this.oDialogTabPosFinanziaria) {
 				Fragment.load({
-					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.TablePosizioneFinanziaria",
+					name:"zgestposfinzgestposfin.view.fragment.TablePosizioneFinanziaria",
 					controller: this
 				}).then(oDialog => {
 					this.oDialogTabPosFinanziaria = oDialog;
@@ -276,70 +198,41 @@ sap.ui.define([
 			}
 		},
 		handleCloseFinan: function (oEvent) {
-			let homeModel = this.getView().getModel("modelPosFin")
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
 			let oSelectedItem = homeModel.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath())
 			homeModel.setProperty("/posFin", oSelectedItem.POSIZIONE_FINANZIARIA)
-			//lt inserisco la posizione finanziaria
-			let modelFilterHome = this.getView().getModel("modelFilterHome") 
-			modelFilterHome.setProperty("/PosizioneFinanziaria", oSelectedItem.POSIZIONE_FINANZIARIA)
 			homeModel.setProperty("/selectedPosFin", oSelectedItem)
 			this.oDialogPosFin.close()
 		},
 		onGestisciPosFin: function (oEvent) {
-			let homeModel = this.getView().getModel("modelPosFin")
-			//this.getView().byId("DetailInitial").setVisible(false)
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
+			this.getView().byId("DetailInitial").setVisible(false)
 			homeModel.setProperty("/onAvvio", true)
 			homeModel.setProperty("/tabAnagrafica", true)
 			homeModel.setProperty("/faseRicerca", false)
 			homeModel.setProperty("/onModify", true)
 			homeModel.setProperty("/onCreate", false)
 			homeModel.setProperty("/detailAnagrafica", homeModel.getProperty("/selectedPosFin"))
-			/* this.getView().byId("idCompetenzaTab").setVisible(true)
-			this.getView().byId("idCassTab").setVisible(true) */
+			this.getView().byId("idCompetenzaTab").setVisible(true)
+			this.getView().byId("idCassTab").setVisible(true)
 
-			homeModel.setProperty("/idCompetenzaTab", true)
-			homeModel.setProperty("/idCassTab", true)
-
-			//lt vado al dettaglio
-			this.onNavTo();
+			//lt chiudo il popup
+			this.handlecloseInizialFilter();
 
 		},
 		onCreaPosFin: function(oEvent){
-			let homeModel = this.getView().getModel("modelPosFin")
-
-			/* this.getView().byId("DetailInitial").setVisible(false)
-			this.getView().byId("idCompetenzaTab").setVisible(false)
-			this.getView().byId("idCassTab").setVisible(false) */
-			//setto visibilità
-			//homeModel.setProperty("/DetailInitial", false)
-
-			//controlla che il sotto strumento sia stato selezionato
-			let modelFilterHome = this.getView().getModel("modelFilterHome");
-			if(!modelFilterHome.getProperty("/Sottostrumento")) {
-				return MessageBox.warning("Selezionare  un Sottostrumento", 
-					{ 	
-						title: "Attenzione",
-						actions: sap.m.MessageBox.Action.OK,                
-						emphasizedAction: sap.m.MessageBox.Action.OK,       
-						onClose: () => {
-							this.onHelpValueSottoStrumento()
-						}
-					}
-				)
-			}
-			//fine controllo
-			homeModel.setProperty("/idCompetenzaTab", false)
-			homeModel.setProperty("/idCassTab", false)
-
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
+			this.getView().byId("DetailInitial").setVisible(false)
 			homeModel.setProperty("/onAvvio", true)
 			homeModel.setProperty("/tabAnagrafica", true)
 			homeModel.setProperty("/onModify", false)
 			homeModel.setProperty("/onCreate", true)
 			homeModel.setProperty("/detailAnagrafica", {})
-			
-			
-			//lt vado al dettaglio
-			this.onNavTo();
+			this.getView().byId("idCompetenzaTab").setVisible(false)
+			this.getView().byId("idCassTab").setVisible(false)
+
+			//lt chiudo il popup
+			this.handlecloseInizialFilter();
 		},
 		onExpandPopOverPosFin: function (oEvent) {
 			var oButton = oEvent.getSource(),
@@ -349,7 +242,7 @@ sap.ui.define([
 			if (!this._pPopover) {
 				this._pPopover = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverPosizioneFinanziaria",
+					name: "zgestposfinzgestposfin.view.fragment.PopOverPosizioneFinanziaria",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -361,9 +254,9 @@ sap.ui.define([
 			});
 		},
 		onPressRipristinaRicerca: function (oEvent) {
-			let homeModel = this.getView().getModel("modelPosFin")
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
 			homeModel.setProperty("/faseRicerca", true)
-			//this.getView().byId("DetailInitial").setVisible(true)
+			this.getView().byId("DetailInitial").setVisible(true)
 			homeModel.setProperty("/Sottostrumento", "")
 			homeModel.setProperty("/esercizio", "")
 			homeModel.setProperty("/posFin", "")
@@ -389,14 +282,14 @@ sap.ui.define([
 				descrizione = customData.desc;
 			}	
 					
-			this.getView().getModel("modelPosFin").setProperty("/InfoPopoverTitle", customData.title); 
-			this.getView().getModel("modelPosFin").setProperty("/InfoPopover", descrizione); 
+			this.getOwnerComponent().getModel("modelHome").setProperty("/InfoPopoverTitle", customData.title); 
+			this.getOwnerComponent().getModel("modelHome").setProperty("/InfoPopover", descrizione); 
 
 			// create popover general	
 			if (!this._pPopoverAction) {
 				this._pPopoverAction = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverInfoGeneral",
+					name: "zgestposfinzgestposfin.view.fragment.PopOverInfoGeneral",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -417,7 +310,7 @@ sap.ui.define([
 			if (!this._pPopoverSottoStr) {
 				this._pPopoverSottoStr = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverSottostrumento",
+					name: "zgestposfinzgestposfin.view.fragment.PopOverSottostrumento",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -436,7 +329,7 @@ sap.ui.define([
 			if (!this._pPopoverMiss) {
 				this._pPopoverMiss = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverMissione",
+					name: "zgestposfinzgestposfin.view.fragment.PopOverMissione",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -455,7 +348,7 @@ sap.ui.define([
 			if (!this._pPopoverProgr) {
 				this._pPopoverProgr = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverProgramma",
+					name: "zgestposfinzgestposfin.view.fragment.PopOverProgramma",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -475,7 +368,7 @@ sap.ui.define([
 			if (!this._pPopoverAction) {
 				this._pPopoverAction = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverAzione",
+					name: "zgestposfinzgestposfin.view.fragment.PopOverAzione",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -487,7 +380,7 @@ sap.ui.define([
 			});
 		},
 		onTabChanged: function (oEvent) {
-			let homeModel = this.getView().getModel("modelPosFin")
+			let homeModel = this.getOwnerComponent().getModel("modelHome")
 			if(oEvent.getParameter("key") === "info"){
 				homeModel.setProperty("/tabAnagrafica", true)
 			} else {
@@ -498,14 +391,14 @@ sap.ui.define([
 		//lt inserisco popup iniziale.
 		handleCreateInizialFilter: function (oEvent) {
 
-			this.getView().getModel("modelPosFin").setProperty("/Filter",{
+			this.getOwnerComponent().getModel("modelHome").setProperty("/Filter",{
 				nome 		: "",
 				esercizio 	: "2023",
 				descrizione : "",
 				statoWf		: "Iniziato"
 			})
 			if (!this._handleAddFilter) {
-				this._handleAddFilter = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.FiltriIniziali", this);
+				this._handleAddFilter = sap.ui.xmlfragment("zgestposfinzgestposfin.view.fragment.FiltriIniziali", this);
 				this.getView().addDependent(this._handleAddFilter);
 			}
 			this._handleAddFilter.open();
@@ -520,15 +413,15 @@ sap.ui.define([
 
 		handleAddElenco: function (oEvent) {
 
-			/* this.getView().getModel("generalModel").setProperty("/ValueNpshNew", {}); */
-			this.getView().getModel("modelPosFin").setProperty("/Elenco",{
+			/* this.getOwnerComponent().getModel("generalModel").setProperty("/ValueNpshNew", {}); */
+			this.getOwnerComponent().getModel("modelHome").setProperty("/Elenco",{
 				nome 		: "",
 				esercizio 	: "",
 				descrizione : "",
 				statoWf		: "Iniziato"
 			})
 			if (!this._handleAddElenco) {
-				this._handleAddElenco = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.AddElenco", this);
+				this._handleAddElenco = sap.ui.xmlfragment("zgestposfinzgestposfin.view.fragment.AddElenco", this);
 				this.getView().addDependent(this._handleAddElenco);
 			}
 			this._handleAddElenco.open();
@@ -549,15 +442,15 @@ sap.ui.define([
 
 		handleAddCOFOG: function (oEvent) {
 
-			/* this.getView().getModel("generalModel").setProperty("/ValueNpshNew", {}); */
-			this.getView().getModel("modelPosFin").setProperty("/COFOG",{
+			/* this.getOwnerComponent().getModel("generalModel").setProperty("/ValueNpshNew", {}); */
+			this.getOwnerComponent().getModel("modelHome").setProperty("/COFOG",{
 				nome 		: "",
 				esercizio 	: "",
 				descrizione : "",
 				statoWf		: "Iniziato"
 			})
 			if (!this._handleAddCOFOG) {
-				this._handleAddCOFOG = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.AddCOFOG", this);
+				this._handleAddCOFOG = sap.ui.xmlfragment("zgestposfinzgestposfin.view.fragment.AddCOFOG", this);
 				this.getView().addDependent(this._handleAddCOFOG);
 			}
 			this._handleAddCOFOG.open();
@@ -580,7 +473,7 @@ sap.ui.define([
 
 			
 			if (!this._handleAddCOFOG) {
-				this._handleAddCOFOG = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.AddCOFOG", this);
+				this._handleAddCOFOG = sap.ui.xmlfragment("zgestposfinzgestposfin.view.fragment.AddCOFOG", this);
 				this.getView().addDependent(this._handleAddCOFOG);
 			}
 			this._handleAddCOFOG.open();
@@ -590,7 +483,7 @@ sap.ui.define([
 		initData: function () {
 
 			//sap.ui.core.BusyIndicator.show();		
-			var sapHanaS2Tipologiche = this.getView().getModel("sapHanaS2Tipologiche");
+			var sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
 
 			var scpDeferredGroups = sapHanaS2Tipologiche.getDeferredGroups();
 			scpDeferredGroups = scpDeferredGroups.concat(["scpGroup"]);
@@ -603,9 +496,9 @@ sap.ui.define([
 				"/ZES_AZIONE_SET",
 				"/ZES_MISSIONE_SET",
 				"/ZES_ECONOMICA2_SET",
-				"/ZES_ECONOMICA3_SET" /*,
+				"/ZES_ECONOMICA3_SET"/* ,
 				"/ZES_PG_SET",
-				"/ZES_CAPITOLO_SET"*/			
+				"/ZES_CAPITOLO_SET"	 */			
 			];
 			
 			for (var i=0; i<entityArray.length; i++) {
@@ -622,7 +515,7 @@ sap.ui.define([
 					for (var j = 0; batchCallRel.__batchResponses && j < batchCallRel.__batchResponses.length; j++) {
 						if (batchCallRel.__batchResponses[j].statusCode === "200") {
 							var propertyToSave = this[j];				
-							that.getView().getModel("modelPosFin").setProperty(propertyToSave, batchCallRel.__batchResponses[j].data.results);
+							that.getOwnerComponent().getModel("modelHome").setProperty(propertyToSave, batchCallRel.__batchResponses[j].data.results);
 							
 						} 
 					}
@@ -641,90 +534,72 @@ sap.ui.define([
 			});
 
 		},
-		navToDetail: function(oEvent){
-			var table = this.getView().byId("idTableRisultatiRicerca");
-			var context = table.getSelectedContexts();
-
-			if(context.length === 0){
-				MessageBox.warning("Seleziona Prima una Posizione");
-				return;
-			}
-			var posizione = context[0].getObject();
-
-			this.getView().getModel("modelPosFin").setProperty("/selectedPosFin", posizione);
-			this.onGestisciPosFin();
-		},
-		onNavTo: function () {		
+		onNavBack: function () {		
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("Detail");
+			oRouter.navTo("RouteView");
 					
 		},
-		onReset: function () {
-			let modelFilterHome = this.getView().getModel("modelFilterHome");
-			let modelHome = this.getView().getModel("modelPosFin");
-
-			//reset Filtri
-			modelFilterHome.setProperty("/FieldPosEnabled", false)
-			modelFilterHome.setProperty("/PosizioneFinanziaria", "")
-			modelFilterHome.setProperty("/Sottostrumento", "")
-			modelFilterHome.setProperty("/infoSottoStrumento", {})
-
-			//Pulizia Tabella
-			modelHome.setProperty("/tablePosFin", [])
-
-		},
-		onHelpValueSottoStrumento: function () {
-			if(!this.oDialogHVSottoStrumento) {
+		onAuth: function (oEvent) {
+			if(!this.oDialogAutorizzazioni) {
 				Fragment.load({
-					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HelpValueSottostrumento",
+					name:"zgestposfinzgestposfin.view.fragment.HVAutorizzazioni",
 					controller: this
 				}).then(oDialog => {
-					this.oDialogHVSottoStrumento = oDialog;
+					this.oDialogAutorizzazioni = oDialog;
 					this.getView().addDependent(oDialog);
-					this.oDialogHVSottoStrumento.open();
-					let oModel = this.getView().getModel("sapHanaS2");
-					let modelHome = this.getView().getModel("modelPosFin")
-					oModel.read("/Gest_PosFin_SH_TipologiaSet",{
-						success:  (oData) => {
-							oData.results.push({StatFase: -1, TipoSstr: null, NomeTipoSstr: ""})
-							modelHome.setProperty("/formSottostrumento/tipologieSet", oData.results)
-						}
-					})
+					this.oDialogAutorizzazioni.open();
 				})
 			} else {
-				this.oDialogHVSottoStrumento.open();
+				this.oDialogAutorizzazioni.open();
 			}
 		},
-		onPressConfSottoStrumento: function (oEvent) {
-			this.onSottostrumento()
-		},
-		onPressAvvio: function() {
-			let modelHome = this.getView().getModel("modelPosFin");
-			modelHome.setProperty("/tablePosFin", modelHome.getProperty("/elencoPosFin"))
-
-		},
-		__resetFiltri: function (aResetKeyValue) {
-			let modelHome = this.getView().getModel("modelPosFin");
-			aResetKeyValue.map(reset => {
-				if(reset.getKey() === "resetFiltri"){
-					if (reset.getValue() === "formSottostrumento") {
-						modelHome.setProperty("/formSottostrumento/tipologia", null)
-						modelHome.setProperty("/formSottostrumento/codice_sstr", null)
-						modelHome.setProperty("/formSottostrumento/descrizione_sstr", null)
-						modelHome.setProperty("/formSottostrumento/visibilita", null)
-						modelHome.setProperty("/formSottostrumento/dominio_sstr", null)
-					}
-				}
-			})
-		},
-		onResetVHSstr: function (oEvent) {
-			if(oEvent.getSource().getCustomData().length){
-				this.__resetFiltri(oEvent.getSource().getCustomData())
+		onAuthCollegata: function (oEvent) {
+			if(!this.oDialogAutorizzazioniCollegate) {
+				Fragment.load({
+					name:"zgestposfinzgestposfin.view.fragment.HVAuthCollegata",
+					controller: this
+				}).then(oDialog => {
+					this.oDialogAutorizzazioniCollegate = oDialog;
+					this.getView().addDependent(oDialog);
+					this.oDialogAutorizzazioniCollegate.open();
+				})
+			} else {
+				this.oDialogAutorizzazioniCollegate.open();
 			}
 		},
-		onNavBackHome: function () {
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("RouteHome");
+		handleConfirmAuth: function (oEvent) {
+			let modelHome = this.getOwnerComponent().getModel("modelHome")
+			let selectedItem = modelHome.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath());
+			modelHome.setProperty("/CompetenzaAuth/Auth", selectedItem.desc)
+		},
+		handleConfirmAuthCollegata: function (oEvent) {
+			let modelHome = this.getOwnerComponent().getModel("modelHome")
+			let selectedItem = modelHome.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath());
+			modelHome.setProperty("/CompetenzaAuth/AuthAssociata", selectedItem.desc)
+		},
+		onResetAuth: function() {
+			let modelHome = this.getOwnerComponent().getModel("modelHome")
+			modelHome.setProperty("/CompetenzaAuth/AuthAssociata", null)
+			modelHome.setProperty("/CompetenzaAuth/Auth", null)
+		},
+		onNuovaAuth: function() {
+			if(!this.oDialogAssNuovaAuth) {
+				Fragment.load({
+					name:"zgestposfinzgestposfin.view.fragment.HVAssNuovaAuth",
+					controller: this
+				}).then(oDialog => {
+					this.oDialogAssNuovaAuth = oDialog;
+					this.getView().addDependent(oDialog);
+					this.oDialogAssNuovaAuth.open();
+				})
+			} else {
+				this.oDialogAssNuovaAuth.open();
+			}
+		},
+		onChooseNuovaAuth: function(oEvent) {
+			let modelHome = this.getOwnerComponent().getModel("modelHome")
+			let selectedItem = modelHome.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath());
+			modelHome.setProperty("/CompetenzaAuth/Auth", selectedItem.desc)
 		}
 	});
 });

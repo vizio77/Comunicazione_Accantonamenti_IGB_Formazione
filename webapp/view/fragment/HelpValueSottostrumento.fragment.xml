@@ -15,16 +15,15 @@
 				<!-- <Input id="idformStTipologia" value="{modelHome>/formSottostrumento/tipologia}" width="70%" showValueHelp="true"/> -->
                 <Select id="idformStTipologia"  width="70%"  selectedKey="{modelHome>/formSottostrumento/tipologia}" items="{
                     path: 'modelHome>/formSottostrumento/tipologieSet/',
-                    sorter: { path: 'modelHome>StatFase' }
+                    sorter: { path: 'StatFase' }
                 }">
-                    <c:Item key="{modelHome>TipoSstr}" text="{modelHome>NomeTipoSstr}" />
+                    <c:Item key="{modelHome>TipoSstr}" text="{modelHome>TipoSstrDescr}" />
                 </Select>
                 <Label text="{i18n>EspContabile}" labelFor="idformStEspCont"/>
                     <!-- value="{modelHome>/formSottostrumento/esposizione_contabile}" -->
-				<Select id="idformStEspCont"  width="70%"  selectedKey="{modelHome>/formSottostrumento/esposizione_contabile}">
-                    <c:Item key="" text="" />
-                    <c:Item key="0" text="Normale" />
-                    <c:Item key="8" text="Rimodulazione FL" />
+				<Select id="idformStEspCont"  width="70%"  selectedKey="{modelHome>/formSottostrumento/esposizione_contabile}" items="{
+                    path:'modelHome>/formSottostrumento/esposizione_contabileSet/'}" forceSelection="false">
+                    <c:Item key="{modelHome>TipoEsposizione}" text="{modelHome>Descr}" />
                 </Select>
                 <Label text="{i18n>descrizione}" labelFor="idFormStDescr"/>
 				<Input id="idFormStDescr" value="{modelHome>/formSottostrumento/descrizione_sstr}" width="70%"/>
@@ -35,7 +34,12 @@
                     <c:Item key="0" text="Bilancio" />
                 </Select>
                 <Label text="{i18n>ambito}" labelFor="idFormStAmm"/>
-				<Input id="idFormStAmm" value="{modelHome>/formSottostrumento/amministrazione}" width="70%" showValueHelp="true"/>
+				<!-- <Input id="idFormStAmm" value="{modelHome>/formSottostrumento/amministrazione}" width="70%" showValueHelp="true"/> -->
+                <Select id="idFormStAmm" selectedKey="{modelHome>/formSottostrumento/dominio_sstr}" width="70%"
+                    items="{
+                        path:'modelHome>/formSottostrumento/dominio_sstrSet/'}" >
+                    <c:Item key="{modelHome>Prctr}" text="{modelHome>DescrBreve}" />
+                </Select>
             </f:content>
         </f:SimpleForm>
     </content>

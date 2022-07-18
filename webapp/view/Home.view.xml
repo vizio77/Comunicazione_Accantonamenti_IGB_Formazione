@@ -41,12 +41,12 @@
                                 </f:toolbar>
                                 <f:content>
                                     <Label text="Esercizio"/>
-                                    <Text text="2023"/>
+                                    <Text text="{modelHome>/formSottostrumento/esercizio}"/>
                                     <Label text="Sottostrumento" />
                                     <Input value="{modelFilterHome>/Sottostrumento}" showValueHelp="true" valueHelpRequest="onHelpValueSottoStrumento"/>
-                                    <Label text="Autorizzazione"  id="labelAuth" visible="{modelFilterHome>/visibleAuth}"/>
+                                    <!-- <Label text="Autorizzazione"  id="labelAuth" visible="{modelFilterHome>/visibleAuth}"/>
                                     <Input value="{Street}" id="inputAuth" visible="{modelFilterHome>/visibleAuth}" showValueHelp="true" >
-                                    </Input>
+                                    </Input> -->
                                 </f:content>
                             </f:SimpleForm>
                             <OverflowToolbar id="ddj" design="Transparent" >

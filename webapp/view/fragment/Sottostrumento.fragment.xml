@@ -7,22 +7,22 @@
 					<Table id="idTableSottostrumento2" inset="false" items="{sottostrumentiModel>/}" mode="SingleSelectLeft" selectionChange="onScegliSottostrumento"
                         sticky="ColumnHeaders,HeaderToolbar,InfoToolbar">
 						<columns>
-                            <Column width="auto">
+                            <Column width="8%">
 								<Text text="{i18n>TipoSottoStr}" class="boldCss"/>
 							</Column>
-							<Column width="auto">
+							<Column width="7%">
 								<Text text="{i18n>Numero}" class="boldCss"/>
 							</Column>
-                            <Column width="auto">
+                            <Column width="10%">
 								<Text text="{i18n>AnnoFaseSottoStr}" class="boldCss"/>
 							</Column>
-							<Column width="auto">
+							<Column width="35%">
 								<Text text="{i18n>DescrSottostrumento}" class="boldCss"/>
 							</Column>
-							<Column width="auto">
+							<Column width="7%">
 								<Text text="{i18n>Stato}" class="boldCss"/>
 							</Column>
-							<Column width="auto">
+							<Column width="10%">
 								<Text text="{i18n>Visibilita}" class="boldCss"/>
 							</Column>
 							<Column width="auto">
@@ -32,13 +32,13 @@
 						<items>
 							<ColumnListItem vAlign="Middle" visible="{= ${sottostrumentiModel>IdSstr} !== '1487' }">
 								<cells>
-                                    <Text text="{sottostrumentiModel>TestoTipo}"/>
-									<Text text="{sottostrumentiModel>IdSstr}"/>
-									<Text text="{sottostrumentiModel>FkEseStrAnnoEse}"/>
+                                    <Text text="{sottostrumentiModel>DescrTipoSottostrumento}"/>
+									<Text text="{sottostrumentiModel>NumeroSottostrumento}"/>
+									<Text text="{sottostrumentiModel>AnnoSottostrumento}"/>
 									<Text text="{sottostrumentiModel>DescrEstesa}"/>
-									<Text text="{sottostrumentiModel>Stato}"/>
+									<Text text="Aperto"/>
 									<Text text="Bilancio"/>
-									<Text text="{= ${sottostrumentiModel>StatEsposizione} === '0' ? 'Normale' : 'Rimodulazione FL'}"/> 
+									<Text text="{path: 'sottostrumentiModel>TipoEsposizione', formatter: '.onFormatTipoEsposizione' }"/> 
 								</cells>
 							</ColumnListItem>
 						</items>

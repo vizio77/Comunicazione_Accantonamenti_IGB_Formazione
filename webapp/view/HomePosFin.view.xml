@@ -20,14 +20,16 @@
 							<fb:FilterGroupItem groupName="Essential" name="A" groupTitle="{i18n>Essential}" partOfCurrentVariant="true" label="{i18n>Esercizio}"
 							visibleInFilterBar="true">
 								<fb:control>
-									<Input class="esercizioClass" width="20%" id="idEserGestione" value="{modelFilterHome>/Esercizio}" editable="false" textAlign="Center"/>
+									<!-- <Input class="esercizioClass" width="20%" id="idEserGestione" value="{modelFilterHome>/Esercizio}" editable="false" textAlign="Center"/> -->
+										<Text text="2023"/>
 								</fb:control>
 							</fb:FilterGroupItem>
 							<fb:FilterGroupItem mandatory="true" groupName="Essential" groupTitle="{i18n>Essential}" id="filtroSottostrumento" name="A1" label="{i18n>Sottostrumento}"
 								visibleInFilterBar="true">
 								<fb:control>
 									<!-- sostituito onSottostrumento con onHelpValueSottoStrumento -->
-									<Input value="{modelFilterHome>/Sottostrumento}" width="50%" showValueHelp="true" required="false" valueHelpRequest="onHelpValueSottoStrumento" editable="false"/>
+									<!-- <Input value="{modelFilterHome>/Sottostrumento}" width="50%" showValueHelp="true" required="false" valueHelpRequest="onHelpValueSottoStrumento" editable="false"/> -->
+										<Link text="{modelHome>/Sottostrumento}" press="onExpandPopOverSottostrumento" class="sapUiSmallMarginEnd"/>
 								</fb:control>
 							</fb:FilterGroupItem>
 							<fb:FilterGroupItem groupName="Essential" id="POSIZIONEFINANZIARIA" groupTitle="{i18n>ricercaStru}" name="A2" label="{i18n>posFin}"

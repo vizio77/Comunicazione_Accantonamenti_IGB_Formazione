@@ -9,6 +9,9 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("zsap.com.r3.cobi.s4.gestposfin.controller.BaseController", {
+        getRouter : function () {
+            return this.getOwnerComponent().getRouter();
+        },
         __getEntityMatchCode: function (key) {
             let oCodificaEntity = {
                 "Amm": "/Gest_PosFin_SH_AmministrazioniSet"

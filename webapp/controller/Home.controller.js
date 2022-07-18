@@ -24,7 +24,8 @@ sap.ui.define([
                     visibilitaSet: [],
                     visibilita: null,
                     dominio_sstrSet: [],
-                    dominio_sstr: null
+                    dominio_sstr: null,
+                    esercizio: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear().toString()
                 }}), "modelHome")
                 this.getView().setModel(new JSONModel({Sottostrumento: null, visibleAuth: false}), "modelFilterHome")
             },
@@ -40,9 +41,27 @@ sap.ui.define([
                         let oModel = this.getOwnerComponent().getModel("sapHanaS2");
                         let modelHome = this.getView().getModel("modelHome")
                         oModel.read("/Gest_PosFin_SH_TipologiaSet",{
+                            filters:[ new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio"))],
                             success:  (oData) => {
-                                oData.results.push({StatFase: -1, TipoSstr: null, NomeTipoSstr: ""})
+                                oData.results.unshift({StatFase: -1, TipoSstr: null, NomeTipoSstr: ""})
                                 modelHome.setProperty("/formSottostrumento/tipologieSet", oData.results)
+                            }
+                        })
+                        oModel.read("/Gest_PosFin_SH_TiesSet",{
+                            filters:[ new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio")),
+                                      new Filter("Fase", FilterOperator.EQ, "DLB")],
+                            success:  (oData) => {
+                                oData.results.unshift({TipoEsposizione: null, Descr: null, Fase: null, Anno: null})
+                                modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", oData.results)
+                            }
+                        })
+                        oModel.read("/Gest_PosFin_SH_AmministrazioniSet",{
+                            filters:[new Filter("Fikrs", FilterOperator.EQ, "S001"),
+                                     new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio")),
+                                     new Filter("Fase", FilterOperator.EQ, "DLB")],
+                            success:  (oData) => {
+                                oData.results.unshift({Prctr: null, DescrBreve: ""})
+                                modelHome.setProperty("/formSottostrumento/dominio_sstrSet", oData.results)
                             }
                         })
                     })
@@ -78,66 +97,97 @@ sap.ui.define([
             },
             onSottostrumento: function () {
                 var oModel = this.getOwnerComponent().getModel("sapHanaS2");
-                var Dateto = new Date(new Date().getFullYear(), 11, 31);
-                Dateto.setHours(2);
+                
+                let annoSStr = new Date(new Date().setFullYear(new Date().getFullYear() + 1)) 
                 var sottostrumentiModel = new JSONModel();
+
                 var oView = this.getView();
                 //filtri standard
                 var _filters = [
                     new Filter({
-                        path: "Dateto",
+                        path: "AnnoSottostrumento",
                         operator: FilterOperator.EQ,
-                        value1: Dateto
+                        value1: annoSStr.getFullYear().toString()
                     }),
                     new Filter({
                         path: "Fase",
                         operator: FilterOperator.EQ,
                         value1: "DLB"
-                    }),
-                    new Filter({
-                        path: "TestoTipo",
-                        operator: FilterOperator.EQ,
-                        value1: "VLV"
-                    }),
-                    new Filter({
-                        path: "StatStatus",
-                        operator: FilterOperator.EQ,
-                        value1: "1"
                     })
                 ];
                 //filtri in da form di sottostrumento
                 let modelHome = this.getView().getModel("modelHome") //.getProperty("/formSottostrumento")
                 if(modelHome.getProperty("/formSottostrumento/esposizione_contabile")){
                     _filters.push(new Filter({
-                        path: "StatEsposizione",
+                        path: "TipoEsposizione",
                         operator: FilterOperator.EQ,
                         value1: modelHome.getProperty("/formSottostrumento/esposizione_contabile")
-                    }),)
+                    }))
+                } else {
+                    modelHome.getProperty("/formSottostrumento/esposizione_contabileSet").map((espCont) => {
+                            if (espCont.TipoEsposizione) {
+                                _filters.push(new Filter({
+                                    path: "TipoEsposizione",
+                                    operator: FilterOperator.EQ,
+                                    value1: espCont.TipoEsposizione
+                                }))
+                            }   
+                        })
                 }
                 if(modelHome.getProperty("/formSottostrumento/sottostrumento")){
                     _filters.push(new Filter({
-                        path: "IdSstr",
+                        path: "CodiceSottostrumento",
                         operator: FilterOperator.EQ,
                         value1: modelHome.getProperty("/formSottostrumento/sottostrumento")
                     }),)
                 }
-                if(modelHome.getProperty("/formSottostrumento/descrizione")){
+                if(modelHome.getProperty("/formSottostrumento/descrizione_sstr")){
                     _filters.push(new Filter({
                         path: "DescrEstesa",
                         operator: FilterOperator.EQ,
-                        value1: modelHome.getProperty("/formSottostrumento/descrizione")
+                        value1: modelHome.getProperty("/formSottostrumento/descrizione_sstr")
                     }),)
                 }
+                if(modelHome.getProperty("/formSottostrumento/dominio_sstr")){
+                    _filters.push(new Filter({
+                        path: "Prctr",
+                        operator: FilterOperator.EQ,
+                        value1: modelHome.getProperty("/formSottostrumento/dominio_sstr")
+                    }),)
+                } else {
+                    modelHome.getProperty("/formSottostrumento/dominio_sstrSet").map((dom) => {
+                        if (dom.Prctr) {
+                            _filters.push(new Filter({
+                                path: "Prctr",
+                                operator: FilterOperator.EQ,
+                                value1: dom.Prctr
+                            }))
+                        }   
+                    })
+                }
+                if(modelHome.getProperty("/formSottostrumento/tipologia")){
+                    _filters.push(new Filter({
+                        path: "TipoSottostrumento",
+                        operator: FilterOperator.EQ,
+                        value1: modelHome.getProperty("/formSottostrumento/tipologia")
+                    }),)
+                } else {
+                    modelHome.getProperty("/formSottostrumento/tipologieSet").map((tipologie) => {
+                        if (tipologie.TipoSstr) {
+                            _filters.push(new Filter({
+                                path: "TipoSottostrumento",
+                                operator: FilterOperator.EQ,
+                                value1: tipologie.TipoSstr
+                            }))
+                        }   
+                    })
+                }
                 //
-                oModel.read("/Gest_PosFin_SottostrumentoSet", {
+                oModel.read("/Gest_fasi_sstrSet", {
                     filters: _filters,
-                    success: function(oData, response) {
-                        oData.results = oData.results.map((item) => {
-                            item.FkEseStrAnnoEse = Number(item.FkEseStrAnnoEse) + 1
-                            item.EseAnnoEse = Number(item.EseAnnoEse) + 1
-                            item.Stato = "Aperto"
-                            return item
-                        })
+                    sorters: [new sap.ui.model.Sorter("TipoSottostrumento", false),
+                              new sap.ui.model.Sorter("NumeroSottostrumento", false)],//new sap.ui.model.Sorter("NumeroSottostrumento", false),
+                    success: (oData, response) => {
                         sottostrumentiModel.setData(oData.results);
                         sottostrumentiModel.setSizeLimit(2000);
                         oView.setModel(sottostrumentiModel, "sottostrumentiModel");
@@ -164,24 +214,24 @@ sap.ui.define([
                 let selectedPath = sap.ui.getCore().byId("idTableSottostrumento2").getSelectedContextPaths()[0]
                 let selectedItem = modelSottoStrumenti.getProperty(selectedPath)
     
-                modelHome.setProperty("/Sottostrumento", `${selectedItem.TestoTipo} - ${selectedItem.IdSstr} - ${selectedItem.EseAnnoEse}`)
+                modelHome.setProperty("/Sottostrumento", `${selectedItem.DescrTipoSottostrumento} - ${selectedItem.NumeroSottostrumento}`)
                 modelHome.setProperty("/infoSottoStrumento", selectedItem)
-                modelHome.setProperty("/esercizio", Number(selectedItem.EseAnnoEse) + 1)
+                modelHome.setProperty("/esercizio", selectedItem.AnnoSottostrumento)
     
                 //lt setto anche il model filter home per recuperare tutto nella prima schermata
                 let modelFilterHome = this.getView().getModel("modelFilterHome")
-                modelFilterHome.setProperty("/Sottostrumento", `${selectedItem.TestoTipo} - ${selectedItem.IdSstr}`)
+                modelFilterHome.setProperty("/Sottostrumento", `${selectedItem.DescrTipoSottostrumento} - ${selectedItem.NumeroSottostrumento}`)
                 //lt elimino l'anno all'interno della selezione del sottostrumento
                 //modelFilterHome.setProperty("/Sottostrumento", `${selectedItem.TestoTipo} - ${selectedItem.IdSstr} - ${selectedItem.EseAnnoEse}`)
                 modelFilterHome.setProperty("/infoSottoStrumento", selectedItem)
-                modelFilterHome.setProperty("/esercizio", Number(selectedItem.EseAnnoEse) + 1)
+                modelFilterHome.setProperty("/esercizio", selectedItem.AnnoSottostrumento)
                 //setto nel modello filtro anche l'abilitazione o meno del campo pos finanziaria
                 modelFilterHome.setProperty("/FieldPosEnabled", true)
-                if(selectedItem.TestoTipo === "VLV") {
-                    modelFilterHome.setProperty("/visibleAuth", false)
-                } else {
-                    modelFilterHome.setProperty("/visibleAuth", true)
-                }
+                // if(selectedItem.TestoTipo === "VLV") {
+                //     modelFilterHome.setProperty("/visibleAuth", false)
+                // } else {
+                //     modelFilterHome.setProperty("/visibleAuth", true)
+                // }
     
                 this.oDialogHVSottoStrumento.close();
                 this._oDialog.close()
@@ -191,8 +241,21 @@ sap.ui.define([
                 this._oDialog = null
             },
             onNavigate: function () {
+                let modelHome = this.getView().getModel("modelHome")
+                let oSottostrumento = modelHome.getProperty("/infoSottoStrumento")
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			    oRouter.navTo("HomePosFin");
+			    oRouter.navTo("HomePosFin",{
+                    Fikrs: oSottostrumento.Fikrs,
+                    CodiceStrumento: oSottostrumento.CodiceStrumento,
+                    CodiceStrumentoOri: oSottostrumento.CodiceStrumentoOri,
+                    CodiceSottostrumento: oSottostrumento.CodiceSottostrumento,
+                    Datbis: oSottostrumento.Datbis.toISOString(),
+                });
+            },
+            onFormatTipoEsposizione:function (sTipoEsposizione) {
+                const modelHome = this.getView().getModel("modelHome")
+                const aTipologie = modelHome.getProperty("/formSottostrumento/esposizione_contabileSet")
+                return aTipologie.find(es => es.TipoEsposizione === sTipoEsposizione).Descr
             }
         });
     });
