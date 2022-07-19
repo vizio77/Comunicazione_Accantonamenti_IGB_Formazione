@@ -60,8 +60,25 @@ sap.ui.define([
                                      new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio")),
                                      new Filter("Fase", FilterOperator.EQ, "DLB")],
                             success:  (oData) => {
-                                oData.results.unshift({Prctr: null, DescrBreve: ""})
+                                //oData.results.unshift({Prctr: null, DescrBreve: ""})
                                 modelHome.setProperty("/formSottostrumento/dominio_sstrSet", oData.results)
+                            }
+                        })
+                        oModel.read("/Gest_SH1Set",{
+                            urlParameters: {
+                                $expand: 'ToSHEsposizione,ToSHTipologia,ToSHVisibilita'
+                            },
+                            filters:[new Filter("Anno", FilterOperator.EQ, "2023"),
+                                    new Filter("Fase", FilterOperator.EQ, "DLB"),
+                                    new Filter("ToSHTipologia/TipoSstr", FilterOperator.EQ, "PLBR"),
+                                    new Filter("ToSHTipologia/TipoSstr", FilterOperator.EQ, "VLV")],
+                            success:  (oData) => {
+                                debugger
+                                //oData.results.unshift({Prctr: null, DescrBreve: ""})
+                                //modelHome.setProperty("/formSottostrumento/dominio_sstrSet", oData.results)
+                            },
+                            error: function (res) {
+                                debugger
                             }
                         })
                     })
@@ -253,9 +270,9 @@ sap.ui.define([
                 });
             },
             onFormatTipoEsposizione:function (sTipoEsposizione) {
-                const modelHome = this.getView().getModel("modelHome")
-                const aTipologie = modelHome.getProperty("/formSottostrumento/esposizione_contabileSet")
-                return aTipologie.find(es => es.TipoEsposizione === sTipoEsposizione).Descr
-            }
+                   const modelHome = this.getView().getModel("modelHome")
+                   const aTipologie = modelHome.getProperty("/formSottostrumento/esposizione_contabileSet")
+                   return aTipologie.find(es => es.TipoEsposizione === sTipoEsposizione).Descr
+               }
         });
     });

@@ -4,8 +4,9 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"sap/ui/core/Fragment",
-	"sap/m/MessageBox"
-], function(Controller, JSONModel, Filter, FilterOperator, Fragment, MessageBox) {
+	"sap/m/MessageBox",
+	"sap/ui/core/routing/History"
+], function(Controller, JSONModel, Filter, FilterOperator, Fragment, MessageBox, History) {
 	"use strict";
 
 	return Controller.extend("zsap.com.r3.cobi.s4.gestposfin.controller.DetailPosFin", {
@@ -13,16 +14,6 @@ sap.ui.define([
 		 * @override
 		 */
 		onInit: async function() {
-			/* this.getOwnerComponent().setModel(new JSONModel({faseRicerca: true, infoSottoStrumento: {}}),"modelHome")
-			let itemsMock = await this.loadJSONTest("/webapp/model/data_mock.json");
-			// this.getOwnerComponent().getModel("modelHome").setProperty("/onAvvio",false)
-			 this.getOwnerComponent().getModel("modelHome").setProperty("/initialDetail",true)
-			this.getOwnerComponent().getModel("modelHome").setProperty("/",itemsMock)
-			this.getOwnerComponent().getModel("modelHome").setProperty("/form",{})
-			
-
-			this.handleCreateInizialFilter();
-			this.initData(); */
 			let modelHome = this.getOwnerComponent().getModel("modelHome")
 			modelHome.setProperty("/CompetenzaAuth", {})
 		},
@@ -67,7 +58,7 @@ sap.ui.define([
 			});
 			if(!this._oDialog){
 				this._oDialog = sap.ui.xmlfragment(
-					"zgestposfinzgestposfin.view.fragment.Sottostrumento",
+					"zsap.com.r3.cobi.s4.gestposfin.view.fragment.Sottostrumento",
 					this);
 				this._oDialog.setModel("sottostrumentiModel");
 				this.getView().addDependent(this._oDialog);
@@ -93,7 +84,7 @@ sap.ui.define([
 		onPosFin: function () {
 			if(!this.oDialogPosFin) {
 				Fragment.load({
-					name:"zgestposfinzgestposfin.view.fragment.PosFinHelp",
+					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.PosFinHelp",
 					controller: this
 				}).then(oDialog => {
 					this.oDialogPosFin = oDialog;
@@ -108,7 +99,7 @@ sap.ui.define([
 			const {key, value} = oEvent.getSource().getCustomData()[0].mProperties
 			if(!this[value]) {
 				Fragment.load({
-					name:"zgestposfinzgestposfin.view.fragment." + value,
+					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment." + value,
 					controller: this
 				}).then(oDialog => {
 					this[value] = oDialog;
@@ -186,7 +177,7 @@ sap.ui.define([
 		onPressConfPosFin: function () {
 			if(!this.oDialogTabPosFinanziaria) {
 				Fragment.load({
-					name:"zgestposfinzgestposfin.view.fragment.TablePosizioneFinanziaria",
+					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.TablePosizioneFinanziaria",
 					controller: this
 				}).then(oDialog => {
 					this.oDialogTabPosFinanziaria = oDialog;
@@ -242,7 +233,7 @@ sap.ui.define([
 			if (!this._pPopover) {
 				this._pPopover = Fragment.load({
 					id: oView.getId(),
-					name: "zgestposfinzgestposfin.view.fragment.PopOverPosizioneFinanziaria",
+					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverPosizioneFinanziaria",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -289,7 +280,7 @@ sap.ui.define([
 			if (!this._pPopoverAction) {
 				this._pPopoverAction = Fragment.load({
 					id: oView.getId(),
-					name: "zgestposfinzgestposfin.view.fragment.PopOverInfoGeneral",
+					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverInfoGeneral",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -310,7 +301,7 @@ sap.ui.define([
 			if (!this._pPopoverSottoStr) {
 				this._pPopoverSottoStr = Fragment.load({
 					id: oView.getId(),
-					name: "zgestposfinzgestposfin.view.fragment.PopOverSottostrumento",
+					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverSottostrumento",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -321,6 +312,9 @@ sap.ui.define([
 				oPopover.openBy(oButton);
 			});
 		},
+		__onGetTipoEsposizione: function (esp) {
+			return 'NORMALE'
+		},
 		onExpandPopOverMiss: function (oEvent) {
 			var oButton = oEvent.getSource(),
 			oView = this.getView();
@@ -329,7 +323,7 @@ sap.ui.define([
 			if (!this._pPopoverMiss) {
 				this._pPopoverMiss = Fragment.load({
 					id: oView.getId(),
-					name: "zgestposfinzgestposfin.view.fragment.PopOverMissione",
+					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverMissione",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -348,7 +342,7 @@ sap.ui.define([
 			if (!this._pPopoverProgr) {
 				this._pPopoverProgr = Fragment.load({
 					id: oView.getId(),
-					name: "zgestposfinzgestposfin.view.fragment.PopOverProgramma",
+					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverProgramma",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -368,7 +362,7 @@ sap.ui.define([
 			if (!this._pPopoverAction) {
 				this._pPopoverAction = Fragment.load({
 					id: oView.getId(),
-					name: "zgestposfinzgestposfin.view.fragment.PopOverAzione",
+					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverAzione",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -398,7 +392,7 @@ sap.ui.define([
 				statoWf		: "Iniziato"
 			})
 			if (!this._handleAddFilter) {
-				this._handleAddFilter = sap.ui.xmlfragment("zgestposfinzgestposfin.view.fragment.FiltriIniziali", this);
+				this._handleAddFilter = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.FiltriIniziali", this);
 				this.getView().addDependent(this._handleAddFilter);
 			}
 			this._handleAddFilter.open();
@@ -421,7 +415,7 @@ sap.ui.define([
 				statoWf		: "Iniziato"
 			})
 			if (!this._handleAddElenco) {
-				this._handleAddElenco = sap.ui.xmlfragment("zgestposfinzgestposfin.view.fragment.AddElenco", this);
+				this._handleAddElenco = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.AddElenco", this);
 				this.getView().addDependent(this._handleAddElenco);
 			}
 			this._handleAddElenco.open();
@@ -450,7 +444,7 @@ sap.ui.define([
 				statoWf		: "Iniziato"
 			})
 			if (!this._handleAddCOFOG) {
-				this._handleAddCOFOG = sap.ui.xmlfragment("zgestposfinzgestposfin.view.fragment.AddCOFOG", this);
+				this._handleAddCOFOG = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.AddCOFOG", this);
 				this.getView().addDependent(this._handleAddCOFOG);
 			}
 			this._handleAddCOFOG.open();
@@ -473,7 +467,7 @@ sap.ui.define([
 
 			
 			if (!this._handleAddCOFOG) {
-				this._handleAddCOFOG = sap.ui.xmlfragment("zgestposfinzgestposfin.view.fragment.AddCOFOG", this);
+				this._handleAddCOFOG = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.AddCOFOG", this);
 				this.getView().addDependent(this._handleAddCOFOG);
 			}
 			this._handleAddCOFOG.open();
@@ -535,14 +529,21 @@ sap.ui.define([
 
 		},
 		onNavBack: function () {		
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("RouteView");
+			var oHistory = History.getInstance();
+			var sPreviousHash = oHistory.getPreviousHash();
+
+			if (sPreviousHash !== undefined) {
+				window.history.go(-1);
+			} else {
+				var oRouter = this.getOwnerComponent().getRouter();
+				oRouter.navTo("Home", {}, true);
+			}
 					
 		},
 		onAuth: function (oEvent) {
 			if(!this.oDialogAutorizzazioni) {
 				Fragment.load({
-					name:"zgestposfinzgestposfin.view.fragment.HVAutorizzazioni",
+					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HVAutorizzazioni",
 					controller: this
 				}).then(oDialog => {
 					this.oDialogAutorizzazioni = oDialog;
@@ -556,7 +557,7 @@ sap.ui.define([
 		onAuthCollegata: function (oEvent) {
 			if(!this.oDialogAutorizzazioniCollegate) {
 				Fragment.load({
-					name:"zgestposfinzgestposfin.view.fragment.HVAuthCollegata",
+					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HVAuthCollegata",
 					controller: this
 				}).then(oDialog => {
 					this.oDialogAutorizzazioniCollegate = oDialog;
@@ -585,7 +586,7 @@ sap.ui.define([
 		onNuovaAuth: function() {
 			if(!this.oDialogAssNuovaAuth) {
 				Fragment.load({
-					name:"zgestposfinzgestposfin.view.fragment.HVAssNuovaAuth",
+					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HVAssNuovaAuth",
 					controller: this
 				}).then(oDialog => {
 					this.oDialogAssNuovaAuth = oDialog;

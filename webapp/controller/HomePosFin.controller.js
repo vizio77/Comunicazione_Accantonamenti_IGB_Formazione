@@ -21,21 +21,19 @@ sap.ui.define([
 			this.getOwnerComponent().getModel("modelPosFin").setProperty("/",itemsMock)
 			this.getOwnerComponent().getModel("modelPosFin").setProperty("/initialDetail",true)
 			this.getOwnerComponent().getModel("modelPosFin").setProperty("/form",{})
-			// this.getOwnerComponent().getModel("modelPosFin").setProperty("/formSottostrumento",{
-			// 	tipologia: null,
-			// 	tipologieSet: [],
-			// 	codice_sstr: null,
-			// 	esposizione_contabileSet: [],
-			// 	esposizione_contabile: null,
-			// 	descrizione_sstr: null,
-			// 	visibilitaSet: [],
-			// 	visibilita: null,
-			// 	dominio_sstrSet: [],
-			// 	dominio_sstr: null
-			// })
-			//var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			this.oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			this.oRouter.getRoute("HomePosFin").attachPatternMatched(this._onObjectMatched, this);
+			
+			const router = sap.ui.core.UIComponent.getRouterFor(this)
+			const aSubHashes = router.getHashChanger().getHash().split("/")
+			const oKeySStr = {
+				Fikrs: aSubHashes[1],
+				CodiceStrumento: aSubHashes[2],
+				CodiceStrumentoOri: aSubHashes[3],
+				CodiceSottostrumento: aSubHashes[4],
+				Datbis: encodeURIComponent(new Date(aSubHashes[5]).toISOString()).replace(".000Z", "")
+			}
+			this.__getSottoStrumento(oKeySStr)
+			var oRouter = this.getOwnerComponent().getRouter();
+			oRouter.getRoute("HomePosFin").attachPatternMatched(this._onObjectMatched, this);
 		//	this.handleCreateInizialFilter();
 			//this.initData();
 		},
@@ -43,15 +41,38 @@ sap.ui.define([
 			const oKeySStr = oEvent.getParameter("arguments")
 			const oModel = this.getView().getModel("sapHanaS2");
 			this.getView().setBusy(true)
+			oKeySStr.Datbis = encodeURIComponent(new Date(oKeySStr.Datbis).toISOString()).replace(".000Z", "")
+			this.__getSottoStrumento(oKeySStr)
+			// let sUrl = `/Gest_fasi_sstrSet(Fikrs='${oKeySStr.Fikrs}',CodiceStrumento='${oKeySStr.CodiceStrumento}'`+
+			// 			`,CodiceStrumentoOri='${oKeySStr.CodiceStrumentoOri}',CodiceSottostrumento='${oKeySStr.CodiceSottostrumento}',Datbis=datetime'${oKeySStr.Datbis}')`
+			// oModel.read(sUrl,{
+			// 	success: (oData, res) => {
+			// 		this.getView().setBusy(false)
+			// 		let modelPosFin = this.getView().getModel("modelPosFin")
+			// 		modelPosFin.setProperty("/Sottostrumento", `${oData.DescrTipoSottostrumento} - ${oData.NumeroSottostrumento}`)
+			// 		modelPosFin.setProperty("/itemSottostrumento", oData)
+			// 	},
+			// 	error: function (res) {
+			// 		this.getView().setBusy(false)
+			// 	}
+			// })
+		},
+		__getSottoStrumento(oKeySStr){
+			this.getView().setBusy(true)
+			const oModel = this.getView().getModel("sapHanaS2");
 			let sUrl = `/Gest_fasi_sstrSet(Fikrs='${oKeySStr.Fikrs}',CodiceStrumento='${oKeySStr.CodiceStrumento}'`+
-						`,CodiceStrumentoOri='${oKeySStr.CodiceStrumentoOri}',CodiceSottostrumento='${oKeySStr.CodiceSottostrumento}',Datbis=datetime'${new Date(oKeySStr.Datbis).toISOString()}')`
+						`,CodiceStrumentoOri='${oKeySStr.CodiceStrumentoOri}',CodiceSottostrumento='${oKeySStr.CodiceSottostrumento}',Datbis=datetime'${oKeySStr.Datbis}')`
 			oModel.read(sUrl,{
 				success: (oData, res) => {
+					this.getView().setBusy(false)
 					let modelPosFin = this.getView().getModel("modelPosFin")
-					//modelPosFin.setProperty("/sottostrumento", `${oData.}`)
+					modelPosFin.setProperty("/Sottostrumento", `${oData.DescrTipoSottostrumento} - ${oData.NumeroSottostrumento}`)
+					modelPosFin.setProperty("/infoSottoStrumento", oData)
+				},
+				error: function (res) {
+					this.getView().setBusy(false)
 				}
 			})
-			debugger
 		},
 		onSottostrumento: function () {
 			var oModel = this.getView().getModel("sapHanaS2");
@@ -305,7 +326,7 @@ sap.ui.define([
 
 		},
 		onCreaPosFin: function(oEvent){
-			let homeModel = this.getView().getModel("modelPosFin")
+			let modelPosFin = this.getView().getModel("modelPosFin")
 
 			/* this.getView().byId("DetailInitial").setVisible(false)
 			this.getView().byId("idCompetenzaTab").setVisible(false)
@@ -314,8 +335,7 @@ sap.ui.define([
 			//homeModel.setProperty("/DetailInitial", false)
 
 			//controlla che il sotto strumento sia stato selezionato
-			let modelFilterHome = this.getView().getModel("modelFilterHome");
-			if(!modelFilterHome.getProperty("/Sottostrumento")) {
+			if(!modelPosFin.getProperty("/Sottostrumento")) {
 				return MessageBox.warning("Selezionare  un Sottostrumento", 
 					{ 	
 						title: "Attenzione",
@@ -328,14 +348,14 @@ sap.ui.define([
 				)
 			}
 			//fine controllo
-			homeModel.setProperty("/idCompetenzaTab", false)
-			homeModel.setProperty("/idCassTab", false)
+			modelPosFin.setProperty("/idCompetenzaTab", false)
+			modelPosFin.setProperty("/idCassTab", false)
 
-			homeModel.setProperty("/onAvvio", true)
-			homeModel.setProperty("/tabAnagrafica", true)
-			homeModel.setProperty("/onModify", false)
-			homeModel.setProperty("/onCreate", true)
-			homeModel.setProperty("/detailAnagrafica", {})
+			modelPosFin.setProperty("/onAvvio", true)
+			modelPosFin.setProperty("/tabAnagrafica", true)
+			modelPosFin.setProperty("/onModify", false)
+			modelPosFin.setProperty("/onCreate", true)
+			modelPosFin.setProperty("/detailAnagrafica", {})
 			
 			
 			//lt vado al dettaglio
@@ -656,7 +676,7 @@ sap.ui.define([
 		},
 		onNavTo: function () {		
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("Detail");
+			oRouter.navTo("DetailPosFin");
 					
 		},
 		onReset: function () {

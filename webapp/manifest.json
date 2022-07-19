@@ -101,6 +101,13 @@
           "target": [
             "HomePosFin"
           ]
+        },
+        {
+          "name": "DetailPosFin",
+          "pattern": "DetailPosFin",
+          "target": [
+            "DetailPosFin"
+          ]
         }
       ],
       "targets": {
@@ -117,6 +124,13 @@
           "clearControlAggregation": false,
           "viewId": "HomePosFin",
           "viewName": "HomePosFin"
+        },
+        "DetailPosFin": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "DetailPosFin",
+          "viewName": "DetailPosFin"
         }
       }
     },

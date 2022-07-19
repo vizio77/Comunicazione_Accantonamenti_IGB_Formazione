@@ -12,16 +12,16 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 			<f:DynamicPageHeader pinnable="true">
 				<f:content>
 				<!-- lt commento perch' antonio diche che non vogliono vedere un header iniziale così perchè altrimenti viene bocciata -->
-					<!-- <VBox visible="{modelHome>/faseRicerca}">
+					<!-- <VBox visible="{modelPosFin>/faseRicerca}">
 						<FlexBox >
 							<items>
 								<Label text="{i18n>Esercizio}" labelFor="idEsercizio" class="sapUiTinyMargin"/>
 								<Input id="idEsercizio" width="50%" value="2023" enabled="false" class="sapUiTinyMargin"/>
 								<Label text="{i18n>Sottostrumento}" labelFor="idSottostrumento" class="sapUiTinyMargin"/>
 								<Input id="idSottostrumento" width="90%" showValueHelp="true" required="false" valueHelpRequest="onSottostrumento"
-									value="{modelHome>/Sottostrumento}" class="sapUiTinyMargin"/>
+									value="{modelPosFin>/Sottostrumento}" class="sapUiTinyMargin"/>
 								<Label text="{i18n>posFin}" labelFor="idPosFin" visible="{visibleCheckModel>/visiblePosFin}" class="sapUiTinyMargin"/>
-								<Input id="idPosFin" value="{modelHome>/posFin}" required="false" width="100%" showValueHelp="true"
+								<Input id="idPosFin" value="{modelPosFin>/posFin}" required="false" width="100%" showValueHelp="true"
 									valueHelpRequest="onPosFin" visible="{visibleCheckModel>/visiblePosFin}" class="sapUiTinyMargin"/> 
 								<Label text="{i18n>autorizzazione}" labelFor="idAutorizzazione" visible="false" class="sapUiTinyMargin" /> 
 								<Input id="idAutorizzazione" value="{modelFilteranaS2TipologicheFrag>/RICERCASTRUTASS/POSIZIONEFINANZIARIA}" width="50%" showValueHelp="true"
@@ -42,16 +42,16 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 						
 					</VBox> -->
 					<!-- lt sposto questa sezione in una sezione di info -->
-					<!-- visible="{= ${modelHome>/faseRicerca} === false }" -->
+					<!-- visible="{= ${modelPosFin>/faseRicerca} === false }" -->
 					 <FlexBox > 
 						<items>
 							<Label text="{i18n>Esercizio}" design="Bold" class="sapUiTinyMarginEnd"/>
 							<Text text="2023" class="sapUiSmallMarginEnd"/>
 							<Label text="{i18n>Sottostrumento}" design="Bold"  class="sapUiTinyMarginEnd" />
-							<Link text="{modelHome>/Sottostrumento}" press="onExpandPopOverSottostrumento" class="sapUiSmallMarginEnd"/>
-							<HBox visible="{= ${modelHome>/onCreate} === false}">
+							<Link text="{modelPosFin>/Sottostrumento}" press="onExpandPopOverSottostrumento" class="sapUiSmallMarginEnd"/>
+							<HBox visible="{= ${modelPosFin>/onCreate} === false}">
 								<Label text="{i18n>labelPosFin}" design="Bold"  class="sapUiTinyMarginEnd"/>
-								<Link text="{modelHome>/posFin}" press="onExpandPopOverPosFin"  class="sapUiSmallMarginEnd"/>
+								<Link text="{modelPosFin>/posFin}" press="onExpandPopOverPosFin"  class="sapUiSmallMarginEnd"/>
 							</HBox>
 						</items>
 					</FlexBox> 
@@ -60,7 +60,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 		</f:header>
 				<f:content>
 					<VBox visible="true" id="DetailInitial" height="100%"/>
-					<VBox visible="{= !!${modelHome>/onAvvio} }"  height="100%">	
+					<VBox visible="{= !!${modelPosFin>/onAvvio} }"  height="100%">	
 					
 						<IconTabBar id="idIconTabBarMulti" expanded="{device>/isNoPhone}" visible="{visibleCheckModel>/visibleIconTab}" select="onTabChanged">
 							<items>								
@@ -92,30 +92,30 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												singleContainerFullSize="false" id="AmmCapPG">
 												<form:content>
 													<core:Title text="" /> 
-													<Label text="Amministrazione"  required="{= !${modelHome>/onModify} }"/>
-													<Input value="{modelHome>/detailAnagrafica/AMMINISTAZIONE}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" >
+													<Label text="Amministrazione"  required="{= !${modelPosFin>/onModify} }"/>
+													<Input value="{modelPosFin>/detailAnagrafica/AMMINISTAZIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" >
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
 													</Input>
-													<Input  value="{modelHome>/detailAnagrafica/DESC_AMMINISTAZIONE}" editable="false"/>
+													<Input  value="{modelPosFin>/detailAnagrafica/DESC_AMMINISTAZIONE}" editable="false"/>
 													<!--Capitoli e PG con relative switch e label  -->
 													<!-- <Toolbar visible="false"/> -->
 													<core:Title text="" /> 
-													<Label text="{i18n>Capitolo}"  required="{= !${modelHome>/onModify} }"/>
+													<Label text="{i18n>Capitolo}"  required="{= !${modelPosFin>/onModify} }"/>
 
-													<Input  value="{modelHome>/detailAnagrafica/CAPITOLO}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<Input  value="{modelPosFin>/detailAnagrafica/CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
 													</Input>
-													<Text text="Provvisorio" visible="{= !${modelHome>/onModify} }" class="sapUiMediumMarginEnd">
+													<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
 														<layoutData>
 															<FlexItemData growFactor="2" />
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
 													</Text>
-													<Switch state="true" visible="{= ${modelHome>/onModify} }" >
+													<Switch state="true" visible="{= ${modelPosFin>/onModify} }" >
 															<!-- <layoutData>
 																<FlexItemData growFactor="1" />
 																<layout:GridData span="XL2 L3 M4 S4" />
@@ -126,19 +126,19 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													</Switch>
 													<!-- <Toolbar visible="false"/> -->
 													<core:Title text="" /> 
-													<Label text="{i18n>Pg}" required="{= !${modelHome>/onModify} }" />
-													<Input  value="{modelHome>/detailAnagrafica/pg}" editable="{= !${modelHome>/onModify} }" showValueHelp="true">
+													<Label text="{i18n>Pg}" required="{= !${modelPosFin>/onModify} }" />
+													<Input  value="{modelPosFin>/detailAnagrafica/pg}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
 													</Input>
-													<Text text="Provvisorio" visible="{= !${modelHome>/onModify} }" class="sapUiMediumMarginEnd">
+													<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
 														<layoutData>
 															<FlexItemData growFactor="2" />
 															<layout:GridData span="XL2 L2 M4 S4" />
 														</layoutData>
 													</Text>
-													<Switch state="true" visible="{= ${modelHome>/onModify} }">
+													<Switch state="true" visible="{= ${modelPosFin>/onModify} }">
 														<!-- <layoutData>
 															<FlexItemData growFactor="1" />
 															<layout:GridData span="XL2 L3 M4 S4" />
@@ -165,21 +165,21 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												columnsM="2"
 												singleContainerFullSize="false">
 												<form:content>
-													<Label text="{i18n>Capitolo}"  required="{= !${modelHome>/onModify} }"/>
-													<Input  value="{modelHome>/detailAnagrafica/CAPITOLO}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<Label text="{i18n>Capitolo}"  required="{= !${modelPosFin>/onModify} }"/>
+													<Input  value="{modelPosFin>/detailAnagrafica/CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
 													</Input>
 													<Label text="{i18n>Stato}"/>
 			
-														<Text text="Provvisorio" visible="{= !${modelHome>/onModify} }" class="sapUiMediumMarginEnd">
+														<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
 															<layoutData>
 																<FlexItemData growFactor="2" />
 																<layout:GridData span="XL2 L2 M4 S4" />
 															</layoutData>
 														</Text>
-														<Switch state="true" visible="{= ${modelHome>/onModify} }" >
+														<Switch state="true" visible="{= ${modelPosFin>/onModify} }" >
 															<customData>
 																<core:CustomData key="switch" value="switch"/>
 															</customData>
@@ -210,20 +210,20 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 
 
 													<Toolbar visible="false"/>
-													<Label text="{i18n>Pg}" required="{= !${modelHome>/onModify} }" />
-													<Input  value="{modelHome>/detailAnagrafica/pg}" editable="{= !${modelHome>/onModify} }" showValueHelp="true">
+													<Label text="{i18n>Pg}" required="{= !${modelPosFin>/onModify} }" />
+													<Input  value="{modelPosFin>/detailAnagrafica/pg}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
 													</Input>
 													<Label text="{i18n>Stato}"/>
-														<Text text="Provvisorio" visible="{= !${modelHome>/onModify} }" class="sapUiMediumMarginEnd">
+														<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
 															<layoutData>
 																<FlexItemData growFactor="2" />
 																<layout:GridData span="XL2 L2 M4 S4" />
 															</layoutData>
 														</Text>
-														<Switch state="true" visible="{= ${modelHome>/onModify} }">
+														<Switch state="true" visible="{= ${modelPosFin>/onModify} }">
 															
 														</Switch>
 													<Toolbar visible="false"/>
@@ -252,52 +252,52 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												singleContainerFullSize="false" >
 												<form:content>
 
-													<Label text="{i18n>mission}" required="{= !${modelHome>/onModify} }"/>
-													<Input showValueHelp="true" value="{modelHome>/detailAnagrafica/MISSIONE}" editable="{= !${modelHome>/onModify} }" >
+													<Label text="{i18n>mission}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/MISSIONE}" editable="{= !${modelPosFin>/onModify} }" >
 														<layoutData>
 															 <layout:GridData span="XL2 L3 M4 S4" /> 
 														</layoutData>
 													</Input>
-													<Input value="{modelHome>/detailAnagrafica/DESC_MISSIONE}" editable="false" showValueHelp="false"/>
+													<Input value="{modelPosFin>/detailAnagrafica/DESC_MISSIONE}" editable="false" showValueHelp="false"/>
 													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
 														<customData>
 															<core:CustomData key="title" value="{i18n>mission}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelHome>/detailAnagrafica/DESC_MISSIONE}" writeToDom="true"/>
+															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/DESC_MISSIONE}" writeToDom="true"/>
 														</customData>
 														<layoutData>
 															<layout:GridData span="XL2 L2 M4 S4" />
 														</layoutData>
 													</Button> -->
-													<Label text="{i18n>programma}" required="{= !${modelHome>/onModify} }"/>
-													<Input showValueHelp="true" value="{modelHome>/detailAnagrafica/PROGRAMMA}" editable="{= !${modelHome>/onModify} }" >
+													<Label text="{i18n>programma}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/PROGRAMMA}" editable="{= !${modelPosFin>/onModify} }" >
 														<layoutData>
 															 <layout:GridData span="XL2 L3 M4 S4" /> 
 														</layoutData>
 													</Input>
 														
 													
-													<Input value="{modelHome>/detailAnagrafica/DESC_PROGRAMMA}" editable="false" showValueHelp="false"/>
+													<Input value="{modelPosFin>/detailAnagrafica/DESC_PROGRAMMA}" editable="false" showValueHelp="false"/>
 													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
 														<customData>
 															<core:CustomData key="title" value="{i18n>programma}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelHome>/detailAnagrafica/DESC_PROGRAMMA}" writeToDom="true"/>
+															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/DESC_PROGRAMMA}" writeToDom="true"/>
 														</customData>
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
 													</Button> -->
 
-													<Label text="{i18n>azione}" required="{= !${modelHome>/onModify} }"/>
-													<Input showValueHelp="true" value="{modelHome>/detailAnagrafica/AZIONE}" editable="{= !${modelHome>/onModify} }" >
+													<Label text="{i18n>azione}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/AZIONE}" editable="{= !${modelPosFin>/onModify} }" >
 														<layoutData>
 															 <layout:GridData span="XL2 L3 M4 S4" /> 
 														</layoutData>
 													</Input>
-													<Input value="{modelHome>/detailAnagrafica/DESC_AZIONE}" editable="false" showValueHelp="false"/>
+													<Input value="{modelPosFin>/detailAnagrafica/DESC_AZIONE}" editable="false" showValueHelp="false"/>
 													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
 													<customData>
 															<core:CustomData key="title" value="{i18n>azione}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelHome>/detailAnagrafica/DESC_AZIONE}" writeToDom="true"/>
+															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/DESC_AZIONE}" writeToDom="true"/>
 													</customData>
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
@@ -349,8 +349,8 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 
 													
 													
-													<Label text="{i18n>Tit}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="auto" value="{anagraficaModel>/tit}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<Label text="{i18n>Tit}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="auto" value="{anagraficaModel>/tit}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
@@ -366,25 +366,25 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														</layoutData>
 													</Button>	 -->									
 
-													<Label text="{i18n>Cat}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="auto" value="{modelHome>/detailAnagrafica/CATEGORIA}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<Label text="{i18n>Cat}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="auto" value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
 													</Input>
-													<Input width="auto"  value="{modelHome>/detailAnagrafica/CATEGORIA}" editable="false"/> 
+													<Input width="auto"  value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="false"/> 
 													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
 														<customData>
 															<core:CustomData key="title" value="{i18n>CatCdr}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelHome>/detailAnagrafica/CATEGORIA}" writeToDom="true"/>
+															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/CATEGORIA}" writeToDom="true"/>
 														</customData>
 														<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
 													</Button> -->
 
-													<Label text="{i18n>Cdr}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="auto" value="{anagraficaModel>/cdr}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<Label text="{i18n>Cdr}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="auto" value="{anagraficaModel>/cdr}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
@@ -400,8 +400,8 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														</layoutData>
 													</Button> -->
 													
-													<Label text="{i18n>Rag}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="auto" value="{anagraficaModel>/rag}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<Label text="{i18n>Rag}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="auto" value="{anagraficaModel>/rag}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
@@ -438,7 +438,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 
 													<Label text="{i18n>TcrC}"/>
 													
-													<Input width="auto" value="{anagraficaModel>/tctr}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<Input width="auto" value="{anagraficaModel>/tctr}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
@@ -456,7 +456,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 
 													
 													<Label text="{i18n>TcrF}"/>
-													<Input width="auto" value="{anagraficaModel>/tcrf}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<Input width="auto" value="{anagraficaModel>/tcrf}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
@@ -473,7 +473,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													</Button> -->
 
 													<!-- <Label text="{i18n>Toa}"/>
-													<Input width="auto" value="{anagraficaModel>/toa}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<Input width="auto" value="{anagraficaModel>/toa}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
@@ -491,7 +491,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 
 													<Toolbar visible="false"/>
 													<Label text="{i18n>TipoFondo}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="{= !${modelHome>/onModify} }"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="{= !${modelPosFin>/onModify} }"/>
 													<Label text="{i18n>TipoSpesa}"/>
 													<Select width="auto" selectedKey="{anagraficaModel>/tipoSpesa}">
 														<core:Item key="Obbligatoria" text="Obbligatoria"/>
@@ -571,10 +571,10 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													
 													<core:Title text="" />
 													<Label text="{i18n>DenInt}" required="false" labelFor="test"/>
-													<TextArea rows="5" value="{modelHome>/detailAnagrafica/DESC_CAPITOLO}" editable="{= !${modelHome>/onModify} }" />
+													<TextArea rows="5" value="{modelPosFin>/detailAnagrafica/DESC_CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" />
 													<core:Title text="" />
 													<Label text="{i18n>DenRid}" required="false" labelFor="test"/>
-													<Input width="auto" showValueHelp="false" value="{modelHome>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>		
+													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>		
 														
 														
 													</form:content>
@@ -607,10 +607,10 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													
 													<core:Title text="" />
 													<Label text="{i18n>DenInt}" required="false" labelFor="test"/>
-													<TextArea rows="5" value="{modelHome>/detailAnagrafica/DESC_PG_ESTESA}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="{= !${modelHome>/onModify} }" />
+													<TextArea rows="5" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="{= !${modelPosFin>/onModify} }" />
 													<core:Title text="" />
 													<Label text="{i18n>DenRid}" required="false" labelFor="test"/>
-													<Input width="auto" showValueHelp="false" value="{modelHome>/detailAnagrafica/DESC_PG_ESTESA/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>		
+													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>		
 														
 																																		
 												</form:content>
@@ -639,10 +639,10 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													
 													<core:Title text="" />
 													<Label text="{i18n>DenInt}" required="false" labelFor="test"/>
-													<TextArea rows="5" value="{modelHome>/detailAnagrafica/CAPITOLO/DenInt}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="true" />
+													<TextArea rows="5" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenInt}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="true" />
 													<core:Title text="" />
 													<Label text="{i18n>DenRid}" required="false" labelFor="test"/>
-													<Input width="auto" showValueHelp="false" value="{modelHome>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>		
+													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>		
 														
 																																		
 												</form:content>
@@ -675,17 +675,17 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														</layoutData>
 													</Input>	 -->
 
-													<Label text="{i18n>Class2}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="auto" showValueHelp="true" value="{modelHome>/detailAnagrafica/CE2}" editable="{= !${modelHome>/onModify} }" textAlign="Left">
+													<Label text="{i18n>Class2}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="auto" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CE2}" editable="{= !${modelPosFin>/onModify} }" textAlign="Left">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
 													</Input>
-													<Input width="auto" showValueHelp="false" value="{modelHome>/detailAnagrafica/CE2}" editable="false" textAlign="Left"/>
+													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CE2}" editable="false" textAlign="Left"/>
 													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
 														<customData>
 															<core:CustomData key="title" value="{i18n>Class2}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelHome>/detailAnagrafica/CE2}" writeToDom="true"/>
+															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/CE2}" writeToDom="true"/>
 														</customData>
 														<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
@@ -693,17 +693,17 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													</Button> -->
 
 
-													<Label text="{i18n>Class3}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="auto" showValueHelp="true" value="{modelHome>/detailAnagrafica/CE3}" editable="{= !${modelHome>/onModify} }" textAlign="Left">
+													<Label text="{i18n>Class3}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="auto" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CE3}" editable="{= !${modelPosFin>/onModify} }" textAlign="Left">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
 													</Input>
-													<Input width="auto" showValueHelp="false" value="{modelHome>/detailAnagrafica/CE3}" editable="false" textAlign="Left"/>
+													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CE3}" editable="false" textAlign="Left"/>
 													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
 														<customData>
 															<core:CustomData key="title" value="{i18n>Class3}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelHome>/detailAnagrafica/CE3}" writeToDom="true"/>
+															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/CE3}" writeToDom="true"/>
 														</customData>
 														<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
@@ -821,7 +821,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 											</Table>
 										</Panel>															
 									
-										<Panel expandable="true" visible="{= ${modelHome>/onCreate} === false}" expanded="false">
+										<Panel expandable="true" visible="{= ${modelPosFin>/onCreate} === false}" expanded="false">
 											<headerToolbar>
 												<OverflowToolbar>
 													<Title text="{i18n>collegamenti}"/>
@@ -907,10 +907,10 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>Amministrazione}" required="{= !${modelHome>/onModify} }"/>
+															<Label text="{i18n>Amministrazione}" required="{= !${modelPosFin>/onModify} }"/>
 															<HBox justifyContent="SpaceBetween">
-																<Input class="sapUiSmallMarginEnd" value="{modelHome>/detailAnagrafica/AMMINISTAZIONE}" editable="{= !${modelHome>/onModify} }" showValueHelp="true" />
-																<Input class="sapUiSmallMarginBegin" value="{modelHome>/detailAnagrafica/DESC_AMMINISTAZIONE}" editable="false">
+																<Input class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/AMMINISTAZIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" />
+																<Input class="sapUiSmallMarginBegin" value="{modelPosFin>/detailAnagrafica/DESC_AMMINISTAZIONE}" editable="false">
 																	<layoutData>
 																		<FlexItemData baseSize="70rem" />
 																	</layoutData>
@@ -924,11 +924,11 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>Capitolo}" required="{= !${modelHome>/onModify} }" labelFor="idCapitolo"/>
+															<Label text="{i18n>Capitolo}" required="{= !${modelPosFin>/onModify} }" labelFor="idCapitolo"/>
 															<HBox justifyContent="SpaceBetween">
-																<Input id="idCapitolo" class="sapUiSmallMarginEnd" value="{modelHome>/detailAnagrafica/CAPITOLO}" editable="{= !${modelHome>/onModify} }" showValueHelp="true">
+																<Input id="idCapitolo" class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
 																</Input>
-																<Input class="sapUiSmallMarginBegin" value="{modelHome>/detailAnagrafica/DESC_CAPITOLO}" editable="false">
+																<Input class="sapUiSmallMarginBegin" value="{modelPosFin>/detailAnagrafica/DESC_CAPITOLO}" editable="false">
 																	<layoutData>
 																		<FlexItemData baseSize="70rem"/>
 																	</layoutData>
@@ -940,9 +940,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>CodStandard}" required="{= !${modelHome>/onModify} }" labelFor="test"/>
+															<Label text="{i18n>CodStandard}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
 															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="true" value="{modelHome>/detailAnagrafica/CAPITOLO/codStandard}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
+																<Input width="70%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CAPITOLO/codStandard}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
 															</HBox>
 														</VBox>
 													</items>
@@ -950,7 +950,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenInt}" required="{= !${modelHome>/onModify} }" labelFor="test"/>
+															<Label text="{i18n>DenInt}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
 															<HBox justifyContent="SpaceBetween">		
 															<TextArea  rows="3" value="" >
 																<layoutData>
@@ -964,9 +964,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenRid}" required="{= !${modelHome>/onModify} }" labelFor="test"/>
+															<Label text="{i18n>DenRid}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
 															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="false" value="{modelHome>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
+																<Input width="70%" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
 															</HBox>
 														</VBox>
 													</items>
@@ -975,11 +975,11 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 											 <layout:HorizontalLayout >
 											
 												<VBox class="sapUiTinyMargin">
-													<Label text="{i18n>Pg}" required="{= !${modelHome>/onModify} }" labelFor="idPg"/>
+													<Label text="{i18n>Pg}" required="{= !${modelPosFin>/onModify} }" labelFor="idPg"/>
 													<HBox justifyContent="SpaceBetween">
-														<Input id="idPg" class="sapUiSmallMarginEnd" value="{modelHome>/detailAnagrafica/PG}" editable="{= !${modelHome>/onModify} }" showValueHelp="true">
+														<Input id="idPg" class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/PG}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
 														</Input>
-														<Input class="sapUiSmallMarginBegin" value="{modelHome>/detailAnagrafica/DESC_PG_ESTESA}" editable="false">
+														<Input class="sapUiSmallMarginBegin" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA}" editable="false">
 															<layoutData>
 																<FlexItemData baseSize="70rem"/>
 															</layoutData>
@@ -989,9 +989,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiSmallMarginBegin">
-															<Label text="{i18n>CodStandard}" required="{= !${modelHome>/onModify} }" labelFor="test"/>
+															<Label text="{i18n>CodStandard}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
 															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="true" value="{modelHome>/detailAnagrafica/DESC_PG_ESTESA/codStandard}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
+																<Input width="70%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA/codStandard}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
 															</HBox>
 														</VBox>
 													</items>
@@ -999,7 +999,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenInt}" required="{= !${modelHome>/onModify} }" labelFor="test"/>
+															<Label text="{i18n>DenInt}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
 															<HBox justifyContent="SpaceBetween">		
 															<TextArea  rows="3" value="" >
 																<layoutData>
@@ -1013,9 +1013,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenRid}" required="{= !${modelHome>/onModify} }" labelFor="test"/>
+															<Label text="{i18n>DenRid}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
 															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="false" value="{modelHome>/detailAnagrafica/DESC_PG_ESTESA/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
+																<Input width="70%" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
 															</HBox>
 														</VBox>
 													</items>
@@ -1031,16 +1031,16 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<Input width="50%" value="{anagraficaModel>/mac}" editable="{visibleCheckModel>/enableInputAnagrafica}"/>
 												</layout:VerticalLayout>
 												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Cdr}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="50%" showValueHelp="true" value="{anagraficaModel>/cdr}" editable="{= !${modelHome>/onModify} }"/>
+													<Label text="{i18n>Cdr}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="50%" showValueHelp="true" value="{anagraficaModel>/cdr}" editable="{= !${modelPosFin>/onModify} }"/>
 												</layout:VerticalLayout>
 												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Cat}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="50%" showValueHelp="true" value="{modelHome>/detailAnagrafica/CATEGORIA}" editable="{= !${modelHome>/onModify} }"/>
+													<Label text="{i18n>Cat}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="50%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="{= !${modelPosFin>/onModify} }"/>
 												</layout:VerticalLayout>
 												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Rag}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="50%" showValueHelp="true" value="{anagraficaModel>/rag}" editable="{= !${modelHome>/onModify} }"/>
+													<Label text="{i18n>Rag}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="50%" showValueHelp="true" value="{anagraficaModel>/rag}" editable="{= !${modelPosFin>/onModify} }"/>
 												</layout:VerticalLayout>
 												<layout:VerticalLayout class="sapUiTinyMargin">
 													<Label text="{i18n>TcrC}"/>
@@ -1140,9 +1140,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 											 <FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="65%">
 												<items>
 													<VBox class="sapUiTinyMarginEnd">
-														<Label text="{i18n>mission}" required="{= !${modelHome>/onModify} }"/>
+														<Label text="{i18n>mission}" required="{= !${modelPosFin>/onModify} }"/>
 														<HBox justifyContent="SpaceBetween">
-															<Input class="sapUiSmallMarginEnd" value="{modelHome>/detailAnagrafica/MISSIONE}" editable="{= !${modelHome>/onModify} }" showValueHelp="true">
+															<Input class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/MISSIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
 																<layoutData>
 																	<FlexItemData baseSize="5em"/>
 																</layoutData>
@@ -1155,9 +1155,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														</HBox>
 													</VBox>
 													<VBox class="sapUiTinyMarginEnd">
-														<Label text="{i18n>programma}" required="{= !${modelHome>/onModify} }" labelFor="idInput2"/>
+														<Label text="{i18n>programma}" required="{= !${modelPosFin>/onModify} }" labelFor="idInput2"/>
 														<HBox justifyContent="SpaceBetween">
-															<Input id="idInput2" class="sapUiSmallMarginEnd" value="{modelHome>/detailAnagrafica/PROGRAMMA}" editable="{= !${modelHome>/onModify} }" showValueHelp="true">
+															<Input id="idInput2" class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/PROGRAMMA}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
 																<layoutData>
 																	<FlexItemData baseSize="5em"/>
 																</layoutData>
@@ -1170,9 +1170,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														</HBox>
 													</VBox>
 													<VBox class="sapUiTinyMarginEnd">
-														<Label text="{i18n>azione}" required="{= !${modelHome>/onModify} }"/>
+														<Label text="{i18n>azione}" required="{= !${modelPosFin>/onModify} }"/>
 														<HBox justifyContent="SpaceBetween">
-															<Input class="sapUiSmallMarginEnd" value="{modelHome>/detailAnagrafica/AZIONE}" editable="{= !${modelHome>/onModify} }" showValueHelp="true">
+															<Input class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/AZIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
 																<layoutData>
 																	<FlexItemData baseSize="5em"/>
 																</layoutData>
@@ -1189,9 +1189,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 											<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="65%">
 												<items>
 													<VBox class="sapUiTinyMarginEnd">
-														<Label text="{i18n>azione}" required="{= !${modelHome>/onModify} }"/>
+														<Label text="{i18n>azione}" required="{= !${modelPosFin>/onModify} }"/>
 														<HBox justifyContent="SpaceBetween">
-															<Input class="sapUiSmallMarginEnd" value="{modelHome>/detailAnagrafica/AZIONE}" editable="{= !${modelHome>/onModify} }" showValueHelp="true">
+															<Input class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/AZIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
 																<layoutData>
 																	<FlexItemData baseSize="5em"/>
 																</layoutData>
@@ -1230,9 +1230,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>CodStandard}" required="{= !${modelHome>/onModify} }" labelFor="test"/>
+															<Label text="{i18n>CodStandard}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
 															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="true" value="{modelHome>/detailAnagrafica/CAPITOLO/codStandard}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
+																<Input width="70%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CAPITOLO/codStandard}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
 															</HBox>
 														</VBox>
 													</items>
@@ -1240,7 +1240,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenInt}" required="{= !${modelHome>/onModify} }" labelFor="test"/>
+															<Label text="{i18n>DenInt}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
 															<HBox justifyContent="SpaceBetween">		
 															<TextArea  rows="3" value="" >
 																<layoutData>
@@ -1254,9 +1254,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
 													<items>
 														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenRid}" required="{= !${modelHome>/onModify} }" labelFor="test"/>
+															<Label text="{i18n>DenRid}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
 															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="false" value="{modelHome>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
+																<Input width="70%" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
 															</HBox>
 														</VBox>
 													</items>
@@ -1298,12 +1298,12 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 											</layout:VerticalLayout>
 											<layout:HorizontalLayout>
 												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Class2}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="70%" showValueHelp="true" value="{modelHome>/detailAnagrafica/CE2}" editable="{= !${modelHome>/onModify} }" textAlign="Center"/>
+													<Label text="{i18n>Class2}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="70%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CE2}" editable="{= !${modelPosFin>/onModify} }" textAlign="Center"/>
 												</layout:VerticalLayout>
 												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Class3}" required="{= !${modelHome>/onModify} }"/>
-													<Input width="70%" showValueHelp="true" value="{modelHome>/detailAnagrafica/CE3}" editable="{= !${modelHome>/onModify} }" textAlign="Center"/>
+													<Label text="{i18n>Class3}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="70%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CE3}" editable="{= !${modelPosFin>/onModify} }" textAlign="Center"/>
 												</layout:VerticalLayout>
 											</layout:HorizontalLayout>
 											<layout:HorizontalLayout>
@@ -1355,7 +1355,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 										</layout:VerticalLayout> -->
 									</Panel>
 								</IconTabFilter>
-								<IconTabFilter icon="sap-icon://process" key="attachments" text="{i18n>competenza}" id="idCompetenzaTab" visible="{modelHome>/idCompetenzaTab}" >
+								<IconTabFilter icon="sap-icon://process" key="attachments" text="{i18n>competenza}" id="idCompetenzaTab" visible="{modelPosFin>/idCompetenzaTab}" >
 									<!-- <FlexBox class="sapUiSmallMarginTopBottom">
 										<items>
 											<Select class="sapUiMediumMarginBeginEnd">
@@ -1375,12 +1375,12 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 											<VBox>
 												
 												<Label text="Autorizzazione:" labelFor="idAuthComp"/>
-												<Input value="{modelHome>/CompetenzaAuth/Auth}" showValueHelp="true" valueHelpRequest=".onAuth" id="idAuthComp" valueHelpOnly="true" width="130%">
+												<Input value="{modelPosFin>/CompetenzaAuth/Auth}" showValueHelp="true" valueHelpRequest=".onAuth" id="idAuthComp" valueHelpOnly="true" width="130%">
 												</Input>
 											</VBox>
 											<VBox>
 												<Label text="Autorizzazione Collegata:" labelFor="idAuthAssComp"/>
-												<Input value="{modelHome>/CompetenzaAuth/AuthAssociata}" showValueHelp="true" valueHelpRequest=".onAuthCollegata" id="idAuthAssComp" valueHelpOnly="true" width="130%">
+												<Input value="{modelPosFin>/CompetenzaAuth/AuthAssociata}" showValueHelp="true" valueHelpRequest=".onAuthCollegata" id="idAuthAssComp" valueHelpOnly="true" width="130%">
 												</Input>
 											</VBox>
 										</items>
@@ -1393,8 +1393,8 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 									</OverflowToolbar>
 									<html:iframe id ="attachmentframe" height="100%" width="100%" src=""> </html:iframe>
 								</IconTabFilter>
-								<IconTabFilter icon="sap-icon://accounting-document-verification" key="people" text="{i18n>cassa}"  id="idCassTab" visible="{modelHome>/idCassTab}"></IconTabFilter>
-								<!-- <IconTabFilter icon="sap-icon://hint" key="information" text="{i18n>Info Posizione}" visible="{= ${modelHome>/faseRicerca} === false }">
+								<IconTabFilter icon="sap-icon://accounting-document-verification" key="people" text="{i18n>cassa}"  id="idCassTab" visible="{modelPosFin>/idCassTab}"></IconTabFilter>
+								<!-- <IconTabFilter icon="sap-icon://hint" key="information" text="{i18n>Info Posizione}" visible="{= ${modelPosFin>/faseRicerca} === false }">
 										<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -1414,19 +1414,19 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<form:content>
 													<core:Title text="" /> 
 													<Label text="{i18n>TipoSottoStr}" />
-													<Text text="{modelHome>/infoSottoStrumento/TestoTipo}" />
+													<Text text="{modelPosFin>/infoSottoStrumento/TestoTipo}" />
 													<Label text="{i18n>Sottostrumento}" />
-													<Text text="{modelHome>/infoSottoStrumento/IdSstr}" />
+													<Text text="{modelPosFin>/infoSottoStrumento/IdSstr}" />
 													<Label text="{i18n>AnnoFaseSottoStr}" />
-													<Text text="{modelHome>/infoSottoStrumento/EseAnnoEse}" />
+													<Text text="{modelPosFin>/infoSottoStrumento/EseAnnoEse}" />
 													<Label text="{i18n>DescrSottostrumento}" />
-													<Text text="{modelHome>/infoSottoStrumento/DescrEstesa}" />
+													<Text text="{modelPosFin>/infoSottoStrumento/DescrEstesa}" />
 													<Label text="{i18n>Stato}" />
-													<Text text="{modelHome>/infoSottoStrumento/Stato}" />
+													<Text text="{modelPosFin>/infoSottoStrumento/Stato}" />
 													<Label text="{i18n>Visibilita}" />
-													<Text text="{modelHome>/infoSottoStrumento/Visibilita}" />
+													<Text text="{modelPosFin>/infoSottoStrumento/Visibilita}" />
 													<Label text="{i18n>EspContabile}" />
-													<Text text="{modelHome>/infoSottoStrumento/StatEsposizione}" />													
+													<Text text="{modelPosFin>/infoSottoStrumento/StatEsposizione}" />													
 												</form:content>
 											</form:SimpleForm>
 
@@ -1522,12 +1522,12 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 											<VBox>
 												
 												<Label text="Autorizzazione:" labelFor="idAuthCompRimO"/>
-												<Input value="{modelHome>/CompetenzaAuth/Auth}" showValueHelp="true" valueHelpRequest=".onAuth" id="idAuthCompRimO" valueHelpOnly="true" width="130%">
+												<Input value="{modelPosFin>/CompetenzaAuth/Auth}" showValueHelp="true" valueHelpRequest=".onAuth" id="idAuthCompRimO" valueHelpOnly="true" width="130%">
 												</Input>
 											</VBox>
 											<!-- <VBox>
 												<Label text="Autorizzazione Collegata:" labelFor="idAuthAssCompRimOr"/>
-												<Input value="{modelHome>/CompetenzaAuth/AuthAssociata}" showValueHelp="true" valueHelpRequest=".onAuthCollegata" id="idAuthAssCompRimOr" valueHelpOnly="true" width="130%">
+												<Input value="{modelPosFin>/CompetenzaAuth/AuthAssociata}" showValueHelp="true" valueHelpRequest=".onAuthCollegata" id="idAuthAssCompRimOr" valueHelpOnly="true" width="130%">
 												</Input>
 											</VBox> -->
 										</items>
@@ -1548,8 +1548,8 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 			<OverflowToolbar>
 				<ToolbarSpacer/>
 				<Button text="Torna Indietro" press="onNavBack" type="Emphasized" visible="true"/>
-				<!-- <Button text="Resetta Filtri" press="onPressRipristinaRicerca" type="Emphasized" visible="{= ${modelHome>/onAvvio} === true}"/> -->
-				<Button text="Salva" type="Emphasized" visible="{= ${modelHome>/onAvvio} === true  &amp;&amp; ${modelHome>/tabAnagrafica} === true}"/>
+				<!-- <Button text="Resetta Filtri" press="onPressRipristinaRicerca" type="Emphasized" visible="{= ${modelPosFin>/onAvvio} === true}"/> -->
+				<Button text="Salva" type="Emphasized" visible="{= ${modelPosFin>/onAvvio} === true  &amp;&amp; ${modelPosFin>/tabAnagrafica} === true}"/>
 			</OverflowToolbar>
 		</f:footer>
 	</f:DynamicPage>

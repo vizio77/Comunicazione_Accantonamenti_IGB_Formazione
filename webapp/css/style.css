@@ -263,3 +263,6 @@ div[id=__container6--Grid] > div.sapUiRespGridSpanInvisible{
 	flex-basis: 1rem !important;
     max-width: 6rem !important;
 }
+.marginHeaderSStr > header {
+    margin-left: 11.5rem !important;
+}
