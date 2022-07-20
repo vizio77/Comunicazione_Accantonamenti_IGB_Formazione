@@ -70,8 +70,9 @@ sap.ui.define([
                             },
                             filters:[new Filter("Anno", FilterOperator.EQ, "2023"),
                                     new Filter("Fase", FilterOperator.EQ, "DLB"),
-                                    new Filter("ToSHTipologia/TipoSstr", FilterOperator.EQ, "PLBR"),
-                                    new Filter("ToSHTipologia/TipoSstr", FilterOperator.EQ, "VLV")],
+                                    new Filter("TipoSstr", FilterOperator.EQ, "03"),
+                                    new Filter("TipoEsposizione", FilterOperator.EQ, "2"),
+                                    new Filter("Reale", FilterOperator.EQ, "R")],
                             success:  (oData) => {
                                 debugger
                                 //oData.results.unshift({Prctr: null, DescrBreve: ""})

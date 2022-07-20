@@ -11,38 +11,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 		<f:header>
 			<f:DynamicPageHeader pinnable="true">
 				<f:content>
-				<!-- lt commento perch' antonio diche che non vogliono vedere un header iniziale così perchè altrimenti viene bocciata -->
-					<!-- <VBox visible="{modelPosFin>/faseRicerca}">
-						<FlexBox >
-							<items>
-								<Label text="{i18n>Esercizio}" labelFor="idEsercizio" class="sapUiTinyMargin"/>
-								<Input id="idEsercizio" width="50%" value="2023" enabled="false" class="sapUiTinyMargin"/>
-								<Label text="{i18n>Sottostrumento}" labelFor="idSottostrumento" class="sapUiTinyMargin"/>
-								<Input id="idSottostrumento" width="90%" showValueHelp="true" required="false" valueHelpRequest="onSottostrumento"
-									value="{modelPosFin>/Sottostrumento}" class="sapUiTinyMargin"/>
-								<Label text="{i18n>posFin}" labelFor="idPosFin" visible="{visibleCheckModel>/visiblePosFin}" class="sapUiTinyMargin"/>
-								<Input id="idPosFin" value="{modelPosFin>/posFin}" required="false" width="100%" showValueHelp="true"
-									valueHelpRequest="onPosFin" visible="{visibleCheckModel>/visiblePosFin}" class="sapUiTinyMargin"/> 
-								<Label text="{i18n>autorizzazione}" labelFor="idAutorizzazione" visible="false" class="sapUiTinyMargin" /> 
-								<Input id="idAutorizzazione" value="{modelFilteranaS2TipologicheFrag>/RICERCASTRUTASS/POSIZIONEFINANZIARIA}" width="50%" showValueHelp="true"
-									valueHelpRequest="onPosFin" required="true" visible="false" class="sapUiTinyMargin"/> 
-								<Label text="" labelFor="idAzioneF" class="sapUiTinyMargin"/>
-								<RadioButtonGroup id="GroupA">
-									<RadioButton text="{i18n>Spesa}" selected="true"/>
-									<RadioButton text="{i18n>Entrata}"/>
-								</RadioButtonGroup>
-							</items>
-						</FlexBox>
-						<FlexBox>
-							<items>
-								<Button text="Gestisci Posizione Finanziaria"  class="sapUiTinyMarginEnd" type="Emphasized" press="onGestisciPosFin"/>
-								<Button text="Crea Posizione Finanziaria" type="Emphasized" press="onCreaPosFin"/>
-							</items>
-						</FlexBox>
-						
-					</VBox> -->
-					<!-- lt sposto questa sezione in una sezione di info -->
-					<!-- visible="{= ${modelPosFin>/faseRicerca} === false }" -->
 					 <FlexBox > 
 						<items>
 							<Label text="{i18n>Esercizio}" design="Bold" class="sapUiTinyMarginEnd"/>
@@ -73,7 +41,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 										</headerToolbar>
 
 										<!-- MODIFICA LAYOUT SECONDO ANTONIO 10/06/2022 -->
-										
+										<!-- AMMINISTRAZIONE - CAPITOLO E PG -->
 											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -147,8 +115,176 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<!--Capitoli e PG con relative switch e label  -->			
 												</form:content>
 											</form:SimpleForm>	
+											<!-- MISSIONE - PROGRAMMA - AZIONE -UDV -->
+											<form:SimpleForm 
+												editable="true"
+												layout="ResponsiveGridLayout"																
+												labelSpanXL="4"
+												labelSpanL="4"
+												labelSpanM="12"
+												labelSpanS="12"
+												adjustLabelSpan="false"
+												emptySpanXL="0"
+												emptySpanL="4"
+												emptySpanM="0"
+												emptySpanS="0"
+												columnsXL="3"
+												columnsL="2"
+												columnsM="2"
+												singleContainerFullSize="false" >
+												<form:content>
+													<Label text="{i18n>mission}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/MISSIONE}" editable="{= !${modelPosFin>/onModify} }" >
+														<layoutData>
+															 <layout:GridData span="XL2 L3 M4 S4" /> 
+														</layoutData>
+													</Input>
+													<Input value="{modelPosFin>/detailAnagrafica/DESC_MISSIONE}" editable="false" showValueHelp="false"/>
+													<Label text="{i18n>programma}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/PROGRAMMA}" editable="{= !${modelPosFin>/onModify} }" >
+														<layoutData>
+															 <layout:GridData span="XL2 L3 M4 S4" /> 
+														</layoutData>
+													</Input>
+														
+													
+													<Input value="{modelPosFin>/detailAnagrafica/DESC_PROGRAMMA}" editable="false" showValueHelp="false"/>
+													<Label text="{i18n>azione}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/AZIONE}" editable="{= !${modelPosFin>/onModify} }" >
+														<layoutData>
+															 <layout:GridData span="XL2 L3 M4 S4" /> 
+														</layoutData>
+													</Input>
+													<Input value="{modelPosFin>/detailAnagrafica/DESC_AZIONE}" editable="false" showValueHelp="false"/>
+													
+													<Toolbar visible="false"/>
+													<Label text="{i18n>Udv}"/>
+													<Input  value="{anagraficaModel>/udv1}" editable="false">
+													<layoutData>
+															<layout:GridData span="XL3 L3 M4 S4" />
+														</layoutData>
+													</Input>
+													<Input value="{anagraficaModel>/udv2}" editable="false"/>
+												</form:content>
+											</form:SimpleForm>		
+											<!-- DA TIT A CAPITOLONE -->
+											<form:SimpleForm 
+												editable="true"
+												layout="ResponsiveGridLayout"																
+												labelSpanXL="4"
+												labelSpanL="4"
+												labelSpanM="12"
+												labelSpanS="12"
+												adjustLabelSpan="false"
+												emptySpanXL="0"
+												emptySpanL="4"
+												emptySpanM="0"
+												emptySpanS="0"
+												columnsXL="3"
+												columnsL="2"
+												columnsM="2"
+												singleContainerFullSize="false" >
+												<form:content>
+													<Label text="{i18n>Tit}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="auto" value="{anagraficaModel>/tit}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<layoutData>
+															<layout:GridData span="XL2 L3 M4 S4" />
+														</layoutData>
+													</Input>
+													<Input width="auto" value="{anagraficaModel>/tit}" editable="false"/>
+													<Label text="{i18n>Cat}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="auto" value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<layoutData>
+															<layout:GridData span="XL2 L3 M4 S4" />
+														</layoutData>
+													</Input>
+													<Input width="auto"  value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="false"/> 
+													<Label text="{i18n>Cdr}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="auto" value="{anagraficaModel>/cdr}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<layoutData>
+															<layout:GridData span="XL2 L3 M4 S4" />
+														</layoutData>
+													</Input>
+													<Input width="auto" showValueHelp="false" value="{anagraficaModel>/cdr}" editable="false"/> 
+													<Label text="{i18n>Rag}" required="{= !${modelPosFin>/onModify} }"/>
+													<Input width="auto" value="{anagraficaModel>/rag}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<layoutData>
+															<layout:GridData span="XL2 L3 M4 S4" />
+														</layoutData>
+													</Input>
+													<Input width="auto"  value="{anagraficaModel>/rag}" editable="false"/> 
+													
+													<Toolbar visible="false"/>
 
-											<!-- <form:SimpleForm 
+													<Label text="{i18n>Mac}" required="true"/>
+													<Input width="auto" value="{anagraficaModel>/mac}" editable="true" showValueHelp="true" valueHelpOnly="true">
+													<layoutData>
+															<layout:GridData span="XL2 L3 M4 S4" />
+														</layoutData>
+													</Input>
+													<Input width="auto" value="{anagraficaModel>/mac}" editable="false"/>
+													<Label text="{i18n>TcrC}"/>
+													<Input width="auto" value="{anagraficaModel>/tctr}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<layoutData>
+															<layout:GridData span="XL2 L3 M4 S4" />
+														</layoutData>
+													</Input>
+													<Input width="auto" value="{anagraficaModel>/tcrc}" editable="false"/>
+													<Label text="{i18n>TcrF}"/>
+													<Input width="auto" value="{anagraficaModel>/tcrf}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<layoutData>
+															<layout:GridData span="XL2 L3 M4 S4" />
+														</layoutData>
+													</Input>
+													<Input width="auto" value="{anagraficaModel>/tcrf}" editable="false"/> 
+													
+													<Toolbar visible="false"/>
+													<Label text="{i18n>TipoFondo}"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="{= !${modelPosFin>/onModify} }"/>
+													<Label text="{i18n>TipoSpesa}"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/tipoSpesa}">
+														<core:Item key="Obbligatoria" text="Obbligatoria"/>
+													</Select>
+													<Label text="{i18n>TipoNaturaSpesa}"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/tipoNaturaSpesa}"/>
+													<Label text="{i18n>Memoria}"/>
+													<CheckBox selected="{anagraficaModel>/memoria}"/>
+													<Label text="{i18n>Capitolone}"/>
+													<CheckBox selected="{anagraficaModel>/capitolone}"/>
+												</form:content>
+											</form:SimpleForm>		
+											<!-- CU/IRAP/NON CU - NOIPA - Posizione Finanziaria IRAP -->
+											<form:SimpleForm 
+												editable="true"
+												layout="ResponsiveGridLayout"																
+												labelSpanXL="4"
+												labelSpanL="4"
+												labelSpanM="12"
+												labelSpanS="12"
+												adjustLabelSpan="false"
+												emptySpanXL="0"
+												emptySpanL="4"
+												emptySpanM="0"
+												emptySpanS="0"
+												columnsXL="3"
+												columnsL="2"
+												columnsM="2"
+												singleContainerFullSize="false" >
+												<form:content>																				
+													<Label text="{i18n>Cu}"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/cu}">
+														<core:Item key="noipa" text="NoiPa NON Cu"/>
+													</Select>
+													<Label text="{i18n>Noipa}"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/noipa}">
+														<core:Item key="altro" text="ALTRO"/>
+													</Select>
+													<Label text="{i18n>CapitoloIrap}"/>
+													<Input width="auto" value="{anagraficaModel>/capitoloIrap}" editable="{visibleCheckModel>/enableInputAnagrafica}"/>
+												</form:content>
+											</form:SimpleForm>		
+											<!-- Denominazione Capitolo -->
+											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
 												labelSpanXL="4"
@@ -162,404 +298,8 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												emptySpanS="0"
 												columnsXL="3"
 												columnsL="3"
-												columnsM="2"
-												singleContainerFullSize="false">
-												<form:content>
-													<Label text="{i18n>Capitolo}"  required="{= !${modelPosFin>/onModify} }"/>
-													<Input  value="{modelPosFin>/detailAnagrafica/CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-														<layoutData>
-															<layout:GridData span="XL3 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Label text="{i18n>Stato}"/>
-			
-														<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
-															<layoutData>
-																<FlexItemData growFactor="2" />
-																<layout:GridData span="XL2 L2 M4 S4" />
-															</layoutData>
-														</Text>
-														<Switch state="true" visible="{= ${modelPosFin>/onModify} }" >
-															<customData>
-																<core:CustomData key="switch" value="switch"/>
-															</customData>
-														</Switch>
-													<Toolbar visible="false"/>
-													<Toolbar visible="false"/>
-												</form:content>
-											</form:SimpleForm>		 -->
-
-											<!-- <form:SimpleForm 
-												editable="true"
-												layout="ResponsiveGridLayout"																
-												labelSpanXL="4"
-												labelSpanL="4"
-												labelSpanM="12"
-												labelSpanS="12"
-												adjustLabelSpan="false"
-												emptySpanXL="0"
-												emptySpanL="4"
-												emptySpanM="0"
-												emptySpanS="0"
-												columnsXL="3"
-												columnsL="2"
-												columnsM="2"
-												singleContainerFullSize="false">
-												<form:content>
-													
-
-
-													<Toolbar visible="false"/>
-													<Label text="{i18n>Pg}" required="{= !${modelPosFin>/onModify} }" />
-													<Input  value="{modelPosFin>/detailAnagrafica/pg}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
-														<layoutData>
-															<layout:GridData span="XL3 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Label text="{i18n>Stato}"/>
-														<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
-															<layoutData>
-																<FlexItemData growFactor="2" />
-																<layout:GridData span="XL2 L2 M4 S4" />
-															</layoutData>
-														</Text>
-														<Switch state="true" visible="{= ${modelPosFin>/onModify} }">
-															
-														</Switch>
-													<Toolbar visible="false"/>
-													
-													<Toolbar visible="false"/>
-													
-												</form:content>
-											</form:SimpleForm>																 -->
-										
-																						
-											<form:SimpleForm 
-												editable="true"
-												layout="ResponsiveGridLayout"																
-												labelSpanXL="4"
-												labelSpanL="4"
-												labelSpanM="12"
-												labelSpanS="12"
-												adjustLabelSpan="false"
-												emptySpanXL="0"
-												emptySpanL="4"
-												emptySpanM="0"
-												emptySpanS="0"
-												columnsXL="3"
-												columnsL="2"
-												columnsM="2"
+												columnsM="3"
 												singleContainerFullSize="false" >
-												<form:content>
-
-													<Label text="{i18n>mission}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/MISSIONE}" editable="{= !${modelPosFin>/onModify} }" >
-														<layoutData>
-															 <layout:GridData span="XL2 L3 M4 S4" /> 
-														</layoutData>
-													</Input>
-													<Input value="{modelPosFin>/detailAnagrafica/DESC_MISSIONE}" editable="false" showValueHelp="false"/>
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>mission}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/DESC_MISSIONE}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L2 M4 S4" />
-														</layoutData>
-													</Button> -->
-													<Label text="{i18n>programma}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/PROGRAMMA}" editable="{= !${modelPosFin>/onModify} }" >
-														<layoutData>
-															 <layout:GridData span="XL2 L3 M4 S4" /> 
-														</layoutData>
-													</Input>
-														
-													
-													<Input value="{modelPosFin>/detailAnagrafica/DESC_PROGRAMMA}" editable="false" showValueHelp="false"/>
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>programma}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/DESC_PROGRAMMA}" writeToDom="true"/>
-														</customData>
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->
-
-													<Label text="{i18n>azione}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/AZIONE}" editable="{= !${modelPosFin>/onModify} }" >
-														<layoutData>
-															 <layout:GridData span="XL2 L3 M4 S4" /> 
-														</layoutData>
-													</Input>
-													<Input value="{modelPosFin>/detailAnagrafica/DESC_AZIONE}" editable="false" showValueHelp="false"/>
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-													<customData>
-															<core:CustomData key="title" value="{i18n>azione}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/DESC_AZIONE}" writeToDom="true"/>
-													</customData>
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->
-
-													<Toolbar visible="false"/>
-													<Label text="{i18n>Udv}"/>
-													<Input  value="{anagraficaModel>/udv1}" editable="false">
-													<layoutData>
-															<layout:GridData span="XL3 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Input value="{anagraficaModel>/udv2}" editable="false"/>
-
-													<!-- <Toolbar visible="false"/>
-													
-													<Label text="{i18n>Cu}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/cu}">
-														<core:Item key="noipa" text="NoiPa NON Cu"/>
-													</Select>
-													<Label text="{i18n>Noipa}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/noipa}">
-														<core:Item key="altro" text="ALTRO"/>
-													</Select>
-													<Label text="{i18n>CapitoloIrap}"/>
-													<Input width="auto" value="{anagraficaModel>/capitoloIrap}" editable="{visibleCheckModel>/enableInputAnagrafica}"/> -->
-
-												</form:content>
-											</form:SimpleForm>		
-										
-											<form:SimpleForm 
-												editable="true"
-												layout="ResponsiveGridLayout"																
-												labelSpanXL="4"
-												labelSpanL="4"
-												labelSpanM="12"
-												labelSpanS="12"
-												adjustLabelSpan="false"
-												emptySpanXL="0"
-												emptySpanL="4"
-												emptySpanM="0"
-												emptySpanS="0"
-												columnsXL="3"
-												columnsL="2"
-												columnsM="2"
-												singleContainerFullSize="false" >
-												<form:content>
-
-													
-													
-													<Label text="{i18n>Tit}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="auto" value="{anagraficaModel>/tit}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Input width="auto" value="{anagraficaModel>/tit}" editable="false"/>
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>CatCdr}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{anagraficaModel>/tit}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button>	 -->									
-
-													<Label text="{i18n>Cat}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="auto" value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Input width="auto"  value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="false"/> 
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>CatCdr}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/CATEGORIA}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->
-
-													<Label text="{i18n>Cdr}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="auto" value="{anagraficaModel>/cdr}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Input width="auto" showValueHelp="false" value="{anagraficaModel>/cdr}" editable="false"/> 
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>Cdr}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{anagraficaModel>/cdr}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->
-													
-													<Label text="{i18n>Rag}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="auto" value="{anagraficaModel>/rag}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Input width="auto"  value="{anagraficaModel>/rag}" editable="false"/> 
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>Rag}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{anagraficaModel>/rag}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->		
-
-													<Toolbar visible="false"/>
-
-													<Label text="{i18n>Mac}" required="true"/>
-													<Input width="auto" value="{anagraficaModel>/mac}" editable="true" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Input width="auto" value="{anagraficaModel>/mac}" editable="false"/>
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>Mac}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{anagraficaModel>/mac}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->	
-
-													<Label text="{i18n>TcrC}"/>
-													
-													<Input width="auto" value="{anagraficaModel>/tctr}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Input width="auto" value="{anagraficaModel>/tcrc}" editable="false"/>
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>TcrC}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{anagraficaModel>/tcrc}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->
-
-													
-													<Label text="{i18n>TcrF}"/>
-													<Input width="auto" value="{anagraficaModel>/tcrf}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Input width="auto" value="{anagraficaModel>/tcrf}" editable="false"/> 
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>TcrF}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{anagraficaModel>/tcrf}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->
-
-													<!-- <Label text="{i18n>Toa}"/>
-													<Input width="auto" value="{anagraficaModel>/toa}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>Toa}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{anagraficaModel>/toa}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->
-
-
-													<Toolbar visible="false"/>
-													<Label text="{i18n>TipoFondo}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="{= !${modelPosFin>/onModify} }"/>
-													<Label text="{i18n>TipoSpesa}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/tipoSpesa}">
-														<core:Item key="Obbligatoria" text="Obbligatoria"/>
-													</Select>
-													<Label text="{i18n>TipoNaturaSpesa}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/tipoNaturaSpesa}"/>
-													
-													
-													<Label text="{i18n>Memoria}"/>
-													<CheckBox selected="{anagraficaModel>/memoria}"/>
-													<Label text="{i18n>Capitolone}"/>
-													<CheckBox selected="{anagraficaModel>/capitolone}"/>
-
-													
-														
-													
-
-												</form:content>
-											</form:SimpleForm>		
-
-											<form:SimpleForm 
-												editable="true"
-												layout="ResponsiveGridLayout"																
-												labelSpanXL="4"
-												labelSpanL="4"
-												labelSpanM="12"
-												labelSpanS="12"
-												adjustLabelSpan="false"
-												emptySpanXL="0"
-												emptySpanL="4"
-												emptySpanM="0"
-												emptySpanS="0"
-												columnsXL="3"
-												columnsL="2"
-												columnsM="2"
-												singleContainerFullSize="false" >
-												<form:content>												
-																										
-													<Label text="{i18n>Cu}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/cu}">
-														<core:Item key="noipa" text="NoiPa NON Cu"/>
-													</Select>
-													<Label text="{i18n>Noipa}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/noipa}">
-														<core:Item key="altro" text="ALTRO"/>
-													</Select>
-													<Label text="{i18n>CapitoloIrap}"/>
-													<Input width="auto" value="{anagraficaModel>/capitoloIrap}" editable="{visibleCheckModel>/enableInputAnagrafica}"/>
-
-												</form:content>
-											</form:SimpleForm>		
-
-											<form:SimpleForm 
-											editable="true"
-											layout="ResponsiveGridLayout"																
-											labelSpanXL="4"
-											labelSpanL="4"
-											labelSpanM="12"
-											labelSpanS="12"
-											adjustLabelSpan="false"
-											emptySpanXL="0"
-											emptySpanL="4"
-											emptySpanM="0"
-											emptySpanS="0"
-											columnsXL="3"
-											columnsL="3"
-											columnsM="3"
-											singleContainerFullSize="false" >
 												<form:content>
 													<core:Title text="{i18n>DenominazioneCapitolo}" /> 	
 													<Label text="{i18n>CodStandard}" required="false" labelFor="test"/>
@@ -574,12 +314,10 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<TextArea rows="5" value="{modelPosFin>/detailAnagrafica/DESC_CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" />
 													<core:Title text="" />
 													<Label text="{i18n>DenRid}" required="false" labelFor="test"/>
-													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>		
-														
-														
-													</form:content>
+													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
+												</form:content>
 											</form:SimpleForm>	
-												
+											<!-- Denominazione PG -->
 											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -610,44 +348,10 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<TextArea rows="5" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="{= !${modelPosFin>/onModify} }" />
 													<core:Title text="" />
 													<Label text="{i18n>DenRid}" required="false" labelFor="test"/>
-													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>		
-														
-																																		
+													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>																			
 												</form:content>
 											</form:SimpleForm>	
-											
-											<!-- <form:SimpleForm 
-												editable="true"
-												layout="ResponsiveGridLayout"																
-												labelSpanXL="4"
-												labelSpanL="4"
-												labelSpanM="12"
-												labelSpanS="12"
-												adjustLabelSpan="false"
-												emptySpanXL="0"
-												emptySpanL="4"
-												emptySpanM="0"
-												emptySpanS="0"
-												columnsXL="3"
-												columnsL="3"
-												columnsM="3"
-												singleContainerFullSize="false" >
-												<form:content>
-													<core:Title text="{i18n>DenominazionePosizioneFinanziaria}" /> 	
-													<Label text="" required="false" labelFor="test"/>
-													<CheckBox text="Recupera Denominazione Pg"/>	
-													
-													<core:Title text="" />
-													<Label text="{i18n>DenInt}" required="false" labelFor="test"/>
-													<TextArea rows="5" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenInt}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="true" />
-													<core:Title text="" />
-													<Label text="{i18n>DenRid}" required="false" labelFor="test"/>
-													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>		
-														
-																																		
-												</form:content>
-											</form:SimpleForm> -->
-
+											<!-- Anagrafica Piano Di Gestione -->
 											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -666,84 +370,40 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												singleContainerFullSize="false" >
 												<form:content>
 													<core:Title text="{i18n>AnagraficaPianoDiGestione}" /> 
-	
-													
-													<!-- <Label text="{i18n>percentQuotaAggredibilita}"  required="false"/>
-													<Input width="auto" value="{anagraficaModel>/percQuotaAgg}">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>	 -->
-
 													<Label text="{i18n>Class2}" required="{= !${modelPosFin>/onModify} }"/>
 													<Input width="auto" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CE2}" editable="{= !${modelPosFin>/onModify} }" textAlign="Left">
-													<layoutData>
+														<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
 													</Input>
 													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CE2}" editable="false" textAlign="Left"/>
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>Class2}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/CE2}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->
-
-
 													<Label text="{i18n>Class3}" required="{= !${modelPosFin>/onModify} }"/>
 													<Input width="auto" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CE3}" editable="{= !${modelPosFin>/onModify} }" textAlign="Left">
-													<layoutData>
+														<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
 													</Input>
 													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CE3}" editable="false" textAlign="Left"/>
-													<!-- <Button icon="sap-icon://hint" type="Emphasized"  press="onExpandPopOverInfo">
-														<customData>
-															<core:CustomData key="title" value="{i18n>Class3}" writeToDom="true"/>
-															<core:CustomData key="desc" value="{modelPosFin>/detailAnagrafica/CE3}" writeToDom="true"/>
-														</customData>
-														<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Button> -->
-
+												
 													<core:Title text="" />
 													<Label text="{i18n>TipoSpesa}"/>
 													<Select width="auto" selectedKey="{anagraficaModel>/tipoSpesa2}"/>
 													<Label text="{i18n>AreeDDI}"/>
 													<Select width="auto" selectedKey="{anagraficaModel>/aree}"/>
-													<!-- <Label text="{i18n>percentQuotaAggredibilita}"  required="false"/>
-														<Input width="auto" value="{anagraficaModel>/percQuotaAgg}" type="Number" maxLength="6">
-														<layoutData>
-																<layout:GridData span="XL2 L3 M4 S4" />
-															</layoutData>
-														</Input>	 -->
 													<core:Title text="" />
 													<Label text="{i18n>ObiettiviMinisteri}"/>
 													<CheckBox selected="{anagraficaModel>/obiettivi}"/>
-													<!-- <Label text="{i18n>FondoProg}"/>
-													<CheckBox selected="{anagraficaModel>/fondoPrg}"/> -->
-													<!-- <Label text="{i18n>FondoOpere}"/>
-													<CheckBox selected="{anagraficaModel>/fondoOpere}"/> -->
 													<Label text="{i18n>RuoliSpesaFissa}"/>
 													<CheckBox selected="{anagraficaModel>/ruoliSpesa}"/>
-													
-													
-
-
 												</form:content>
 											</form:SimpleForm>
-
+										<!-- Elenchi -->
 										<Panel expandable="true" visible="{visibleCheckModel>/visiblePanel}" expanded="false">
 											<headerToolbar>
 												<OverflowToolbar>
 													<Title text="{i18n>GestioneCapitoloPg}"/>
 												</OverflowToolbar>
 											</headerToolbar>
-
 											<Table id="TableGestioneCapitoloPg" width="auto" >
 												<headerToolbar>
 													<Toolbar >
@@ -772,21 +432,18 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													</ColumnListItem>
 												</items>
 											</Table>
-
 										</Panel>
-
+										<!-- C.O.F.O.G. -->
 										<Panel expandable="true" visible="{visibleCheckModel>/visiblePanel}" expanded="false">
 											<headerToolbar>
 												<OverflowToolbar>
 													<Title text="{i18n>Cofog}"/>
 												</OverflowToolbar>
 											</headerToolbar>
-
 											<Table id="TableCofog" width="auto">
 												<headerToolbar>
 													<Toolbar >
 														<ToolbarSpacer />
-														<!-- <Button type="Emphasized" icon="sap-icon://detail-view" text="{i18n>btnDettaglioAccantonamento}" press="navToDetail" enabled="true"/> -->
 														<Button type="Emphasized" icon="sap-icon://add" text="{i18n>btnAddRowCofog}" press="handleAddCOFOG" enabled="true"/>
 													</Toolbar>
 												</headerToolbar>
@@ -820,7 +477,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												</items>
 											</Table>
 										</Panel>															
-									
+										<!-- Visualizza Collegamenti -->
 										<Panel expandable="true" visible="{= ${modelPosFin>/onCreate} === false}" expanded="false">
 											<headerToolbar>
 												<OverflowToolbar>
@@ -828,13 +485,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												</OverflowToolbar>
 											</headerToolbar>
 											<Table id="tableCollegamenti" width="auto">
-												<headerToolbar>
-													<Toolbar >
-														<ToolbarSpacer />
-														<!-- <Button type="Emphasized" icon="sap-icon://detail-view" text="{i18n>btnDettaglioAccantonamento}" press="navToDetail" enabled="true"/> -->
-														<!-- <Button type="Emphasized" icon="sap-icon://add" text="{i18n>btnAddRowCofog}" press="handleAddCOFOG" enabled="true"/> -->
-													</Toolbar>
-												</headerToolbar>
 												<columns>
 													<Column width="5em">
 														<Text text="Anno"/>
@@ -842,9 +492,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<Column width="10em">
 														<Text text="{i18n>Amministrazione}"/>
 													</Column>
-													<!-- <Column width="7em">
-														<Text text="Eos"/>
-													</Column> -->
 													<Column width="7em">
 														<Text text="{i18n>Capitolo}"/>
 													</Column>
@@ -857,7 +504,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														<cells>
 															<Text text="2022"/>
 															<Text text="A020"/>
-															<!-- <Text text="1"/> -->
 															<Text text="1001"/>
 															<Text text=""/>
 														</cells>
@@ -865,511 +511,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												</items>
 											</Table>
 										</Panel>
-											
-										<!-- lt vecchio codice mantenuto per ogni eventualità -->												
-									
-										<!--  <VBox class="sapUiTinyMargin">
-											<form:SimpleForm 
-												editable="true"
-												layout="ResponsiveGridLayout"																
-												labelSpanXL="4"
-												labelSpanL="3"
-												labelSpanM="4"
-												labelSpanS="12"
-												adjustLabelSpan="false"
-												emptySpanXL="0"
-												emptySpanL="4"
-												emptySpanM="0"
-												emptySpanS="0"
-												columnsXL="4"
-												columnsL="4"
-												columnsM="2"
-												singleContainerFullSize="false" >
-												<form:content>
-													<core:Title text="" />
-													<Label text="{i18n>TipoFondo}"/>
-													<Select width="250px" selectedKey="{anagraficaModel>/tipoFondo}"/>
-													<Label text="{i18n>TipoSpesa}"/>
-													<Select width="100px" selectedKey="{anagraficaModel>/tipoSpesa}">
-														<core:Item key="Obbligatoria" text="Obbligatoria"/>
-													</Select>
-													<Label text="{i18n>TipoNaturaSpesa}"/>
-													<Select width="150px" selectedKey="{anagraficaModel>/tipoNaturaSpesa}"/>
-													<core:Title text="" />
-													
-												</form:content>
-											</form:SimpleForm>															
-										</VBox>	  -->
-
-
-										<!-- <layout:VerticalLayout class="sapUiTinyMargin">
-											 <layout:HorizontalLayout >
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>Amministrazione}" required="{= !${modelPosFin>/onModify} }"/>
-															<HBox justifyContent="SpaceBetween">
-																<Input class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/AMMINISTAZIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" />
-																<Input class="sapUiSmallMarginBegin" value="{modelPosFin>/detailAnagrafica/DESC_AMMINISTAZIONE}" editable="false">
-																	<layoutData>
-																		<FlexItemData baseSize="70rem" />
-																	</layoutData>
-																</Input>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-											</layout:HorizontalLayout>
-											<layout:HorizontalLayout >
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>Capitolo}" required="{= !${modelPosFin>/onModify} }" labelFor="idCapitolo"/>
-															<HBox justifyContent="SpaceBetween">
-																<Input id="idCapitolo" class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
-																</Input>
-																<Input class="sapUiSmallMarginBegin" value="{modelPosFin>/detailAnagrafica/DESC_CAPITOLO}" editable="false">
-																	<layoutData>
-																		<FlexItemData baseSize="70rem"/>
-																	</layoutData>
-																</Input>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>CodStandard}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
-															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CAPITOLO/codStandard}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>												
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenInt}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
-															<HBox justifyContent="SpaceBetween">		
-															<TextArea  rows="3" value="" >
-																<layoutData>
-																	<FlexItemData baseSize="70rem"/>
-																</layoutData>
-															</TextArea>														
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenRid}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
-															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-											</layout:HorizontalLayout>
-											 <layout:HorizontalLayout >
-											
-												<VBox class="sapUiTinyMargin">
-													<Label text="{i18n>Pg}" required="{= !${modelPosFin>/onModify} }" labelFor="idPg"/>
-													<HBox justifyContent="SpaceBetween">
-														<Input id="idPg" class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/PG}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
-														</Input>
-														<Input class="sapUiSmallMarginBegin" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA}" editable="false">
-															<layoutData>
-																<FlexItemData baseSize="70rem"/>
-															</layoutData>
-														</Input>
-													</HBox>
-												</VBox>
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiSmallMarginBegin">
-															<Label text="{i18n>CodStandard}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
-															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA/codStandard}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>												
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenInt}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
-															<HBox justifyContent="SpaceBetween">		
-															<TextArea  rows="3" value="" >
-																<layoutData>
-																	<FlexItemData baseSize="70rem"/>
-																</layoutData>
-															</TextArea>														
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenRid}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
-															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-											</layout:HorizontalLayout> 
-											<layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Tit}" required="true"/>
-													<Input width="50%" value="{anagraficaModel>/tit}" editable="{visibleCheckModel>/enableInputAnagrafica}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin" >
-													<Label text="{i18n>Mac}" required="true"/>
-													<Input width="50%" value="{anagraficaModel>/mac}" editable="{visibleCheckModel>/enableInputAnagrafica}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Cdr}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="50%" showValueHelp="true" value="{anagraficaModel>/cdr}" editable="{= !${modelPosFin>/onModify} }"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Cat}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="50%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="{= !${modelPosFin>/onModify} }"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Rag}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="50%" showValueHelp="true" value="{anagraficaModel>/rag}" editable="{= !${modelPosFin>/onModify} }"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>TcrC}"/>
-													<Input width="50%" value="{anagraficaModel>/tcrc}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>TcrF}"/>
-													<Input width="50%" value="{anagraficaModel>/tcrf}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Toa}"/>
-													<Select selectedKey="{anagraficaModel>/toa}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout>
-											<layout:HorizontalLayout>
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd" width="100%">
-															<Label text="{i18n>Stato}"/>
-															<HBox justifyContent="SpaceBetween">
-																<Input width="100%" value="{anagraficaModel>/stato}">
-																	<layoutData>
-																		<FlexItemData baseSize="105em"/>
-																	</layoutData>
-																</Input>
-																<Button text="{i18n>Disattiva}" press="onDisattiva" type="Emphasized">
-																	<layoutData>
-																		<FlexItemData baseSize="30rem"/>
-																	</layoutData>
-																</Button>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-											</layout:HorizontalLayout> 
-											 <layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>TipoFondo}"/>
-													<Select width="250px" selectedKey="{anagraficaModel>/tipoFondo}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>TipoSpesa}"/>
-													<Select width="100px" selectedKey="{anagraficaModel>/tipoSpesa}">
-														<core:Item key="Obbligatoria" text="Obbligatoria"/>
-													</Select>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>TipoNaturaSpesa}"/>
-													<Select width="150px" selectedKey="{anagraficaModel>/tipoNaturaSpesa}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout> 
-											<layout:HorizontalLayout>
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="65%">
-													<items>
-														<VBox>
-															<Label text="{i18n>Udv}"/>
-															<HBox justifyContent="SpaceBetween">
-																<Input class="sapUiSmallMarginEnd" value="{anagraficaModel>/udv1}" editable="{visibleCheckModel>/enableInputAnagrafica}">
-																	<layoutData>
-																		<FlexItemData baseSize="5em"/>
-																	</layoutData>
-																</Input>
-																<Input class="sapUiSmallMarginBegin" value="{anagraficaModel>/udv2}" editable="{visibleCheckModel>/enableInputAnagrafica}">
-																	<layoutData>
-																		<FlexItemData baseSize="30rem"/>
-																	</layoutData>
-																</Input>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Memoria}"/>
-													<CheckBox selected="{anagraficaModel>/memoria}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Capitolone}"/>
-													<CheckBox selected="{anagraficaModel>/capitolone}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Cu}"/>
-													<Select width="150px" selectedKey="{anagraficaModel>/cu}">
-														<core:Item key="noipa" text="NoiPa NON Cu"/>
-													</Select>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Noipa}"/>
-													<Select width="100px" selectedKey="{anagraficaModel>/noipa}">
-														<core:Item key="altro" text="ALTRO"/>
-													</Select>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>CapitoloIrap}"/>
-													<Input width="50%" value="{anagraficaModel>/capitoloIrap}" editable="{visibleCheckModel>/enableInputAnagrafica}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout> 
-											 <FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="65%">
-												<items>
-													<VBox class="sapUiTinyMarginEnd">
-														<Label text="{i18n>mission}" required="{= !${modelPosFin>/onModify} }"/>
-														<HBox justifyContent="SpaceBetween">
-															<Input class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/MISSIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
-																<layoutData>
-																	<FlexItemData baseSize="5em"/>
-																</layoutData>
-															</Input>
-															<Button press="onExpandPopOverMiss" icon="sap-icon://hint" enabled="true">
-															<layoutData>
-																	<FlexItemData baseSize="30rem"/>
-																</layoutData>
-															</Button>
-														</HBox>
-													</VBox>
-													<VBox class="sapUiTinyMarginEnd">
-														<Label text="{i18n>programma}" required="{= !${modelPosFin>/onModify} }" labelFor="idInput2"/>
-														<HBox justifyContent="SpaceBetween">
-															<Input id="idInput2" class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/PROGRAMMA}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
-																<layoutData>
-																	<FlexItemData baseSize="5em"/>
-																</layoutData>
-															</Input>
-															<Button press="onExpandPopOverProgr" icon="sap-icon://hint" enabled="true">
-															<layoutData>
-																	<FlexItemData baseSize="20rem"/>
-																</layoutData>
-															</Button>
-														</HBox>
-													</VBox>
-													<VBox class="sapUiTinyMarginEnd">
-														<Label text="{i18n>azione}" required="{= !${modelPosFin>/onModify} }"/>
-														<HBox justifyContent="SpaceBetween">
-															<Input class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/AZIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
-																<layoutData>
-																	<FlexItemData baseSize="5em"/>
-																</layoutData>
-															</Input>
-															<Button press="onExpandPopOverAction" icon="sap-icon://hint" enabled="true">
-															<layoutData>
-																	<FlexItemData baseSize="30rem"/>
-																</layoutData>
-															</Button>
-														</HBox>
-													</VBox>
-												</items>
-											</FlexBox> 
-											<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="65%">
-												<items>
-													<VBox class="sapUiTinyMarginEnd">
-														<Label text="{i18n>azione}" required="{= !${modelPosFin>/onModify} }"/>
-														<HBox justifyContent="SpaceBetween">
-															<Input class="sapUiSmallMarginEnd" value="{modelPosFin>/detailAnagrafica/AZIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
-																<layoutData>
-																	<FlexItemData baseSize="5em"/>
-																</layoutData>
-															</Input>
-															<Button icon="sap-icon://hint" type="Emphasized"  enabled="true">
-															<layoutData>
-																	<FlexItemData baseSize="30rem"/>
-																</layoutData>
-															</Button>
-														</HBox>
-													</VBox>
-												</items>
-											</FlexBox> 
-											 <layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>CodStandard}" required="true" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-													<Input width="70%" showValueHelp="true" value="{anagraficaModel>/codStandard}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout>
-											<layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>DenInt}" required="false" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-													<Input width="200%" value="{anagraficaModel>/denInt}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout>
-											<layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-													<Input width="200%" value="{anagraficaModel>/denRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout> 
-											 <layout:VerticalLayout>
-												<Title level="H4" text="{i18n>DenominazionePosizioneFinanziaria}" class="sapUiMediumMargin"/>
-												<layout:HorizontalLayout >
-												
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>CodStandard}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
-															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CAPITOLO/codStandard}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>												
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenInt}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
-															<HBox justifyContent="SpaceBetween">		
-															<TextArea  rows="3" value="" >
-																<layoutData>
-																	<FlexItemData baseSize="70rem"/>
-																</layoutData>
-															</TextArea>														
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd">
-															<Label text="{i18n>DenRid}" required="{= !${modelPosFin>/onModify} }" labelFor="test"/>
-															<HBox justifyContent="SpaceBetween">																
-																<Input width="70%" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-											</layout:HorizontalLayout>
-												
-											</layout:VerticalLayout> 
-											 <layout:VerticalLayout>
-												<Title level="H4" text="{i18n>AnagraficaPianoDiGestione}" class="sapUiMediumMargin"/>
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd" width="100%">
-															<Label text="{i18n>Stato}"/>
-															<HBox justifyContent="SpaceBetween">
-																<Input width="100%" value="{anagraficaModel>/stato2}">
-																	<layoutData>
-																		<FlexItemData baseSize="105em"/>
-																	</layoutData>
-																</Input>
-																<Button text="{i18n>Disattiva}" press="onDisattiva" type="Emphasized">
-																	<layoutData>
-																		<FlexItemData baseSize="30rem"/>
-																	</layoutData>
-																</Button>
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-												<FlexBox class="sapUiTinyMargin" justifyContent="SpaceBetween" width="100%">
-													<items>
-														<VBox class="sapUiTinyMarginEnd" width="100%">
-															<Label text="{i18n>percentQuotaAggredibilita}"/>
-															<HBox justifyContent="SpaceBetween">
-																<Input width="70%" value="{anagraficaModel>/percQuotaAgg}"/>																
-															</HBox>
-														</VBox>
-													</items>
-												</FlexBox>
-											</layout:VerticalLayout>
-											<layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Class2}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="70%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CE2}" editable="{= !${modelPosFin>/onModify} }" textAlign="Center"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>Class3}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="70%" showValueHelp="true" value="{modelPosFin>/detailAnagrafica/CE3}" editable="{= !${modelPosFin>/onModify} }" textAlign="Center"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout>
-											<layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>TipoSpesa}"/>
-													<Select width="150px" selectedKey="{anagraficaModel>/tipoSpesa2}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>AreeDDI}"/>
-													<Select width="150px" selectedKey="{anagraficaModel>/aree}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout>
-											<layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>ObiettiviMinisteri}"/>
-													<CheckBox selected="{anagraficaModel>/obiettivi}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>FondoProg}"/>
-													<CheckBox selected="{anagraficaModel>/fondoPrg}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>FondoOpere}"/>
-													<CheckBox selected="{anagraficaModel>/fondoOpere}"/>
-												</layout:VerticalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>RuoliSpesaFissa}"/>
-													<CheckBox selected="{anagraficaModel>/ruoliSpesa}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout>
-											<layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>CodStandard}" required="true" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-													<Input width="70%" showValueHelp="true" value="{anagraficaModel>/codStandard2}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout>
-											<layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>DenInt}" required="false" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-													<Input width="200%" value="{anagraficaModel>/denInt2}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout>
-											<layout:HorizontalLayout>
-												<layout:VerticalLayout class="sapUiTinyMargin">
-													<Label text="{i18n>DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-													<Input width="200%" value="{anagraficaModel>/denRid2}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
-												</layout:VerticalLayout>
-											</layout:HorizontalLayout> 
-										</layout:VerticalLayout> -->
 									</Panel>
 								</IconTabFilter>
 								<IconTabFilter icon="sap-icon://process" key="attachments" text="{i18n>competenza}" id="idCompetenzaTab" visible="{modelPosFin>/idCompetenzaTab}" >
-									<!-- <FlexBox class="sapUiSmallMarginTopBottom">
-										<items>
-											<Select class="sapUiMediumMarginBeginEnd">
-												<items>
-													<core:Item key="0" text="" />
-													<core:Item key="1" text="Autorizzazione 1" />
-													<core:Item key="2" text="Autorizzazione 2" />
-													<core:Item key="3" text="Autorizzazione 3" />
-													<core:Item key="4" text="Autorizzazione 4" />
-												</items>
-											</Select>
-											<Button text="{i18n>associaNuovaAuth}" type="Emphasized"/>
-										</items>
-									</FlexBox> -->
 									<FlexBox justifyContent="SpaceAround" width="40%">
 										<items>
 											<VBox>
@@ -1394,129 +538,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 									<html:iframe id ="attachmentframe" height="100%" width="100%" src=""> </html:iframe>
 								</IconTabFilter>
 								<IconTabFilter icon="sap-icon://accounting-document-verification" key="people" text="{i18n>cassa}"  id="idCassTab" visible="{modelPosFin>/idCassTab}"></IconTabFilter>
-								<!-- <IconTabFilter icon="sap-icon://hint" key="information" text="{i18n>Info Posizione}" visible="{= ${modelPosFin>/faseRicerca} === false }">
-										<form:SimpleForm 
-												editable="true"
-												layout="ResponsiveGridLayout"																
-												labelSpanXL="4"
-												labelSpanL="4"
-												labelSpanM="12"
-												labelSpanS="12"
-												adjustLabelSpan="false"
-												emptySpanXL="0"
-												emptySpanL="4"
-												emptySpanM="0"
-												emptySpanS="0"
-												columnsXL="2"
-												columnsL="2"
-												columnsM="2"
-												singleContainerFullSize="false" >
-												<form:content>
-													<core:Title text="" /> 
-													<Label text="{i18n>TipoSottoStr}" />
-													<Text text="{modelPosFin>/infoSottoStrumento/TestoTipo}" />
-													<Label text="{i18n>Sottostrumento}" />
-													<Text text="{modelPosFin>/infoSottoStrumento/IdSstr}" />
-													<Label text="{i18n>AnnoFaseSottoStr}" />
-													<Text text="{modelPosFin>/infoSottoStrumento/EseAnnoEse}" />
-													<Label text="{i18n>DescrSottostrumento}" />
-													<Text text="{modelPosFin>/infoSottoStrumento/DescrEstesa}" />
-													<Label text="{i18n>Stato}" />
-													<Text text="{modelPosFin>/infoSottoStrumento/Stato}" />
-													<Label text="{i18n>Visibilita}" />
-													<Text text="{modelPosFin>/infoSottoStrumento/Visibilita}" />
-													<Label text="{i18n>EspContabile}" />
-													<Text text="{modelPosFin>/infoSottoStrumento/StatEsposizione}" />													
-												</form:content>
-											</form:SimpleForm>
-
-											<form:SimpleForm 
-												editable="true"
-												layout="ResponsiveGridLayout"																
-												labelSpanXL="4"
-												labelSpanL="4"
-												labelSpanM="12"
-												labelSpanS="12"
-												adjustLabelSpan="false"
-												emptySpanXL="0"
-												emptySpanL="4"
-												emptySpanM="0"
-												emptySpanS="0"
-												columnsXL="2"
-												columnsL="2"
-												columnsM="2"
-												singleContainerFullSize="false" >
-												<form:content>
-													<core:Title text="" /> 
-													<Label text="Amministrazione" />
-													<Text text="A020" tooltip="MINISTERO DELL'ECONOMIA E DELLE FINANZE">
-													<layoutData>
-															<layout:GridData span="XL1 L1 M4 S4" />
-														</layoutData>
-													</Text>
-													<Text text="MINISTERO DELL'ECONOMIA E DELLE FINANZE" />	
-													<Label text="Capitolo" />
-													<Text text="1001">
-													<layoutData>
-															<layout:GridData span="XL1 L1 M4 S4" />
-														</layoutData>
-													</Text>
-													<Text text="STIPENDI ED ALTRI ASSEGNI FISSI AL MINISTRO E AI S" />
-													<Label text="PG" />
-													<Text text="01">
-													<layoutData>
-															<layout:GridData span="XL1 L1 M4 S4" />
-														</layoutData>
-													</Text>
-													<Text text="COMPONENTE NETTA." />		
-													<Label text="Missione" />
-													<Text text="32">
-													<layoutData>
-															<layout:GridData span="XL1 L1 M4 S4" />
-														</layoutData>
-													</Text>
-													<Text text="Ministro e Sottosegretari di Stato" />
-													<Label text="Programma" />
-													<Text text="07">
-													<layoutData>
-															<layout:GridData span="XL1 L1 M4 S4" />
-														</layoutData>
-													</Text>
-													<Text text="Promozione dell'efficienza energetica" />	
-													<Label text="Azione" />
-													<Text text="01" >
-													<layoutData>
-															<layout:GridData span="XL1 L1 M4 S4" />
-														</layoutData>
-													</Text>
-													<Text text="Spese di personale per il programma" />																									
-													<Label text="Categoria" />
-													<Text text="01">
-													<layoutData>
-															<layout:GridData span="XL1 L1 M4 S4" />
-														</layoutData>
-													</Text>	
-													<Text text="REDDITI DA LAVORO DIPENDENTE" />
-													<Label text="C.E.2" />
-													<Text text="01">
-													<layoutData>
-															<layout:GridData span="XL1 L1 M4 S4" />
-														</layoutData>
-													</Text>
-													<Text text="STIPENDI" />
-													<Label text="C.E.3" />
-													<Text text="01">
-													<layoutData>
-															<layout:GridData span="XL1 L1 M4 S4" />
-														</layoutData>
-													</Text>	
-													<Text text="STIPENDI" />
-												</form:content>
-											</form:SimpleForm>
-									 
-								 
-								</IconTabFilter> -->
-								<IconTabFilter icon="sap-icon://commission-check" key="RimOrizzontali" text="Rimodulazioni Orizzontali">
+								<IconTabFilter icon="sap-icon://commission-check" key="RimOrizzontali" text="{i18n>RimOrizzontali}">
 									<FlexBox justifyContent="Start" width="40%" class="sapUiSmallMarginBegin">
 										<items>
 											<VBox>
@@ -1525,11 +547,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<Input value="{modelPosFin>/CompetenzaAuth/Auth}" showValueHelp="true" valueHelpRequest=".onAuth" id="idAuthCompRimO" valueHelpOnly="true" width="130%">
 												</Input>
 											</VBox>
-											<!-- <VBox>
-												<Label text="Autorizzazione Collegata:" labelFor="idAuthAssCompRimOr"/>
-												<Input value="{modelPosFin>/CompetenzaAuth/AuthAssociata}" showValueHelp="true" valueHelpRequest=".onAuthCollegata" id="idAuthAssCompRimOr" valueHelpOnly="true" width="130%">
-												</Input>
-											</VBox> -->
 										</items>
 									</FlexBox>
 									<OverflowToolbar id="autorizzazioniCompButtonRimor" class="sapUiSmallMarginBottom" style="Clear">
@@ -1548,7 +565,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 			<OverflowToolbar>
 				<ToolbarSpacer/>
 				<Button text="Torna Indietro" press="onNavBack" type="Emphasized" visible="true"/>
-				<!-- <Button text="Resetta Filtri" press="onPressRipristinaRicerca" type="Emphasized" visible="{= ${modelPosFin>/onAvvio} === true}"/> -->
 				<Button text="Salva" type="Emphasized" visible="{= ${modelPosFin>/onAvvio} === true  &amp;&amp; ${modelPosFin>/tabAnagrafica} === true}"/>
 			</OverflowToolbar>
 		</f:footer>

@@ -536,7 +536,7 @@ sap.ui.define([
 				window.history.go(-1);
 			} else {
 				var oRouter = this.getOwnerComponent().getRouter();
-				oRouter.navTo("Home", {}, true);
+				oRouter.navTo("RouteHome", {}, true);
 			}
 					
 		},
