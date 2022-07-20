@@ -70,7 +70,7 @@ sap.ui.define([
                             },
                             filters:[new Filter("Anno", FilterOperator.EQ, "2023"),
                                     new Filter("Fase", FilterOperator.EQ, "DLB"),
-                                    new Filter("TipoSstr", FilterOperator.EQ, "03"),
+                                    // new Filter("TipoSstr", FilterOperator.EQ, "03"),
                                     new Filter("TipoEsposizione", FilterOperator.EQ, "2"),
                                     new Filter("Reale", FilterOperator.EQ, "R")],
                             success:  (oData) => {

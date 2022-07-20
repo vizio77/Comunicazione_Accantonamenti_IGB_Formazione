@@ -67,32 +67,27 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														</layoutData>
 													</Input>
 													<Input  value="{modelPosFin>/detailAnagrafica/DESC_AMMINISTAZIONE}" editable="false"/>
-													<!--Capitoli e PG con relative switch e label  -->
-													<!-- <Toolbar visible="false"/> -->
+
 													<core:Title text="" /> 
 													<Label text="{i18n>Capitolo}"  required="{= !${modelPosFin>/onModify} }"/>
-
 													<Input  value="{modelPosFin>/detailAnagrafica/CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
 													</Input>
-													<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
-														<layoutData>
-															<FlexItemData growFactor="2" />
-															<layout:GridData span="XL3 L3 M4 S4" />
-														</layoutData>
-													</Text>
-													<Switch state="true" visible="{= ${modelPosFin>/onModify} }" >
-															<!-- <layoutData>
-																<FlexItemData growFactor="1" />
-																<layout:GridData span="XL2 L3 M4 S4" />
-															</layoutData> -->
-														<customData>
-															<core:CustomData key="switch" value="switch"/>
-														</customData>
-													</Switch>
-													<!-- <Toolbar visible="false"/> -->
+													<HBox >
+														<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
+															<layoutData>
+																<FlexItemData growFactor="2" />
+																<layout:GridData span="XL3 L3 M4 S4" />
+															</layoutData>
+														</Text>
+														<Switch state="true" visible="{= ${modelPosFin>/onModify} }" >
+															<customData>
+																<core:CustomData key="switch" value="switch"/>
+															</customData>
+														</Switch>
+													</HBox>
 													<core:Title text="" /> 
 													<Label text="{i18n>Pg}" required="{= !${modelPosFin>/onModify} }" />
 													<Input  value="{modelPosFin>/detailAnagrafica/pg}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
@@ -100,19 +95,15 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
 													</Input>
-													<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
-														<layoutData>
-															<FlexItemData growFactor="2" />
-															<layout:GridData span="XL2 L2 M4 S4" />
-														</layoutData>
-													</Text>
-													<Switch state="true" visible="{= ${modelPosFin>/onModify} }">
-														<!-- <layoutData>
-															<FlexItemData growFactor="1" />
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData> -->
-													</Switch>
-													<!--Capitoli e PG con relative switch e label  -->			
+													<HBox >
+														<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
+															<layoutData>
+																<FlexItemData growFactor="2" />
+																<layout:GridData span="XL2 L2 M4 S4" />
+															</layoutData>
+														</Text>
+														<Switch state="true" visible="{= ${modelPosFin>/onModify} }"/>	
+													</HBox>	
 												</form:content>
 											</form:SimpleForm>	
 											<!-- MISSIONE - PROGRAMMA - AZIONE -UDV -->

@@ -240,7 +240,7 @@ tr[data-backgroundCassa="Disponibilità Amministrazione"] {
     width: 5rem !important;
 }
 
-div[id=__container5--Grid] .sapUiRespGridMedia-Std-LargeDesktop.sapUiRespGridHSpace0>.sapUiRespGridSpanXL2{
+/* div[id=__container5--Grid] .sapUiRespGridMedia-Std-LargeDesktop.sapUiRespGridHSpace0>.sapUiRespGridSpanXL2{
     width: 0% !important;
 }
 
@@ -249,7 +249,7 @@ div[id=__container5--Grid] > div.sapUiRespGridSpanInvisible{
 }
 div[id=__container6--Grid] > div.sapUiRespGridSpanInvisible{
     width: 0% !important;
-}
+} */
 
 /* div[id=__layout11] > div:first-child {
     flex-basis: 1rem !important; 
