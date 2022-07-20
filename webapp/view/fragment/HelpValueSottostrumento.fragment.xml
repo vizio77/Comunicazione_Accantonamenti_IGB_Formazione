@@ -17,22 +17,23 @@
                 <Select id="idformStTipologia"  width="70%"  selectedKey="{modelHome>/formSottostrumento/tipologia}" items="{
                     path: 'modelHome>/formSottostrumento/tipologieSet/',
                     sorter: { path: 'StatFase' }
-                }">
+                }" change=".onChangeSelect($event)">
                     <c:Item key="{modelHome>TipoSstr}" text="{modelHome>TipoSstrDescr}" />
                 </Select>
                 <Label text="{i18n>EspContabile}" labelFor="idformStEspCont"/>
                     <!-- value="{modelHome>/formSottostrumento/esposizione_contabile}" -->
 				<Select id="idformStEspCont"  width="70%"  selectedKey="{modelHome>/formSottostrumento/esposizione_contabile}" items="{
-                    path:'modelHome>/formSottostrumento/esposizione_contabileSet/'}" forceSelection="false">
-                    <c:Item key="{modelHome>TipoEsposizione}" text="{modelHome>Descr}" />
+                    path:'modelHome>/formSottostrumento/esposizione_contabileSet/'}" forceSelection="false" change=".onChangeSelect($event)">
+                    <c:Item key="{modelHome>TipoEsposizione}-{modelHome>Progr}" text="{modelHome>TipoEsposizioneDescr}" />
                 </Select>
                 <Label text="{i18n>descrizione}" labelFor="idFormStDescr"/>
 				<Input id="idFormStDescr" value="{modelHome>/formSottostrumento/descrizione_sstr}" width="70%"/>
                 <Label text="{i18n>Visibilita}" labelFor="idFormStVisibilita"/>
                 <!-- value="{modelHome>/formSottostrumento/visibilita}" -->
-				<Select id="idFormStVisibilita" selectedKey="{modelHome>/formSottostrumento/visibilita}" width="70%">
-                    <c:Item key="" text="" />
-                    <c:Item key="0" text="Bilancio" />
+				<Select id="idFormStVisibilita" selectedKey="{modelHome>/formSottostrumento/visibilita}" width="70%"
+                    items="{
+                        path:'modelHome>/formSottostrumento/visibilitaSet/'}" forceSelection="false" change=".onChangeSelect($event)">
+                    <c:Item key="{modelHome>Reale}" text="{modelHome>RealeDescr}" />
                 </Select>
                 <!-- <Label text="{i18n>ambito}" labelFor="idFormStAmm"/>
                 <Select id="idFormStAmm" selectedKey="{modelHome>/formSottostrumento/dominio_sstr}" width="70%"
@@ -80,7 +81,7 @@
                                 <c:Item key="02" text="02 - STIPENDI"/>
                             </items>
                         </Select>
-                        <Label text="{i18n>dom_ce2}" labelFor="id_dom_ce3"/>
+                        <Label text="{i18n>dom_ce3}" labelFor="id_dom_ce3"/>
                         <Select id="id_dom_ce3" width="72.5%">
                             <items>
                                 <c:Item key="0" text=""/>
@@ -119,9 +120,9 @@
                         <Label text="{i18n>dom_tipo_var}" labelFor="id_dom_tipo_var"/>
                         <RadioButtonGroup id="id_dom_tipo_var" columns="6" selectedIndex="2">
                             <buttons>
-                                <RadioButton text="Solo variazioni struttura" selected="false"/>
-                                <RadioButton text="Solo variazioni contabili" selected="false"/>
-                                <RadioButton text="Nessuna Restrizione" selected="true"/>
+                                <RadioButton text="Solo variazioni struttura" selected="{modelHome>/formSottostrumento/solo_struttura}" enabled="{= !!${modelHome>/formSottostrumento/esposizione_contabile} &amp;&amp; ${modelHome>/formSottostrumento/esposizione_contabile}.split('-')[0] === '0'}"/>
+                                <RadioButton text="Solo variazioni contabili"  selected="{modelHome>/formSottostrumento/solo_contabili}"/>
+                                <RadioButton text="Nessuna Restrizione"  selected="{modelHome>/formSottostrumento/nessuna_restrizione}"/>
                             </buttons>
                         </RadioButtonGroup>
                     </f:content>
@@ -129,97 +130,6 @@
                 </Panel>
             </f:content>
         </f:SimpleForm>
-        <!-- <Panel expandable="true" width="100%">
-            <headerToolbar>
-                <OverflowToolbar>
-                    <Label text="Dominio SottoStrumento:"/>
-                </OverflowToolbar>
-            </headerToolbar>
-            <f:SimpleForm id="formDominioSStr" editable="true" singleContainerFullSize="false" adjustLabelSpan="false"
-            layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" emptySpanXL="2" emptySpanL="0" emptySpanM="2"
-            emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1">
-            <f:content>
-                <Label text="{i18n>dom_amm}" labelFor="id_dom_amm"/>
-                <MultiComboBox id="id_dom_amm" width="70%" items="{
-                    path:'modelHome>/formSottostrumento/dominio_sstrSet/'}">
-                    <items>
-                        <c:Item key="{modelHome>Prctr}" text="{modelHome>DescrBreve}" />
-                    </items>
-                </MultiComboBox>
-                <Label text="{i18n>dom_titolo}" labelFor="id_dom_titolo"/>
-                <MultiComboBox id="id_dom_titolo" width="70%">
-                    <items>
-                        <c:Item key="0" text=""/>
-                        <c:Item key="1" text="Titolo 1"/>
-                        <c:Item key="2" text="Titolo 2"/>
-                    </items>
-                </MultiComboBox>
-                <Label text="{i18n>dom_categoria}" labelFor="id_dom_categ"/>
-                <MultiComboBox id="id_dom_categ" width="70%">
-                    <items>
-                        <c:Item key="0" text=""/>
-                        <c:Item key="1" text="Categoria 1"/>
-                        <c:Item key="2" text="Categoria 2"/>
-                    </items>
-                </MultiComboBox>
-                <Label text="{i18n>dom_ce2}" labelFor="id_dom_ce2"/>
-                <Select id="id_dom_ce2" width="70%">
-                    <items>
-                        <c:Item key="0" text=""/>
-                        <c:Item key="1" text="C.E.2 1"/>
-                        <c:Item key="2" text="C.E.2 2"/>
-                    </items>
-                </Select>
-                <Label text="{i18n>dom_ce2}" labelFor="id_dom_ce3"/>
-                <Select id="id_dom_ce3" width="70%">
-                    <items>
-                        <c:Item key="0" text=""/>
-                        <c:Item key="1" text="C.E.3 1"/>
-                        <c:Item key="2" text="C.E.3 2"/>
-                    </items>
-                </Select>
-                <Label text="{i18n>dom_miss}" labelFor="id_dom_missione"/>
-                <MultiComboBox id="id_dom_missione" width="70%">
-                    <items>
-                        <c:Item key="0" text=""/>
-                        <c:Item key="1" text="Missione 1"/>
-                        <c:Item key="2" text="Missione 2"/>
-                    </items>
-                </MultiComboBox>
-                <Label text="{i18n>dom_progr}" labelFor="id_dom_progr"/>
-                <MultiComboBox id="id_dom_progr" width="70%">
-                    <items>
-                        <c:Item key="0" text=""/>
-                        <c:Item key="1" text="Programma 1"/>
-                        <c:Item key="2" text="Programma 2"/>
-                    </items>
-                </MultiComboBox>
-                <Label text="{i18n>dom_azione}" labelFor="id_dom_azione"/>
-                <MultiComboBox id="id_dom_azione" width="70%">
-                    <items>
-                        <c:Item key="0" text=""/>
-                        <c:Item key="1" text="Azione 1"/>
-                        <c:Item key="2" text="Azione 2"/>
-                    </items>
-                </MultiComboBox>
-                <Label text="{i18n>dom_tipolog_auth}" labelFor="id_dom_tipo_auth"/>
-                <FlexBox id="id_dom_tipo_auth" justifyContent="SpaceAround" width="60%">
-                    <CheckBox text="FL"/>
-                    <CheckBox text="FB"/>
-                    <CheckBox text="OI"/>
-                    <CheckBox text="E" enabled="false"/>
-                </FlexBox>
-                <Label text="{i18n>dom_tipo_var}" labelFor="id_dom_tipo_var"/>
-                <RadioButtonGroup id="id_dom_tipo_var" columns="6">
-                    <buttons>
-                        <RadioButton text="Solo variazioni struttura" selected="false"/>
-                        <RadioButton text="Solo variazioni contabili" selected="false"/>
-                        <RadioButton text="Nessuna Restrizione" selected="true"/>
-                    </buttons>
-                </RadioButtonGroup>
-            </f:content>
-        </f:SimpleForm>
-        </Panel> -->
     </content>
     <buttons>
         <Button press="onClose" type="Emphasized" text="{i18n>close}">

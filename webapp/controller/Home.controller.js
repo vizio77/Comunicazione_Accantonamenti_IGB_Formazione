@@ -25,6 +25,9 @@ sap.ui.define([
                     visibilita: null,
                     dominio_sstrSet: [],
                     dominio_sstr: null,
+                    solo_struttura: false,
+                    solo_contabili: false,
+                    nessuna_restrizione: true,
                     esercizio: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear().toString()
                 }}), "modelHome")
                 this.getView().setModel(new JSONModel({Sottostrumento: null, visibleAuth: false}), "modelFilterHome")
@@ -40,13 +43,6 @@ sap.ui.define([
                         this.oDialogHVSottoStrumento.open();
                         let oModel = this.getOwnerComponent().getModel("sapHanaS2");
                         let modelHome = this.getView().getModel("modelHome")
-                        oModel.read("/Gest_PosFin_SH_TipologiaSet",{
-                            filters:[ new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio"))],
-                            success:  (oData) => {
-                                oData.results.unshift({StatFase: -1, TipoSstr: null, NomeTipoSstr: ""})
-                                modelHome.setProperty("/formSottostrumento/tipologieSet", oData.results)
-                            }
-                        })
                         oModel.read("/Gest_PosFin_SH_TiesSet",{
                             filters:[ new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio")),
                                       new Filter("Fase", FilterOperator.EQ, "DLB")],
@@ -71,12 +67,17 @@ sap.ui.define([
                             filters:[new Filter("Anno", FilterOperator.EQ, "2023"),
                                     new Filter("Fase", FilterOperator.EQ, "DLB"),
                                     // new Filter("TipoSstr", FilterOperator.EQ, "03"),
-                                    new Filter("TipoEsposizione", FilterOperator.EQ, "2"),
-                                    new Filter("Reale", FilterOperator.EQ, "R")],
+                                    // new Filter("TipoEsposizione", FilterOperator.EQ, "2"),
+                                    // new Filter("Reale", FilterOperator.EQ, "R")
+                                ],
                             success:  (oData) => {
                                 debugger
-                                //oData.results.unshift({Prctr: null, DescrBreve: ""})
-                                //modelHome.setProperty("/formSottostrumento/dominio_sstrSet", oData.results)
+                                oData.results[0].ToSHTipologia.results.unshift({ TipoSstr: null, TipoSstrDescr: ""})
+                                modelHome.setProperty("/formSottostrumento/tipologieSet", oData.results[0].ToSHTipologia.results)
+                                oData.results[0].ToSHEsposizione.results.unshift({TipoEsposizione: null, TipoEsposizioneDescr: "", Fase: null, Anno: null})
+                                modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", oData.results[0].ToSHEsposizione.results)
+                                oData.results[0].ToSHVisibilita.results.unshift({Fase: null, Anno: null})
+                                modelHome.setProperty("/formSottostrumento/visibilitaSet", oData.results[0].ToSHVisibilita.results)
                             },
                             error: function (res) {
                                 debugger
@@ -106,6 +107,7 @@ sap.ui.define([
                             modelHome.setProperty("/formSottostrumento/descrizione_sstr", null)
                             modelHome.setProperty("/formSottostrumento/visibilita", null)
                             modelHome.setProperty("/formSottostrumento/dominio_sstr", null)
+                            modelHome.setProperty("/formSottostrumento/esposizione_contabile", null)
                         }
                     }
                 })
@@ -273,7 +275,73 @@ sap.ui.define([
             onFormatTipoEsposizione:function (sTipoEsposizione) {
                    const modelHome = this.getView().getModel("modelHome")
                    const aTipologie = modelHome.getProperty("/formSottostrumento/esposizione_contabileSet")
-                   return aTipologie.find(es => es.TipoEsposizione === sTipoEsposizione).Descr
-               }
+                   return aTipologie.find(es => es.TipoEsposizione === sTipoEsposizione).TipoEsposizioneDescr
+               },
+            onResetVHSstr: function (oEvent) {
+                if(oEvent.getSource().getCustomData().length){
+                    this.__resetFiltri(oEvent.getSource().getCustomData().filter(item => item.getKey() === "resetFiltri"))
+                }   
+            },
+            onChangeSelect: function (oEvent) {
+                debugger
+                let oModel = this.getOwnerComponent().getModel("sapHanaS2");
+                let modelHome = this.getView().getModel("modelHome")
+                const sIdChange = oEvent.getParameter("id")
+                let sExpand = ""
+                let aFilter = [new Filter("Anno", FilterOperator.EQ, "2023"),
+                               new Filter("Fase", FilterOperator.EQ, "DLB")]
+                switch (sIdChange) {
+                    case 'idformStTipologia':
+                        if(modelHome.getProperty("/formSottostrumento/tipologia")){
+                            aFilter.push(new Filter("TipoSstr", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/tipologia")))
+                            sExpand = sExpand + "ToSHEsposizione,ToSHVisibilita"
+                        }
+                        break;
+                    case 'idformStEspCont':
+                        if(modelHome.getProperty("/formSottostrumento/esposizione_contabile")){
+                            let arrKeyTipoEsp = modelHome.getProperty("/formSottostrumento/esposizione_contabile").split("-")
+                            aFilter.push(new Filter("TipoEsposizione", FilterOperator.EQ, arrKeyTipoEsp[0]))
+                            aFilter.push(new Filter("Progr", FilterOperator.EQ, arrKeyTipoEsp[1]))
+                            sExpand = sExpand + "ToSHTipologia,ToSHVisibilita"
+                            if(modelHome.getProperty("/formSottostrumento/esposizione_contabile") !== '0' && modelHome.getProperty("/formSottostrumento/solo_struttura") === true){
+                                modelHome.setProperty("/formSottostrumento/solo_struttura", false)
+                                modelHome.setProperty("/formSottostrumento/nessuna_restrizione", true)
+                            }
+                        }
+                        break
+                    case 'idFormStVisibilita':
+                        if(modelHome.getProperty("/formSottostrumento/visibilita")){
+                            aFilter.push(new Filter("Reale", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/visibilita")))
+                            sExpand = sExpand + "ToSHTipologia,ToSHEsposizione"
+                        }
+                        break
+                    default:
+                        break;
+                }
+                oModel.read("/Gest_SH1Set",{
+                    urlParameters: {
+                        $expand: sExpand || 'ToSHEsposizione,ToSHTipologia,ToSHVisibilita'
+                    },
+                    filters: aFilter,
+                    success:  (oData) => {
+                        debugger
+                        if(Array.isArray(oData.results[0].ToSHTipologia.results)) {
+                            oData.results[0].ToSHTipologia.results.unshift({ TipoSstr: null, TipoSstrDescr: ""})
+                            modelHome.setProperty("/formSottostrumento/tipologieSet", oData.results[0].ToSHTipologia.results)
+                        }
+                        if(Array.isArray(oData.results[0].ToSHEsposizione.results)){
+                            oData.results[0].ToSHEsposizione.results.unshift({TipoEsposizione: null, TipoEsposizioneDescr: "", Fase: null, Anno: null})
+                            modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", oData.results[0].ToSHEsposizione.results)
+                        }
+                        if(Array.isArray(oData.results[0].ToSHVisibilita.results)){
+                            oData.results[0].ToSHVisibilita.results.unshift({Fase: null, Anno: null})
+                            modelHome.setProperty("/formSottostrumento/visibilitaSet", oData.results[0].ToSHVisibilita.results)
+                        }
+                    },
+                    error: function (res) {
+                        debugger
+                    }
+                })
+            }
         });
     });
