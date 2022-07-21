@@ -744,7 +744,7 @@ sap.ui.define([
 		},
 		onNavBackHome: function () {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("RouteHome");
+			oRouter.navTo("");
 		}
 	});
 });
