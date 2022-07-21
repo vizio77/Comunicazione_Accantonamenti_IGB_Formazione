@@ -25,12 +25,15 @@ sap.ui.define([
                     visibilita: null,
                     dominio_sstrSet: [],
                     dominio_sstr: null,
+                    azione_set: [],
+                    azioni: [],
                     solo_struttura: false,
                     solo_contabili: false,
                     nessuna_restrizione: true,
                     esercizio: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear().toString()
                 }}), "modelHome")
                 //this.getView().setModel(new JSONModel({Sottostrumento: null, visibleAuth: false}), "modelFilterHome")
+                //this.initData();
             },
             onHelpValueSottoStrumento: function () {
                 if(!this.oDialogHVSottoStrumento) {
@@ -443,6 +446,96 @@ sap.ui.define([
                 let modelHome = this.getView().getModel("modelHome")
                 modelHome.setProperty("/Sottostrumento", null)
                 modelHome.setProperty("/infoSottoStrumento", null)
+            },
+            initData: function () {
+                let modelHome = this.getView().getModel("modelHome")
+                //sap.ui.core.BusyIndicator.show();		
+                var sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
+
+                var entityArray = [
+                    "/ZES_AMMINISTRAZIONE_SET",
+                    "/ZES_PROGRAMMA_SET",
+                    "/ZES_CATEGORIA_SET",
+                    "/ZES_AZIONE_SET",
+                    "/ZES_MISSIONE_SET",
+                    "/ZES_ECONOMICA2_SET",
+                    "/ZES_ECONOMICA3_SET" /*,
+                    "/ZES_PG_SET",
+                    "/ZES_CAPITOLO_SET"*/			
+                ];
+               
+                sapHanaS2Tipologiche.read("/ZES_PROGRAMMA_SET", {
+                    filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
+                              new Filter("FASE", FilterOperator.EQ, "DLB"), 
+                              new Filter("ANNO", FilterOperator.EQ, "2023"),
+                              new Filter("ATTIVO", FilterOperator.EQ, "X"),
+                        ],
+                    success: (oData, res ) => {
+                        debugger
+                        modelHome.setProperty("/formSottostrumento/programma_set", oData.results)
+                    },
+                    error: function(res){
+                        debugger
+                    }
+                })
+                sapHanaS2Tipologiche.read("/ZES_AZIONE_SET", {
+                    filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
+                              new Filter("FASE", FilterOperator.EQ, "DLB"), 
+                              new Filter("ANNO", FilterOperator.EQ, "2023"),
+                              new Filter("ATTIVO", FilterOperator.EQ, "X"),
+                        ],
+                    success: (oData, res ) => {
+                        debugger
+                        // oData.results = oData.results.filter((arr, index, self) =>
+                        //     index === self.findIndex((t) => (t.CODICE_AZIONE  === arr.CODICE_AZIONE && t.CODICE_MISSIONE   === arr.CODICE_MISSIONE && t.CODICE_PROGRAMMA    === arr.CODICE_PROGRAMMA)))
+                        modelHome.setProperty("/formSottostrumento/azione_set", oData.results)
+                    },
+                    error: function(res){
+                        debugger
+                    }
+                })
+            },
+            onHRAzioneDomSStr: function (oEvent) {
+                var sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
+                Fragment.load({
+                    name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HelpValueAzione",
+                    controller: this
+                }).then(oDialog => {
+                    let modelHome = this.getView().getModel("modelHome")	
+                    sapHanaS2Tipologiche.read("/ZES_AZIONE_SET", {
+                        filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
+                                  new Filter("FASE", FilterOperator.EQ, "DLB"), 
+                                  new Filter("ANNO", FilterOperator.EQ, "2023"),
+                                  new Filter("ATTIVO", FilterOperator.EQ, "X"),
+                            ],
+                        success: (oData, res ) => {
+                            debugger
+                            modelHome.setProperty("/formSottostrumento/azione_set", oData.results)
+                            this.oDialogVHAzioniDomSStr = oDialog
+                            this.getView().addDependent(oDialog);
+                            this.oDialogVHAzioniDomSStr.open()
+                        },
+                        error: function(res){
+                            debugger
+                        }
+                    })
+                })
+            },
+            onConfirmAzioniDomSStr: function (oEvent) {
+                let oSource = oEvent.getSource()
+                let modelHome = this.getView().getModel("modelHome")
+                let oMultiSelected = oEvent.getParameter("selectedItems")
+                let aAzioni = modelHome.getProperty("/formSottostrumento/azioni")
+                for(let i = 0; i < oMultiSelected.length; i++){
+                    let sPathCurrent = oMultiSelected[i].getBindingContextPath()
+                    let currentItem = modelHome.getProperty(sPathCurrent)
+                    aAzioni.push(currentItem)
+                }
+                modelHome.updateBindings(true)
+            },
+            onSearchHVAzioni: function (oEvent) {
+                let oTable = oEvent.getId()
+                oEvent.getSource().getBinding("items").filter([new Filter("DESC_BREVE", FilterOperator.Contains, oEvent.getParameter("value"))])
             }
         });
     });

@@ -97,19 +97,24 @@
                             </items>
                         </MultiComboBox>
                         <Label text="{i18n>dom_progr}" labelFor="id_dom_progr"/>
-                        <MultiComboBox id="id_dom_progr" width="72.5%">
+                        <MultiComboBox id="id_dom_progr" width="72.5%" items="{path: 'modelHome>/formSottostrumento/programma_set/', length: '1000', sorter:  { path: 'DESC_BREVE' }}">
                             <items>
-                                <c:Item key="02" text="02 - Amministrazione penitenziaria"/>
-                                <c:Item key="03" text="03 - Giustizia civile e penale"/>
+                                <c:Item  key="{modelHome>CODICE_PROGRAMMA} - {modelHome>CODICE_MISSIONE}" text="{modelHome>DESC_BREVE}"/>
+                                <!-- <c:Item key="02" text="02 - Amministrazione penitenziaria"/>
+                                <c:Item key="03" text="03 - Giustizia civile e penale"/> -->
                             </items>
                         </MultiComboBox>
                         <Label text="{i18n>dom_azione}" labelFor="id_dom_azione"/>
-                        <MultiComboBox id="id_dom_azione" width="72.5%">
-                            <items>
-                                <c:Item key="01" text="01 - Ministro e Sottosegretari di Stato"/>
-                                <c:Item key="02" text="02 - Spese di personale per il programma"/>
-                            </items>
-                        </MultiComboBox>
+                        <MultiInput id="id_dom_azione" width="72.5%" valueHelpRequest="onHRAzioneDomSStr" tokens="{modelHome>/formSottostrumento/azioni/}">
+                                <tokens>
+                                    <Token
+                                        editable="true"
+                                        key="{modelHome>CODICE_AZIONE}-{modelHome>CODICE_PROGRAMMA}-{modelHome>CODICE_MISSIONE}-{modelHome>CODICE_MISSIONE}-{modelHome>PRCTR}"
+                                        selected="false"
+                                        text="{modelHome>CODICE_AZIONE} - {modelHome>DESC_BREVE}"
+                                        textDirection="Inherit"/>
+                                </tokens>
+                        </MultiInput>
                         <Label text="{i18n>dom_tipolog_auth}" labelFor="id_dom_tipo_auth"/>
                         <FlexBox id="id_dom_tipo_auth" justifyContent="SpaceAround" width="60%">
                             <CheckBox text="FL"/>

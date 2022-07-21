@@ -19,7 +19,15 @@
           "localUri": "localService/metadata.xml",
           "odataVersion": "2.0"
         }
-      }
+      },
+			"sapHanaS2Tipologiche": {
+				"uri": "/sap/opu/odata/sap/ZSS4_CO_GEST_TIPOLOGICHE_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadataTipologiche.xml"
+				}
+			}
     }
   },
   "sap.ui": {
@@ -68,7 +76,10 @@
         "dataSource": "sapHanaS2",
         "preload": true,
         "settings": {}
-      }
+      },
+			"sapHanaS2Tipologiche": {
+				"dataSource": "sapHanaS2Tipologiche"
+			}
     },
     "resources": {
       "css": [
