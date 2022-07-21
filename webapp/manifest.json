@@ -89,6 +89,13 @@
       },
       "routes": [
         {
+          "name": "",
+          "pattern": "",
+          "target": [
+            "TargetHome"
+          ]
+        },
+        {
           "name": "RouteHome",
           "pattern": "RouteHome",
           "target": [
@@ -139,7 +146,11 @@
       "type": "XML",
       "async": true,
       "id": "app",
-      "target": "TargetHome"
+      "target": [
+        "TargetHome"
+      ],
+      "pattern": "RouteHome",
+      "name": "RouteHome"
     }
   }
 }
