@@ -115,7 +115,7 @@ sap.ui.define([
             onPressConfSottoStrumento: function (oEvent) {
                 this.onSearchSottostrumento()
             },
-            onSearchSottostrumento: function () {
+            onSearchSottostrumentoOld: function () {
                 var oModel = this.getOwnerComponent().getModel("sapHanaS2");
                 
                 let annoSStr = new Date(new Date().setFullYear(new Date().getFullYear() + 1)) 
@@ -227,6 +227,117 @@ sap.ui.define([
                     this._oDialog.open();
                 }
             },
+            onSearchSottostrumento: function () {
+                var oModel = this.getOwnerComponent().getModel("sapHanaS2");
+                
+                let annoSStr = new Date(new Date().setFullYear(new Date().getFullYear() + 1)) 
+                var sottostrumentiModel = new JSONModel();
+
+                var oView = this.getView();
+                var aFiltersCompose = [new Filter("AnnoSottostrumento", FilterOperator.EQ, annoSStr.getFullYear().toString()),
+                                       new Filter("Fase", FilterOperator.Contains, "DLB")];
+
+                let modelHome = this.getView().getModel("modelHome")
+                //Esposizione Contabile
+                if(modelHome.getProperty("/formSottostrumento/esposizione_contabile") && modelHome.getProperty("/formSottostrumento/esposizione_contabile").length > 1){
+                    aFiltersCompose.push(new Filter({
+                        path: "TipoEsposizione",
+                        operator: FilterOperator.EQ,
+                        value1: modelHome.getProperty("/formSottostrumento/esposizione_contabile").split("-")[0]
+                    }))
+                } else {
+                    let aFilterEspContCompose = []
+                    modelHome.getProperty("/formSottostrumento/esposizione_contabileSet").map((espCont) => {
+                            if (espCont.TipoEsposizione) {
+                                aFilterEspContCompose.push(new Filter({
+                                    path: "TipoEsposizione",
+                                    operator: FilterOperator.EQ,
+                                    value1: espCont.TipoEsposizione.split("-")[0]
+                                }))
+                            }   
+                    })
+                    let afiltersEspCont = 
+                        new Filter({
+                            filters: aFilterEspContCompose,
+                            and: false,
+                            or : true
+                            })
+                    
+                    aFiltersCompose.push(afiltersEspCont)
+                }
+                //Numero Sottostrumento
+                if(modelHome.getProperty("/formSottostrumento/sottostrumento")){
+                    aFiltersCompose.push(new Filter({
+                        path: "CodiceSottostrumento",
+                        operator: FilterOperator.EQ,
+                        value1: modelHome.getProperty("/formSottostrumento/sottostrumento")
+                    }),)
+                }
+                //Descrizione Sottostrumento
+                if(modelHome.getProperty("/formSottostrumento/descrizione_sstr")){
+                    aFiltersCompose.push(new Filter({
+                        path: "DescrEstesa",
+                        operator: FilterOperator.Contains,
+                        value1: modelHome.getProperty("/formSottostrumento/descrizione_sstr")
+                    }),)
+                }
+                //Tipologia Sottostrumento
+                if(modelHome.getProperty("/formSottostrumento/tipologia")){
+                    aFiltersCompose.push(new Filter({
+                        path: "TipoSottostrumento",
+                        operator: FilterOperator.EQ,
+                        value1: modelHome.getProperty("/formSottostrumento/tipologia")
+                    }),)
+                } else {
+                    let aFilterTipologiaCompose = []
+                    modelHome.getProperty("/formSottostrumento/tipologieSet").map((tipologie) => {
+                        if (tipologie.TipoSstr) {
+                            aFilterTipologiaCompose.push(new Filter({
+                                path: "TipoSottostrumento",
+                                operator: FilterOperator.EQ,
+                                value1: tipologie.TipoSstr
+                            }))
+                        }   
+                    })
+                    let afiltersTipologia = 
+                        new Filter({
+                            filters: aFilterTipologiaCompose,
+                            and: false,
+                            or : true
+                            })
+                    
+                    aFiltersCompose.push(afiltersTipologia)
+                }
+                var _filters = [
+                    new Filter({
+                        filters: aFiltersCompose,
+                        and: true
+                      })
+                ]
+                oModel.read("/Gest_fasi_sstrSet", {
+                    filters: _filters,
+                    sorters: [new sap.ui.model.Sorter("TipoSottostrumento", false),
+                              new sap.ui.model.Sorter("NumeroSottostrumento", false)],//new sap.ui.model.Sorter("NumeroSottostrumento", false),
+                    success: (oData, response) => {
+                        sottostrumentiModel.setData(oData.results);
+                        sottostrumentiModel.setSizeLimit(2000);
+                        oView.setModel(sottostrumentiModel, "sottostrumentiModel");
+                    },
+                    error: function(e) {
+    
+                    }
+                });
+                if(!this._oDialog){
+                    this._oDialog = sap.ui.xmlfragment(
+                        "zsap.com.r3.cobi.s4.gestposfin.view.fragment.Sottostrumento",
+                        this);
+                    this._oDialog.setModel("sottostrumentiModel");
+                    this.getView().addDependent(this._oDialog);
+                    this._oDialog.open();
+                } else {
+                    this._oDialog.open();
+                }
+            },
             onPressConfermaSottostrumento: function (oEvent) {
                 let modelSottoStrumenti = this.getView().getModel("sottostrumentiModel")
                 let modelHome = this.getView().getModel("modelHome")
@@ -283,7 +394,7 @@ sap.ui.define([
                         }
                         break;
                     case 'idformStEspCont':
-                        if(modelHome.getProperty("/formSottostrumento/esposizione_contabile")){
+                        if(modelHome.getProperty("/formSottostrumento/esposizione_contabile").length > 1){
                             let arrKeyTipoEsp = modelHome.getProperty("/formSottostrumento/esposizione_contabile").split("-")
                             aFilter.push(new Filter("TipoEsposizione", FilterOperator.EQ, arrKeyTipoEsp[0]))
                             aFilter.push(new Filter("Progr", FilterOperator.EQ, arrKeyTipoEsp[1]))
