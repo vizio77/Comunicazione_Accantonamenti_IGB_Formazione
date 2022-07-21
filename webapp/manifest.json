@@ -138,7 +138,8 @@
       "viewName": "zsap.com.r3.cobi.s4.gestposfin.view.Home",
       "type": "XML",
       "async": true,
-      "id": "app"
+      "id": "app",
+      "target": "TargetHome"
     }
   }
 }
