@@ -30,7 +30,7 @@ sap.ui.define([
                     nessuna_restrizione: true,
                     esercizio: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear().toString()
                 }}), "modelHome")
-                this.getView().setModel(new JSONModel({Sottostrumento: null, visibleAuth: false}), "modelFilterHome")
+                //this.getView().setModel(new JSONModel({Sottostrumento: null, visibleAuth: false}), "modelFilterHome")
             },
             onHelpValueSottoStrumento: function () {
                 if(!this.oDialogHVSottoStrumento) {
@@ -113,9 +113,9 @@ sap.ui.define([
                 })
             },
             onPressConfSottoStrumento: function (oEvent) {
-                this.onSottostrumento()
+                this.onSearchSottostrumento()
             },
-            onSottostrumento: function () {
+            onSearchSottostrumento: function () {
                 var oModel = this.getOwnerComponent().getModel("sapHanaS2");
                 
                 let annoSStr = new Date(new Date().setFullYear(new Date().getFullYear() + 1)) 
@@ -164,7 +164,7 @@ sap.ui.define([
                 if(modelHome.getProperty("/formSottostrumento/descrizione_sstr")){
                     _filters.push(new Filter({
                         path: "DescrEstesa",
-                        operator: FilterOperator.EQ,
+                        operator: FilterOperator.Contains,
                         value1: modelHome.getProperty("/formSottostrumento/descrizione_sstr")
                     }),)
                 }
@@ -237,21 +237,6 @@ sap.ui.define([
                 modelHome.setProperty("/Sottostrumento", `${selectedItem.DescrTipoSottostrumento} - ${selectedItem.NumeroSottostrumento}`)
                 modelHome.setProperty("/infoSottoStrumento", selectedItem)
                 modelHome.setProperty("/esercizio", selectedItem.AnnoSottostrumento)
-    
-                //lt setto anche il model filter home per recuperare tutto nella prima schermata
-                let modelFilterHome = this.getView().getModel("modelFilterHome")
-                modelFilterHome.setProperty("/Sottostrumento", `${selectedItem.DescrTipoSottostrumento} - ${selectedItem.NumeroSottostrumento}`)
-                //lt elimino l'anno all'interno della selezione del sottostrumento
-                //modelFilterHome.setProperty("/Sottostrumento", `${selectedItem.TestoTipo} - ${selectedItem.IdSstr} - ${selectedItem.EseAnnoEse}`)
-                modelFilterHome.setProperty("/infoSottoStrumento", selectedItem)
-                modelFilterHome.setProperty("/esercizio", selectedItem.AnnoSottostrumento)
-                //setto nel modello filtro anche l'abilitazione o meno del campo pos finanziaria
-                modelFilterHome.setProperty("/FieldPosEnabled", true)
-                // if(selectedItem.TestoTipo === "VLV") {
-                //     modelFilterHome.setProperty("/visibleAuth", false)
-                // } else {
-                //     modelFilterHome.setProperty("/visibleAuth", true)
-                // }
     
                 this.oDialogHVSottoStrumento.close();
                 this._oDialog.close()
@@ -342,6 +327,11 @@ sap.ui.define([
                         debugger
                     }
                 })
+            },
+            onResetSStr: function () {
+                let modelHome = this.getView().getModel("modelHome")
+                modelHome.setProperty("/Sottostrumento", null)
+                modelHome.setProperty("/infoSottoStrumento", null)
             }
         });
     });

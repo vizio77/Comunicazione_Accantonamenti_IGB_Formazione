@@ -17,14 +17,14 @@
             <StandardListItem
                 activeIcon=""
                 adaptTitleSize="true"
-                description="{modelPosFin>DescrEstesa}"
+                description="{modelPosFin>DESCRIZIONE}"
                 icon=""
                 iconDensityAware="true"
                 iconInset="true"
                 info=""
                 infoState="None"
                 infoTextDirection="Inherit"
-                title="{modelPosFin>Prctr}"
+                title="{modelPosFin>VALORE}"
                 titleTextDirection="Inherit"
             />
         </items>

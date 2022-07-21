@@ -15,7 +15,7 @@ sap.ui.define([
 		 */
 		onInit: async function() {
 			this.getOwnerComponent().setModel(new JSONModel({faseRicerca: true, infoSottoStrumento: {}}),"modelPosFin")
-			this.getOwnerComponent().setModel(new JSONModel({FieldPosEnabled: false, Esercizio:(new Date(new Date().setFullYear(new Date().getFullYear() + 1))).getFullYear().toString()}),"modelFilterHome")
+			this.getOwnerComponent().setModel(new JSONModel({FieldPosEnabled: true, Esercizio:(new Date(new Date().setFullYear(new Date().getFullYear() + 1))).getFullYear().toString()}),"modelFilterHome")
 			// this.getView().getModel("modelPosFin").setProperty("/onAvvio",false)
 			let itemsMock = await this.loadJSONTest("/model/data_mock.json");
 			this.getOwnerComponent().getModel("modelPosFin").setProperty("/",itemsMock)
@@ -74,7 +74,7 @@ sap.ui.define([
 				}
 			})
 		},
-		onSottostrumento: function () {
+		onSearchSottostrumento: function () {
 			var oModel = this.getView().getModel("sapHanaS2");
 			var Dateto = new Date(new Date().getFullYear(), 11, 31);
 			Dateto.setHours(2);
@@ -159,10 +159,11 @@ sap.ui.define([
 			if(oEvent.getSource().getCustomData().length){
 				this.__resetFiltri(oEvent.getSource().getCustomData().filter(item => item.getKey() === "resetFiltri"))
 			}   
-			let sDialog = oEvent.getSource().getCustomData().find(item => item.getKey() === "HVSottostrumento").getValue()
-			this[sDialog].close()
-			this[sDialog].destroy()
-			this[sDialog] = null
+			oEvent.getSource().getParent().close()
+			//let sDialog = oEvent.getSource().getCustomData().find(item => item.getKey() === "HVSottostrumento").getValue()
+			// this[sDialog].close()
+			// this[sDialog].destroy()
+			// this[sDialog] = null
 		},
 		onPressConfermaSottostrumento: function (oEvent) {
 			let modelSottoStrumenti = this.getView().getModel("sottostrumentiModel")
@@ -209,7 +210,7 @@ sap.ui.define([
 					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment." + value,
 					controller: this
 				}).then(oDialog => {
-					this.__getValueHelpData(key)
+					//this.__getValueHelpData(key)
 					this[value] = oDialog;
 					this.getView().addDependent(oDialog);
 					this[value].open();
@@ -716,7 +717,7 @@ sap.ui.define([
 			}
 		},
 		onPressConfSottoStrumento: function (oEvent) {
-			this.onSottostrumento()
+			this.onSearchSottostrumento()
 		},
 		onPressAvvio: function() {
 			let modelHome = this.getView().getModel("modelPosFin");

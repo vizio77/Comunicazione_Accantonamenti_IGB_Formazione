@@ -43,7 +43,7 @@
                                     <Label text="Esercizio"/>
                                     <Text text="{modelHome>/formSottostrumento/esercizio}"/>
                                     <Label text="Sottostrumento" />
-                                    <Input value="{modelFilterHome>/Sottostrumento}" showValueHelp="true" valueHelpRequest="onHelpValueSottoStrumento"/>
+                                    <Input value="{modelHome>/Sottostrumento}" showValueHelp="true" valueHelpRequest="onHelpValueSottoStrumento"/>
                                     <!-- <Label text="Autorizzazione"  id="labelAuth" visible="{modelFilterHome>/visibleAuth}"/>
                                     <Input value="{Street}" id="inputAuth" visible="{modelFilterHome>/visibleAuth}" showValueHelp="true" >
                                     </Input> -->
@@ -52,7 +52,7 @@
                             <OverflowToolbar id="ddj" design="Transparent" >
                                 <ToolbarSpacer />
                                 <Button icon="sap-icon://search" text="Avvio" type="Emphasized" press="onNavigate"/>
-                                <Button icon="sap-icon://reset" text="Resetta"  type="Emphasized"/>
+                                <Button icon="sap-icon://reset" text="Resetta"  type="Emphasized" press="onResetSStr"/>
                             </OverflowToolbar>
                         </VBox>
                     </content>
