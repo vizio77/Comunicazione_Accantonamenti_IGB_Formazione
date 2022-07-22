@@ -67,45 +67,78 @@
                             </items>
                         </MultiComboBox>
                         <Label text="{i18n>dom_categoria}" labelFor="id_dom_categ"/>
-                        <MultiComboBox id="id_dom_categ" width="72.5%">
-                            <items>
-                                <c:Item key="01" text="01 - REDDITI DA LAVORO DIPENDENTE"/>
-                                <c:Item key="02" text="02 - CONSUMI INTERMEDI"/>
-                            </items>
-                        </MultiComboBox>
+                        <MultiInput id="id_dom_categ" width="72.5%" tokens="{path: 'modelHome>/formSottostrumento/categoria/'}" maxTokens="1000" valueHelpRequest="onHRDomSStr"
+                                   tokenUpdate=".onDeleteTokenDomSStr">
+                            <tokens>
+                                <Token
+                                    editable="true"
+                                    key="{modelHome>CODICE_CATEGORIA}-{modelHome>CODICE_TITOLO}"
+                                    selected="false"
+                                    text="{modelHome>CODICE_CATEGORIA} - {modelHome>DESCR_ESTESA}"
+                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                            </tokens>
+                            <customData>
+                                <c:CustomData key="popup" value="HelpValueCategoria"/>
+                                <c:CustomData key="deleteToken" value="categoria"/>
+                            </customData>
+                        </MultiInput>
                         <Label text="{i18n>dom_ce2}" labelFor="id_dom_ce2"/>
-                        <Select id="id_dom_ce2" width="72.5%">
-                            <items>
-                                <c:Item key="0" text=""/>
-                                <c:Item key="01" text="01 - RETRIBUZIONI LORDE DI DENARO"/>
-                                <c:Item key="02" text="02 - STIPENDI"/>
-                            </items>
-                        </Select>
+                        <MultiInput id="id_dom_ce2" width="72.5%"  tokens="{path: 'modelHome>/formSottostrumento/economica2/'}" maxTokens="1000" valueHelpRequest="onHRDomSStr"
+                                   tokenUpdate=".onDeleteTokenDomSStr">
+                            <tokens>
+                                <Token
+                                    editable="true"
+                                    key="{modelHome>CODICE_CLAECO2}-{modelHome>CODICE_TITOLO}-{modelHome>CODICE_CATEGORIA}"
+                                    selected="false"
+                                    text="{modelHome>CODICE_CLAECO2} - {modelHome>DESC_BREVE}"
+                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                            </tokens>
+                            <customData>
+                                <c:CustomData key="popup" value="HelpValueEconomica2"/>
+                                <c:CustomData key="deleteToken" value="economica2"/>
+                            </customData>
+                        </MultiInput>
                         <Label text="{i18n>dom_ce3}" labelFor="id_dom_ce3"/>
-                        <Select id="id_dom_ce3" width="72.5%">
-                            <items>
-                                <c:Item key="0" text=""/>
-                                <c:Item key="01" text="01 - RETRIBUZIONI LORDE DI DENARO"/>
-                                <c:Item key="02" text="02 - STIPENDI"/>
-                            </items>
-                        </Select>
+                        <MultiInput id="id_dom_ce3" width="72.5%" tokens="{path: 'modelHome>/formSottostrumento/economica3/'}" maxTokens="1000" valueHelpRequest="onHRDomSStr"
+                                   tokenUpdate=".onDeleteTokenDomSStr">
+                            <tokens>
+                                <Token
+                                    editable="true"
+                                    key="{modelHome>CODICE_CLAECO3}-{modelHome>CODICE_TITOLO}-{modelHome>CODICE_CATEGORIA}-{modelHome>CODICE_CLAECO2}"
+                                    selected="false"
+                                    text="{modelHome>CODICE_CLAECO3} - {modelHome>DESC_BREVE}"
+                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                            </tokens>
+                            <customData>
+                                <c:CustomData key="popup" value="HelpValueEconomica3"/>
+                                <c:CustomData key="deleteToken" value="economica3"/>
+                            </customData>
+                        </MultiInput>
                         <Label text="{i18n>dom_miss}" labelFor="id_dom_missione"/>
-                        <MultiComboBox id="id_dom_missione" width="72.5%">
+                        <MultiComboBox id="id_dom_missione" width="72.5%" items="{path: 'modelHome>/formSottostrumento/missione_set/', sorter: { path: 'CODICE_MISSIONE', descending: false} }"
+                                        selectedItems="{modelHome>/formSottostrumento/missioni}" selectionFinish="">
                             <items>
-                                <c:Item key="06" text="06 - Giustizia"/>
-                                <c:Item key="10" text="10 - Energia e diversificazione delle fonti energetiche"/>
+                                <c:Item key="{modelHome>CODICE_MISSIONE}" text="{modelHome>CODICE_MISSIONE} - {modelHome>DESC_BREVE}"/>
                             </items>
                         </MultiComboBox>
                         <Label text="{i18n>dom_progr}" labelFor="id_dom_progr"/>
-                        <MultiComboBox id="id_dom_progr" width="72.5%" items="{path: 'modelHome>/formSottostrumento/programma_set/', length: '1000', sorter:  { path: 'DESC_BREVE' }}">
-                            <items>
-                                <c:Item  key="{modelHome>CODICE_PROGRAMMA} - {modelHome>CODICE_MISSIONE}" text="{modelHome>DESC_BREVE}"/>
-                                <!-- <c:Item key="02" text="02 - Amministrazione penitenziaria"/>
-                                <c:Item key="03" text="03 - Giustizia civile e penale"/> -->
-                            </items>
-                        </MultiComboBox>
+                        <MultiInput id="id_dom_progr" width="72.5%" tokens="{path: 'modelHome>/formSottostrumento/programmi/'}" maxTokens="1000" valueHelpRequest="onHRDomSStr"
+                                   tokenUpdate=".onDeleteTokenDomSStr">
+                            <tokens>
+                                <Token
+                                    editable="true"
+                                    key="{modelHome>CODICE_PROGRAMMA}-{modelHome>CODICE_MISSIONE}-{modelHome>PRCTR}"
+                                    selected="false"
+                                    text="{modelHome>CODICE_PROGRAMMA} - {modelHome>DESC_BREVE}"
+                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                            </tokens>
+                            <customData>
+                                <c:CustomData key="popup" value="HelpValueProgramma"/>
+                                <c:CustomData key="deleteToken" value="programmi"/>
+                            </customData>
+                        </MultiInput>
                         <Label text="{i18n>dom_azione}" labelFor="id_dom_azione"/>
-                        <MultiInput id="id_dom_azione" width="72.5%" valueHelpRequest="onHRAzioneDomSStr" tokens="{modelHome>/formSottostrumento/azioni/}"
+                        <MultiInput id="id_dom_azione" width="72.5%" valueHelpRequest="onHRDomSStr" tokens="{modelHome>/formSottostrumento/azioni/}"
                                     maxTokens="1000" tokenUpdate=".onDeleteTokenDomSStr">
                                 <tokens>
                                     <Token
@@ -115,6 +148,10 @@
                                         text="{modelHome>CODICE_AZIONE} - {modelHome>DESC_BREVE}"
                                         textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
                                 </tokens>
+                                <customData>
+                                    <c:CustomData key="popup" value="HelpValueAzione"/>
+                                    <c:CustomData key="deleteToken" value="azioni"/>
+                                </customData>
                         </MultiInput>
                         <Label text="{i18n>dom_tipolog_auth}" labelFor="id_dom_tipo_auth"/>
                         <FlexBox id="id_dom_tipo_auth" justifyContent="SpaceAround" width="60%">

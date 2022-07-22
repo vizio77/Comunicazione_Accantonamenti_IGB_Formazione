@@ -57,9 +57,9 @@
                     <Text text="{modelHome>CODICE_PROGRAMMA}"/>
                     <Text text="{modelHome>DESCR_PROGRAMMA}"/>
                 </cells>
-                <!-- <customData>
-                    <c:CustomData key="{homeModel>VALORE}" value="{homeModel>DESCRIZIONE}" writeToDom="false" />
-                </customData> -->
+                <customData>
+                    <c:CustomData key="selezioni" value="azioni" writeToDom="false" />
+                </customData>
             </ColumnListItem>
         </items>
          <customData>

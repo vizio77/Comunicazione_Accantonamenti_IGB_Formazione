@@ -8,7 +8,7 @@
                 growing="true"
                 mode="MultiSelect"
                 growingScrollToLoad="true"
-                items="{path: 'modelHome>/formSottostrumento/programma_set/', length: '1000'}"
+                items="{path: 'modelHome>/formSottostrumento/economica2_set/', length: '1000'}"
                 sticky="InfoToolbar,HeaderToolbar,ColumnHeaders"
                 updateStarted="onUpdateStartedHVDomSStr"
                 updateFinished="onUpdateFinishedHVDomSStr"
@@ -21,45 +21,49 @@
                     </OverflowToolbar>
                 </headerToolbar>
                 <infoToolbar>
-                    <OverflowToolbar visible="{= ${modelHome>/formSottostrumento/programmi}.length > 0}">
-                        <Text text="{= 'Selezionati: ' + ${modelHome>/formSottostrumento/programmi}.length }" />
+                    <OverflowToolbar visible="{= ${modelHome>/formSottostrumento/economica2}.length > 0}">
+                        <Text text="{= 'Selezionati: ' + ${modelHome>/formSottostrumento/economica2}.length }" />
                     </OverflowToolbar>
                 </infoToolbar>
                 <columns>
-                     <Column width="8rem">
-                            <Text text="Missione" />
+                    <Column width="6rem">
+                        <Text text="{i18n>ce}"/>
                     </Column>
                     <Column width="12rem">
-                        <Text text="Descr. Missione"/>
+                        <Text text="{i18n>descrCe}"/>
                     </Column>
-                    <Column width="8rem">
-                        <Text text="Programma"/>
+                    <Column  width="6rem">
+                        <Text text="{i18n>dom_titolo}"/>
+                    </Column>
+                    <Column  width="12rem">
+                        <Text text="{i18n>descr_titolo}"/>
+                    </Column>
+                    <Column  width="6rem">
+                        <Text text="{i18n>categoria}"/>
                     </Column>
                     <Column width="12rem">
-                        <Text text="Descr. Programma"/>
+                        <Text text="{i18n>descrCategoria}"/>
                     </Column>
                 </columns>
                 <items>
                     <ColumnListItem type="Active" selected="{ parts: [
-                                                    {path: 'modelHome>CODICE_MISSIONE'},
-                                                    {path:'modelHome>PRCTR'}, 
-                                                    {path:'modelHome>CODICE_PROGRAMMA'}
-                                                ], formatter: '.setSelectedProgrammi' 
+                                                {path: 'modelHome>CODICE_TITOLO'},
+                                                    {path:'modelHome>CODICE_CATEGORIA'},
+                                                    {path:'modelHome>CODICE_CLAECO2'}
+                                                ], formatter: '.setSelectedCE2' 
                                                 }">
-                        <cells>
-                            <Text text="{modelHome>CODICE_MISSIONE}"/>
-                            <Text text="{modelHome>DESCR_MISSIONE}"/>
-                            <Text text="{modelHome>CODICE_PROGRAMMA}"/>
+                        <cells>          
+                            <Text text="{modelHome>CODICE_CLAECO2}"/>
                             <Text text="{modelHome>DESC_BREVE}"/>
+                            <Text text="{modelHome>CODICE_TITOLO}"/>
+                            <Text text="{modelHome>DESCR_TITOLO}"/>
+                            <Text text="{modelHome>CODICE_CATEGORIA}"/>
+                            <Text text="{modelHome>DESCR_CATEGORIA}"/>
                         </cells>
-                        <!-- <customData>
-                            <c:CustomData key="{homeModel>VALORE}" value="{homeModel>DESCRIZIONE}" writeToDom="false" />
-                        </customData> -->
                     </ColumnListItem>
                 </items>
                 <customData>
-                    <c:CustomData key="PROGRAMMA" value="CODICE_PROGRAMMA" writeToDom="false" />
-                    <c:CustomData key="selezioni" value="programmi"/>
+                    <c:CustomData key="selezioni" value="economica2" writeToDom="false" />
                 </customData>
             </Table>
         </content>

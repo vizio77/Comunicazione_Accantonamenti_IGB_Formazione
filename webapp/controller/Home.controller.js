@@ -27,6 +27,11 @@ sap.ui.define([
                     dominio_sstr: null,
                     azione_set: [],
                     azioni: [],
+                    programmi: [],
+                    missioni: [],
+                    economica3: [],
+                    economica2: [],
+                    categoria: [],
                     solo_struttura: false,
                     solo_contabili: false,
                     nessuna_restrizione: true,
@@ -46,6 +51,7 @@ sap.ui.define([
                         this.oDialogHVSottoStrumento.open();
                         let oModel = this.getOwnerComponent().getModel("sapHanaS2");
                         let modelHome = this.getView().getModel("modelHome")
+                        this.initDataDomSStr()
                         oModel.read("/Gest_PosFin_SH_TiesSet",{
                             filters:[ new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio")),
                                       new Filter("Fase", FilterOperator.EQ, "DLB")],
@@ -448,7 +454,7 @@ sap.ui.define([
                 modelHome.setProperty("/Sottostrumento", null)
                 modelHome.setProperty("/infoSottoStrumento", null)
             },
-            initData: function () {
+            initDataDomSStr: function () {
                 let modelHome = this.getView().getModel("modelHome")
                 //sap.ui.core.BusyIndicator.show();		
                 var sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
@@ -486,52 +492,103 @@ sap.ui.define([
                               new Filter("ATTIVO", FilterOperator.EQ, "X"),
                         ],
                     success: (oData, res ) => {
-                        debugger
-                        // oData.results = oData.results.filter((arr, index, self) =>
-                        //     index === self.findIndex((t) => (t.CODICE_AZIONE  === arr.CODICE_AZIONE && t.CODICE_MISSIONE   === arr.CODICE_MISSIONE && t.CODICE_PROGRAMMA    === arr.CODICE_PROGRAMMA)))
                         modelHome.setProperty("/formSottostrumento/azione_set", oData.results)
                     },
                     error: function(res){
                         debugger
                     }
                 })
-            },
-            onHRAzioneDomSStr: function (oEvent) {
-                var sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
-                Fragment.load({
-                    name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HelpValueAzione",
-                    controller: this
-                }).then(oDialog => {
-                    this.oDialogVHAzioniDomSStr = oDialog
-                    this.getView().addDependent(oDialog);
-                    this.oDialogVHAzioniDomSStr.open()
-                    let modelHome = this.getView().getModel("modelHome")	
-                    sapHanaS2Tipologiche.read("/ZES_AZIONE_SET", {
-                        filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
-                                  new Filter("FASE", FilterOperator.EQ, "DLB"), 
-                                  new Filter("ANNO", FilterOperator.EQ, "2023"),
-                                  new Filter("ATTIVO", FilterOperator.EQ, "X"),
-                            ],
-                        success: (oData, res ) => {
-                            debugger
-                            modelHome.setProperty("/formSottostrumento/azione_set", oData.results)
-                        },
-                        error: function(res){
-                            debugger
-                        }
-                    })
+                sapHanaS2Tipologiche.read("/ZES_MISSIONE_SET", {
+                    filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
+                              new Filter("FASE", FilterOperator.EQ, "DLB"), 
+                              new Filter("ANNO", FilterOperator.EQ, "2023"),
+                              new Filter("ATTIVO", FilterOperator.EQ, "X"),
+                        ],
+                    success: (oData, res ) => {
+                        modelHome.setProperty("/formSottostrumento/missione_set", oData.results)
+                    },
+                    error: function(res){
+                        debugger
+                    }
+                })
+                sapHanaS2Tipologiche.read("/ZES_ECONOMICA3_SET", {
+                    filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
+                              new Filter("FASE", FilterOperator.EQ, "DLB"), 
+                              new Filter("ANNO", FilterOperator.EQ, "2023"),
+                              new Filter("ATTIVO", FilterOperator.EQ, "X"),
+                        ],
+                    success: (oData, res ) => {
+                        modelHome.setProperty("/formSottostrumento/economica3_set", oData.results)
+                    },
+                    error: function(res){
+                        debugger
+                    }
+                })
+                sapHanaS2Tipologiche.read("/ZES_ECONOMICA2_SET", {
+                    filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
+                              new Filter("FASE", FilterOperator.EQ, "DLB"), 
+                              new Filter("ANNO", FilterOperator.EQ, "2023"),
+                              new Filter("ATTIVO", FilterOperator.EQ, "X"),
+                        ],
+                    success: (oData, res ) => {
+                        modelHome.setProperty("/formSottostrumento/economica2_set", oData.results)
+                    },
+                    error: function(res){
+                        debugger
+                    }
+                })
+                sapHanaS2Tipologiche.read("/ZES_CATEGORIA_SET", {
+                    filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
+                              new Filter("FASE", FilterOperator.EQ, "DLB"), 
+                              new Filter("ANNO", FilterOperator.EQ, "2023"),
+                              new Filter("ATTIVO", FilterOperator.EQ, "X"),
+                        ],
+                    success: (oData, res ) => {
+                        modelHome.setProperty("/formSottostrumento/categoria_set", oData.results)
+                    },
+                    error: function(res){
+                        debugger
+                    }
                 })
             },
-            onConfirmAzioniDomSStr: function (oEvent) {
+            onHRDomSStr: function (oEvent) {
+                let {key, value} = oEvent.getSource().getCustomData()[0].mProperties
+                var sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
+                Fragment.load({
+                    name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment." + value,
+                    controller: this
+                }).then(oDialog => {
+                    this[value] = oDialog
+                    this.getView().addDependent(oDialog);
+                    this[value].open()
+                    // let modelHome = this.getView().getModel("modelHome")	
+                    // sapHanaS2Tipologiche.read("/ZES_AZIONE_SET", {
+                    //     filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
+                    //               new Filter("FASE", FilterOperator.EQ, "DLB"), 
+                    //               new Filter("ANNO", FilterOperator.EQ, "2023"),
+                    //               new Filter("ATTIVO", FilterOperator.EQ, "X"),
+                    //         ],
+                    //     success: (oData, res ) => {
+                    //         debugger
+                    //         modelHome.setProperty("/formSottostrumento/azione_set", oData.results)
+                    //     },
+                    //     error: function(res){
+                    //         debugger
+                    //     }
+                    // })
+                })
+            },
+            onConfirmSelectionDomSStr: function (oEvent) {
                 let oTable = oEvent.getSource().getParent().getContent()[0]
+                let sPathToUpdate  = oTable.getCustomData().find(cd => cd.getKey() === "selezioni").getValue()
                 let modelHome = this.getView().getModel("modelHome")
                 let aSelectedPaths = oTable.getSelectedContextPaths()
-                let selectedAzioni = []
+                let selectedItems = []
                 for(let i = 0; i < aSelectedPaths.length; i++){
                     let currentItem = modelHome.getProperty(aSelectedPaths[i])
-                    selectedAzioni.push(currentItem)
+                    selectedItems.push(currentItem)
                 }
-                modelHome.setProperty("/formSottostrumento/azioni", selectedAzioni)
+                modelHome.setProperty("/formSottostrumento/" + sPathToUpdate, selectedItems)
                 modelHome.updateBindings(true)
                 oEvent.getSource().getParent().close()
             },
@@ -557,14 +614,42 @@ sap.ui.define([
             onDeleteTokenDomSStr: function (oEvent) {
                 let modelHome = this.getView().getModel("modelHome")
                 let aSplitPathDeleted = []
-                if(oEvent.getId() === 'tokenUpdate')
+                let sPathToUpdate = ""
+
+                if(oEvent.getId() === 'tokenUpdate') {
+                    sPathToUpdate = oEvent.getSource().getCustomData().find(cd => cd.getKey() === "deleteToken").getValue()
                     aSplitPathDeleted = oEvent.getParameter("removedTokens")[0].getBindingContext("modelHome").getPath().split("/")
-                else 
+                }
+                else {
+                    sPathToUpdate = oEvent.getSource().getParent().getParent().getCustomData().find(cd => cd.getKey() === "deleteToken").getValue()
                     aSplitPathDeleted = oEvent.getParameter("token").getBindingContext("modelHome").getPath().split("/")
-                
+                }
+
                 let sIndexDeleted = aSplitPathDeleted[aSplitPathDeleted.length - 1]
-                let aAzioni = modelHome.getProperty("/formSottostrumento/azioni")
-                aAzioni.splice(Number(sIndexDeleted), 1)
+                let aSelectedItems = modelHome.getProperty("/formSottostrumento/" + sPathToUpdate)
+                aSelectedItems.splice(Number(sIndexDeleted), 1)
+            },
+            setSelectedProgrammi: function (missione, amm, programma) {
+                let modelHome = this.getView().getModel("modelHome")
+                let aProgrammi = modelHome.getProperty("/formSottostrumento/programmi")
+                return  aProgrammi.filter(item => ( item.CODICE_PROGRAMMA === programma && item.CODICE_MISSIONE === missione)).length > 0
+            },
+            setSelectedCE3: function (titolo, categoria, ce2, ce3) {
+                let modelHome = this.getView().getModel("modelHome")
+                let aProgrammi = modelHome.getProperty("/formSottostrumento/economica3")
+                return  aProgrammi.filter(item => ( item.CODICE_TITOLO === titolo && item.CODICE_CATEGORIA === categoria && 
+                                        item.CODICE_CLAECO2 === ce2&& item.CODICE_CLAECO3 === ce3 )).length > 0
+            },
+            setSelectedCE2: function (titolo, categoria, ce2) {
+                let modelHome = this.getView().getModel("modelHome")
+                let aProgrammi = modelHome.getProperty("/formSottostrumento/economica2")
+                return  aProgrammi.filter(item => ( item.CODICE_TITOLO === titolo && item.CODICE_CATEGORIA === categoria && 
+                                        item.CODICE_CLAECO2 === ce2 )).length > 0
+            },
+            setSelectedCategoria: function (titolo, categoria) {
+                let modelHome = this.getView().getModel("modelHome")
+                let aProgrammi = modelHome.getProperty("/formSottostrumento/economica2")
+                return  aProgrammi.filter(item => ( item.CODICE_TITOLO === titolo && item.CODICE_CATEGORIA === categoria)).length > 0
             }
         });
     });

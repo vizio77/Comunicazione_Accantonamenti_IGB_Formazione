@@ -8,7 +8,7 @@
                 growing="true"
                 mode="MultiSelect"
                 growingScrollToLoad="true"
-                items="{path: 'modelHome>/formSottostrumento/azione_set/', length: '1000'}"
+                items="{path: 'modelHome>/formSottostrumento/economica3_set/', length: '1000'}"
                 sticky="InfoToolbar,HeaderToolbar,ColumnHeaders"
                 updateStarted="onUpdateStartedHVDomSStr"
                 updateFinished="onUpdateFinishedHVDomSStr"
@@ -21,62 +21,58 @@
                     </OverflowToolbar>
                 </headerToolbar>
                 <infoToolbar>
-                    <OverflowToolbar visible="{= ${modelHome>/formSottostrumento/azioni}.length > 0}">
-                        <Text text="{= 'Selezionati: ' + ${modelHome>/formSottostrumento/azioni}.length }" />
+                    <OverflowToolbar visible="{= ${modelHome>/formSottostrumento/economica3}.length > 0}">
+                        <Text text="{= 'Selezionati: ' + ${modelHome>/formSottostrumento/economica3}.length }" />
                     </OverflowToolbar>
                 </infoToolbar>
                 <columns>
                     <Column width="4rem">
-                        <Text text="Azione" />
+                        <Text text="{i18n>ce3}" />
                     </Column>
                     <Column width="12rem">
-                        <Text text="Descr. Azione"/>
+                        <Text text="{i18n>descrCe3}"/>
                     </Column>
                     <Column  width="6rem">
-                        <Text text="Amm."/>
+                        <Text text="{i18n>dom_titolo}"/>
                     </Column>
                     <Column  width="12rem">
-                        <Text text="Descr. Ammin."/>
+                        <Text text="{i18n>descr_titolo}"/>
                     </Column>
                     <Column  width="6rem">
-                        <Text text="Missione"/>
+                        <Text text="{i18n>categoria}"/>
                     </Column>
                     <Column width="12rem">
-                        <Text text="Desc. Missione"/>
+                        <Text text="{i18n>descrCategoria}"/>
                     </Column>
                     <Column  width="6rem">
-                        <Text text="Programma"/>
+                        <Text text="{i18n>ce}"/>
                     </Column>
                     <Column width="12rem">
-                        <Text text="Desc. Programma"/>
+                        <Text text="{i18n>descrCe}"/>
                     </Column>
                 </columns>
                 <items>
                     <ColumnListItem type="Active" selected="{ parts: [
-                                                {path: 'modelHome>CODICE_AZIONE'},
-                                                    {path:'modelHome>PRCTR'},
-                                                    {path:'modelHome>CODICE_MISSIONE'}, 
-                                                {path:'modelHome>CODICE_PROGRAMMA'}
-                                                ], formatter: '.setSelectedAzioni' 
+                                                {path: 'modelHome>CODICE_TITOLO'},
+                                                    {path:'modelHome>CODICE_CATEGORIA'},
+                                                    {path:'modelHome>CODICE_CLAECO2'}, 
+                                                {path:'modelHome>CODICE_CLAECO3'}
+                                                ], formatter: '.setSelectedCE3' 
                                                 }">
                         <cells>          
-                            <Text text="{modelHome>CODICE_AZIONE}"/>
+                            <Text text="{modelHome>CODICE_CLAECO3}"/>
                             <Text text="{modelHome>DESC_BREVE}"/>
-                            <Text text="{modelHome>PRCTR}"/>
-                            <Text text="{modelHome>DESCR_AMMINISTRAZIONE}"/>
-                            <Text text="{modelHome>CODICE_MISSIONE}"/>
-                            <Text text="{modelHome>DESCR_MISSIONE}"/>
-                            <Text text="{modelHome>CODICE_PROGRAMMA}"/>
-                            <Text text="{modelHome>DESCR_PROGRAMMA}"/>
+                            <Text text="{modelHome>CODICE_TITOLO}"/>
+                            <Text text="{modelHome>DESCR_TITOLO}"/>
+                            <Text text="{modelHome>CODICE_CATEGORIA}"/>
+                            <Text text="{modelHome>DESCR_CATEGORIA}"/>
+                            <Text text="{modelHome>CODICE_CLAECO2}"/>
+                            <Text text="{modelHome>DESCR_CLAECO2}"/>
                         </cells>
-                        <!-- <customData>
-                            <c:CustomData key="{homeModel>VALORE}" value="{homeModel>DESCRIZIONE}" writeToDom="false" />
-                        </customData> -->
                     </ColumnListItem>
                 </items>
                 <customData>
-                    <c:CustomData key="AZIONE" value="CODICE_AZIONE" writeToDom="false" />
-                    <c:CustomData key="selezioni" value="azioni" writeToDom="false" />
+                    <c:CustomData key="selezioni" value="economica3" writeToDom="false" />
                 </customData>
             </Table>
         </content>
