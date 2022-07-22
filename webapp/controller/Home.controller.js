@@ -32,6 +32,8 @@ sap.ui.define([
                     economica3: [],
                     economica2: [],
                     categoria: [],
+                    titoli: [],
+                    amministrazioni: [],
                     solo_struttura: false,
                     solo_contabili: false,
                     nessuna_restrizione: true,
@@ -98,29 +100,28 @@ sap.ui.define([
                 }
             },
             onClose: function (oEvent) {
-                if(oEvent.getSource().getCustomData().length){
-                    this.__resetFiltri(oEvent.getSource().getCustomData().filter(item => item.getKey() === "resetFiltri"))
-                }  
-                
+                this.__resetFiltri()
                 let sDialog = oEvent.getSource().getCustomData().find(item => item.getKey() === "HVSottostrumento").getValue()
                 this[sDialog].close()
                 this[sDialog].destroy()
                 this[sDialog] = null
             },
-            __resetFiltri: function (aResetKeyValue) {
+            __resetFiltri: function () {
                 let modelHome = this.getView().getModel("modelHome");
-                aResetKeyValue.map(reset => {
-                    if(reset.getKey() === "resetFiltri"){
-                        if (reset.getValue() === "formSottostrumento") {
-                            modelHome.setProperty("/formSottostrumento/tipologia", null)
-                            modelHome.setProperty("/formSottostrumento/codice_sstr", null)
-                            modelHome.setProperty("/formSottostrumento/descrizione_sstr", null)
-                            modelHome.setProperty("/formSottostrumento/visibilita", null)
-                            modelHome.setProperty("/formSottostrumento/dominio_sstr", null)
-                            modelHome.setProperty("/formSottostrumento/esposizione_contabile", null)
-                        }
-                    }
-                })
+                modelHome.setProperty("/formSottostrumento/tipologia", null)
+                modelHome.setProperty("/formSottostrumento/codice_sstr", null)
+                modelHome.setProperty("/formSottostrumento/descrizione_sstr", null)
+                modelHome.setProperty("/formSottostrumento/visibilita", null)
+                modelHome.setProperty("/formSottostrumento/dominio_sstr", null)
+                modelHome.setProperty("/formSottostrumento/esposizione_contabile", null)
+                modelHome.setProperty("/formSottostrumento/categoria", [])
+                modelHome.setProperty("/formSottostrumento/economica2", [])
+                modelHome.setProperty("/formSottostrumento/economica3", [])
+                modelHome.setProperty("/formSottostrumento/programmi", [])
+                modelHome.setProperty("/formSottostrumento/azioni", [])
+                sap.ui.getCore().byId("id_dom_amm").setSelectedItems([])
+                sap.ui.getCore().byId("id_dom_titolo").setSelectedItems([])
+                sap.ui.getCore().byId("id_dom_missione").setSelectedItems([])
             },
             onPressConfSottoStrumento: function (oEvent) {
                 this.onSearchSottostrumento()
@@ -384,9 +385,7 @@ sap.ui.define([
                    return aTipologie.find(es => es.TipoEsposizione === sTipoEsposizione).TipoEsposizioneDescr
                },
             onResetVHSstr: function (oEvent) {
-                if(oEvent.getSource().getCustomData().length){
-                    this.__resetFiltri(oEvent.getSource().getCustomData().filter(item => item.getKey() === "resetFiltri"))
-                }   
+                    this.__resetFiltri()
             },
             onChangeSelect: function (oEvent) {
                 debugger
@@ -550,6 +549,19 @@ sap.ui.define([
                         debugger
                     }
                 })
+                sapHanaS2Tipologiche.read("/ZES_TITOLO_SET", {
+                    filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
+                              new Filter("FASE", FilterOperator.EQ, "DLB"), 
+                              new Filter("ANNO", FilterOperator.EQ, "2023"),
+                              new Filter("ATTIVO", FilterOperator.EQ, "X"),
+                        ],
+                    success: (oData, res ) => {
+                        modelHome.setProperty("/formSottostrumento/titolo_set", oData.results)
+                    },
+                    error: function(res){
+                        debugger
+                    }
+                })
             },
             onHRDomSStr: function (oEvent) {
                 let {key, value} = oEvent.getSource().getCustomData()[0].mProperties
@@ -589,8 +601,9 @@ sap.ui.define([
                     selectedItems.push(currentItem)
                 }
                 modelHome.setProperty("/formSottostrumento/" + sPathToUpdate, selectedItems)
-                modelHome.updateBindings(true)
+                //modelHome.updateBindings(true)
                 oEvent.getSource().getParent().close()
+                this.__refreshItemsFilterDomSStr(sPathToUpdate) //aggiorna le altre liste/Tabelle in seguito a una selezione
             },
             onSearchHVAzioni: function (oEvent) {
                 oEvent.getSource().getParent().getParent().getBinding("items").filter([new Filter("DESC_BREVE", FilterOperator.Contains, oEvent.getParameter("query"))])
@@ -648,8 +661,52 @@ sap.ui.define([
             },
             setSelectedCategoria: function (titolo, categoria) {
                 let modelHome = this.getView().getModel("modelHome")
-                let aProgrammi = modelHome.getProperty("/formSottostrumento/economica2")
+                let aProgrammi = modelHome.getProperty("/formSottostrumento/categoria")
                 return  aProgrammi.filter(item => ( item.CODICE_TITOLO === titolo && item.CODICE_CATEGORIA === categoria)).length > 0
+            },
+            onSelectionChangeMCBDomSStr: function (oEvent) {
+                debugger
+                let modelHome = this.getView().getModel("modelHome")
+                const bAction = oEvent.getParameter("selected")
+                const sArrayName = oEvent.getSource().getCustomData().find(cd => cd.getKey() === "selezione").getValue()
+                let sPathItem = oEvent.getParameter("changedItem").getBindingContext("modelHome").getPath()
+                let aItemsToUpdate = modelHome.getProperty("/formSottostrumento/" + sArrayName)
+                if(bAction) {
+                    aItemsToUpdate.push(modelHome.getProperty(sPathItem))
+                } else {
+                    const sKey = this.__getKeyMCBDomSStr(sArrayName)
+                    let sIndexToRemove = aItemsToUpdate.findIndex( item => item[sKey] === oEvent.getParameter("changedItem").getKey())
+                    aItemsToUpdate.splice(Number(sIndexToRemove), 1)
+                }
+            },
+            __getKeyMCBDomSStr: function (key) { //metodo per l'estrazione delle chiavi degli array
+                const keyValue = {
+                    "amministrazioni": "Prctr",
+                    "titoli": "CODICE_TITOLO",
+                    "missioni": "CODICE_MISSIONE"
+                }
+                return keyValue[key]
+            },
+            __getPropertyByEntity: function (sEntity) {
+                const propertyEntity =  {
+                    "/Gest_PosFin_SH_AmministrazioniSet" : "dominio_sstrSet",
+                    "/ZES_PROGRAMMA_SET": "programma_set",
+                    "/ZES_MISSIONE_SET": "missione_set"
+                }
+            },
+            __refreshItemsFilterDomSStr: function (sArrayUpdated) {
+                const oModel = this.getOwnerComponent().getModel("sapHanaS2");
+                const sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
+
+                let sArrayEntitySet = []
+                switch (sArrayUpdated) {
+                    case "azioni": //la selezione di azioni ha effetto su Amministrazione/Missione/Programma
+                        sArrayEntitySet = ["/Gest_PosFin_SH_AmministrazioniSet", "/ZES_PROGRAMMA_SET", "/ZES_MISSIONE_SET"]
+                        break;
+                
+                    default:
+                        break;
+                }
             }
         });
     });

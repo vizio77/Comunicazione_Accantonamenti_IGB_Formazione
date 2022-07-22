@@ -54,17 +54,23 @@
                     <f:content>
                         <Label text="{i18n>dom_amm}" labelFor="id_dom_amm"/>
                         <MultiComboBox id="id_dom_amm" width="72.5%" items="{
-                            path:'modelHome>/formSottostrumento/dominio_sstrSet/'}">
+                            path:'modelHome>/formSottostrumento/dominio_sstrSet/'}" selectionChange="onSelectionChangeMCBDomSStr">
                             <items>
                                 <c:Item key="{modelHome>Prctr}" text="{= ${modelHome>Prctr} !== null ? ${modelHome>Prctr} + ' - ' + ${modelHome>DescrBreve} : '' }" />
                             </items>
+                            <customData>
+                                <c:CustomData key="selezione" value="amministrazioni"/>
+                            </customData>
                         </MultiComboBox>
                         <Label text="{i18n>dom_titolo}" labelFor="id_dom_titolo"/>
-                        <MultiComboBox id="id_dom_titolo" width="72.5%">
+                        <MultiComboBox id="id_dom_titolo" width="72.5%" items="{path: 'modelHome>/formSottostrumento/titolo_set/', sorter: { path: 'CODICE_TITOLO', descending: false} }"
+                                         selectionFinish="" selectionChange="onSelectionChangeMCBDomSStr">
                             <items>
-                                <c:Item key="1" text="Titolo 1"/>
-                                <c:Item key="2" text="Titolo 2"/>
+                                <c:Item key="{modelHome>CODICE_TITOLO}" text="{modelHome>CODICE_TITOLO} - {modelHome>DESCR_ESTESA}"/>
                             </items>
+                            <customData>
+                                <c:CustomData key="selezione" value="titoli"/>
+                            </customData>
                         </MultiComboBox>
                         <Label text="{i18n>dom_categoria}" labelFor="id_dom_categ"/>
                         <MultiInput id="id_dom_categ" width="72.5%" tokens="{path: 'modelHome>/formSottostrumento/categoria/'}" maxTokens="1000" valueHelpRequest="onHRDomSStr"
@@ -116,10 +122,13 @@
                         </MultiInput>
                         <Label text="{i18n>dom_miss}" labelFor="id_dom_missione"/>
                         <MultiComboBox id="id_dom_missione" width="72.5%" items="{path: 'modelHome>/formSottostrumento/missione_set/', sorter: { path: 'CODICE_MISSIONE', descending: false} }"
-                                        selectedItems="{modelHome>/formSottostrumento/missioni}" selectionFinish="">
+                                        selectionFinish="" selectionChange="onSelectionChangeMCBDomSStr">
                             <items>
                                 <c:Item key="{modelHome>CODICE_MISSIONE}" text="{modelHome>CODICE_MISSIONE} - {modelHome>DESC_BREVE}"/>
                             </items>
+                            <customData>
+                                <c:CustomData key="selezione" value="missioni"/>
+                            </customData>
                         </MultiComboBox>
                         <Label text="{i18n>dom_progr}" labelFor="id_dom_progr"/>
                         <MultiInput id="id_dom_progr" width="72.5%" tokens="{path: 'modelHome>/formSottostrumento/programmi/'}" maxTokens="1000" valueHelpRequest="onHRDomSStr"
