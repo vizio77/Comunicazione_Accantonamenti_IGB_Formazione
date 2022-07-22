@@ -502,6 +502,9 @@ sap.ui.define([
                     name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HelpValueAzione",
                     controller: this
                 }).then(oDialog => {
+                    this.oDialogVHAzioniDomSStr = oDialog
+                    this.getView().addDependent(oDialog);
+                    this.oDialogVHAzioniDomSStr.open()
                     let modelHome = this.getView().getModel("modelHome")	
                     sapHanaS2Tipologiche.read("/ZES_AZIONE_SET", {
                         filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
@@ -512,9 +515,6 @@ sap.ui.define([
                         success: (oData, res ) => {
                             debugger
                             modelHome.setProperty("/formSottostrumento/azione_set", oData.results)
-                            this.oDialogVHAzioniDomSStr = oDialog
-                            this.getView().addDependent(oDialog);
-                            this.oDialogVHAzioniDomSStr.open()
                         },
                         error: function(res){
                             debugger
