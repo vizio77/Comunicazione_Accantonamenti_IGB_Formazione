@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
 >
-<Dialog title="Cerca" contentWidth="70%" contentHeight="90%">
+<Dialog title="Cerca" contentHeight="90%" width="auto">
 		<content>
             <Table
                 growing="true"
@@ -16,7 +16,7 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
-                            <SearchField class="sapUiSmallMargin" search="onSearchHVAzioni" width="90%"/>
+                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVAzioni" width="65%" />
                         </content>
                     </OverflowToolbar>
                 </headerToolbar>
