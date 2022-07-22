@@ -105,14 +105,15 @@
                             </items>
                         </MultiComboBox>
                         <Label text="{i18n>dom_azione}" labelFor="id_dom_azione"/>
-                        <MultiInput id="id_dom_azione" width="72.5%" valueHelpRequest="onHRAzioneDomSStr" tokens="{modelHome>/formSottostrumento/azioni/}">
+                        <MultiInput id="id_dom_azione" width="72.5%" valueHelpRequest="onHRAzioneDomSStr" tokens="{modelHome>/formSottostrumento/azioni/}"
+                                    maxTokens="1000" tokenUpdate=".onDeleteTokenDomSStr">
                                 <tokens>
                                     <Token
                                         editable="true"
                                         key="{modelHome>CODICE_AZIONE}-{modelHome>CODICE_PROGRAMMA}-{modelHome>CODICE_MISSIONE}-{modelHome>CODICE_MISSIONE}-{modelHome>PRCTR}"
                                         selected="false"
                                         text="{modelHome>CODICE_AZIONE} - {modelHome>DESC_BREVE}"
-                                        textDirection="Inherit"/>
+                                        textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
                                 </tokens>
                         </MultiInput>
                         <Label text="{i18n>dom_tipolog_auth}" labelFor="id_dom_tipo_auth"/>

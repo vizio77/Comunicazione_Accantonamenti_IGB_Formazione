@@ -94,7 +94,8 @@ sap.ui.define([
             onClose: function (oEvent) {
                 if(oEvent.getSource().getCustomData().length){
                     this.__resetFiltri(oEvent.getSource().getCustomData().filter(item => item.getKey() === "resetFiltri"))
-                }   
+                }  
+                
                 let sDialog = oEvent.getSource().getCustomData().find(item => item.getKey() === "HVSottostrumento").getValue()
                 this[sDialog].close()
                 this[sDialog].destroy()
@@ -522,20 +523,48 @@ sap.ui.define([
                 })
             },
             onConfirmAzioniDomSStr: function (oEvent) {
-                let oSource = oEvent.getSource()
+                let oTable = oEvent.getSource().getParent().getContent()[0]
                 let modelHome = this.getView().getModel("modelHome")
-                let oMultiSelected = oEvent.getParameter("selectedItems")
-                let aAzioni = modelHome.getProperty("/formSottostrumento/azioni")
-                for(let i = 0; i < oMultiSelected.length; i++){
-                    let sPathCurrent = oMultiSelected[i].getBindingContextPath()
-                    let currentItem = modelHome.getProperty(sPathCurrent)
-                    aAzioni.push(currentItem)
+                let aSelectedPaths = oTable.getSelectedContextPaths()
+                let selectedAzioni = []
+                for(let i = 0; i < aSelectedPaths.length; i++){
+                    let currentItem = modelHome.getProperty(aSelectedPaths[i])
+                    selectedAzioni.push(currentItem)
                 }
+                modelHome.setProperty("/formSottostrumento/azioni", selectedAzioni)
                 modelHome.updateBindings(true)
+                oEvent.getSource().getParent().close()
             },
             onSearchHVAzioni: function (oEvent) {
-                let oTable = oEvent.getId()
-                oEvent.getSource().getBinding("items").filter([new Filter("DESC_BREVE", FilterOperator.Contains, oEvent.getParameter("value"))])
+                oEvent.getSource().getParent().getParent().getBinding("items").filter([new Filter("DESC_BREVE", FilterOperator.Contains, oEvent.getParameter("query"))])
+            },
+            setSelectedAzioni: function (azione, amm, missione, programma) {
+                let modelHome = this.getView().getModel("modelHome")
+                let aAzioni = modelHome.getProperty("/formSottostrumento/azioni")
+                return  aAzioni.filter(item => (item.PRCTR === amm && item.CODICE_AZIONE === azione && 
+                    item.CODICE_PROGRAMMA === programma && item.CODICE_MISSIONE === missione)).length > 0
+                
+            },
+            onUpdateStartedHVDomSStr: function (oEvent) {
+                oEvent.getSource().setBusy(true)
+            },
+            onUpdateFinishedHVDomSStr: function (oEvent) {
+                oEvent.getSource().setBusy(false)
+            },
+            onCloseHVDomSStr: function (oEvent) {
+                oEvent.getSource().getParent().close() 
+            },
+            onDeleteTokenDomSStr: function (oEvent) {
+                let modelHome = this.getView().getModel("modelHome")
+                let aSplitPathDeleted = []
+                if(oEvent.getId() === 'tokenUpdate')
+                    aSplitPathDeleted = oEvent.getParameter("removedTokens")[0].getBindingContext("modelHome").getPath().split("/")
+                else 
+                    aSplitPathDeleted = oEvent.getParameter("token").getBindingContext("modelHome").getPath().split("/")
+                
+                let sIndexDeleted = aSplitPathDeleted[aSplitPathDeleted.length - 1]
+                let aAzioni = modelHome.getProperty("/formSottostrumento/azioni")
+                aAzioni.splice(Number(sIndexDeleted), 1)
             }
         });
     });
