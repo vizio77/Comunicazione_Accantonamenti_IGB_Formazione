@@ -454,7 +454,22 @@ sap.ui.define([
                 modelHome.setProperty("/infoSottoStrumento", null)
             },
             initDataDomSStr: function () {
-                let modelHome = this.getView().getModel("modelHome")
+                 let modelHome = this.getView().getModel("modelHome")
+                 let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+
+                 modelHana.read("/Gest_SH1_TitoloSet", {
+                    filters: [new Filter("Fase", FilterOperator.EQ, "DLB"),
+                              new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio"))],
+                    success: (oData, res) => {
+                        debugger
+                        // let result = oData.results.filter((s => a => !(s.has(a.REQUESTID) && s.has(a.REQUESTCOMPANYOWNID)) && (s.add(a.REQUESTID) && s.add(
+						// 	                                a.REQUESTCOMPANYOWNID)))(new Set));
+                        let result = oData.results.filter((s => a => !(s.has(a.Prctr)) && (s.add(a.Prctr)))(new Set));
+                    },
+                    error: (err) => {
+                        debugger
+                    }
+                 })
                 //sap.ui.core.BusyIndicator.show();		
                 var sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
 
@@ -562,6 +577,7 @@ sap.ui.define([
                         debugger
                     }
                 })
+
             },
             onHRDomSStr: function (oEvent) {
                 let {key, value} = oEvent.getSource().getCustomData()[0].mProperties
