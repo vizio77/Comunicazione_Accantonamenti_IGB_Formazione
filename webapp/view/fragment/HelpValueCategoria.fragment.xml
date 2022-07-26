@@ -8,7 +8,10 @@
                 growing="true"
                 mode="MultiSelect"
                 growingScrollToLoad="true"
-                items="{path: 'modelHome>/formSottostrumento/categoria_set/', length: '1000'}"
+                items="{path: 'modelHome>/formSottostrumento/categoria_set/', length: '1000', sorter: [
+                    {path: 'Categoria', descending: 'false'},
+                    {path: 'Titolo', descending: 'false'}
+                  ]}"
                 sticky="InfoToolbar,HeaderToolbar,ColumnHeaders"
                 updateStarted="onUpdateStartedHVDomSStr"
                 updateFinished="onUpdateFinishedHVDomSStr"
@@ -27,29 +30,29 @@
                 </infoToolbar>
                 <columns>
                     <Column width="8rem">
-                        <Text text="{i18n>dom_categoria}" />
-                    </Column>
-                    <Column width="12rem">
-                        <Text text="{i18n>descrCategoria}"/>
-                    </Column>
-                    <Column width="8rem">
                         <Text text="{i18n>dom_titolo}"/>
                     </Column>
                     <Column width="12rem">
                         <Text text="{i18n>descr_titolo}"/>
                     </Column>
+                    <Column width="8rem">
+                        <Text text="{i18n>dom_categoria}" />
+                    </Column>
+                    <Column width="12rem">
+                        <Text text="{i18n>descrCategoria}"/>
+                    </Column>
                 </columns>
                 <items>
                     <ColumnListItem type="Active" selected="{ parts: [
-                                                    {path: 'modelHome>CODICE_TITOLO'},
-                                                    {path:'modelHome>CODICE_CATEGORIA'}
+                                                    {path: 'modelHome>Titolo'},
+                                                    {path:'modelHome>Categoria'}
                                                 ], formatter: '.setSelectedCategoria' 
                                                 }">
                         <cells>          
-                            <Text text="{modelHome>CODICE_CATEGORIA}"/>
-                            <Text text="{modelHome>DESCR_ESTESA}"/>
-                            <Text text="{modelHome>CODICE_TITOLO}"/>
-                            <Text text="{modelHome>DESC_TITOLO}"/>
+                            <Text text="{modelHome>Titolo}"/>
+                            <Text text="{modelHome>TitoloDescr}"/>
+                            <Text text="{modelHome>Categoria}"/>
+                            <Text text="{modelHome>CategoriaDescr}"/>
                         </cells>
                     </ColumnListItem>
                 </items>

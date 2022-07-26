@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
 >
-<Dialog title="Cerca" contentHeight="90%" width="auto">
+<Dialog title="Cerca C.E. 2" contentHeight="90%" width="auto">
 		<content>
             <Table
                 growing="true"
@@ -26,12 +26,6 @@
                     </OverflowToolbar>
                 </infoToolbar>
                 <columns>
-                    <Column width="6rem">
-                        <Text text="{i18n>ce}"/>
-                    </Column>
-                    <Column width="12rem">
-                        <Text text="{i18n>descrCe}"/>
-                    </Column>
                     <Column  width="6rem">
                         <Text text="{i18n>dom_titolo}"/>
                     </Column>
@@ -44,21 +38,27 @@
                     <Column width="12rem">
                         <Text text="{i18n>descrCategoria}"/>
                     </Column>
+                    <Column width="6rem">
+                        <Text text="{i18n>ce}"/>
+                    </Column>
+                    <Column width="12rem">
+                        <Text text="{i18n>descrCe}"/>
+                    </Column>
                 </columns>
                 <items>
                     <ColumnListItem type="Active" selected="{ parts: [
-                                                {path: 'modelHome>CODICE_TITOLO'},
-                                                    {path:'modelHome>CODICE_CATEGORIA'},
-                                                    {path:'modelHome>CODICE_CLAECO2'}
+                                                {path: 'modelHome>Titolo'},
+                                                    {path:'modelHome>Categoria'},
+                                                    {path:'modelHome>Ce2'}
                                                 ], formatter: '.setSelectedCE2' 
                                                 }">
                         <cells>          
-                            <Text text="{modelHome>CODICE_CLAECO2}"/>
-                            <Text text="{modelHome>DESC_BREVE}"/>
-                            <Text text="{modelHome>CODICE_TITOLO}"/>
-                            <Text text="{modelHome>DESCR_TITOLO}"/>
-                            <Text text="{modelHome>CODICE_CATEGORIA}"/>
-                            <Text text="{modelHome>DESCR_CATEGORIA}"/>
+                            <Text text="{modelHome>Titolo}"/>
+                            <Text text="{modelHome>TitoloDescr}"/>
+                            <Text text="{modelHome>Categoria}"/>
+                            <Text text="{modelHome>CategoriaDescr}"/>
+                            <Text text="{modelHome>Ce2}"/>
+                            <Text text="{modelHome>Ce2Descr}"/>
                         </cells>
                     </ColumnListItem>
                 </items>

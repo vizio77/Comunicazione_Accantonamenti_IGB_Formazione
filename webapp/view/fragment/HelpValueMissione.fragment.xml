@@ -12,7 +12,7 @@
     showHeader="true"
     state="None"
     stretch="false"
-    title="Cerca Amministrazione"
+    title="Cerca Missioni"
     type="Standard"
     verticalScrolling="true"
 >
@@ -20,31 +20,30 @@
         <List
         mode="MultiSelect"
 		items="{
-			path: 'modelHome>/formSottostrumento/dominio_sstrSet'
+			path: 'modelHome>/formSottostrumento/missione_set'
 		}" >
         <headerToolbar>
             <OverflowToolbar>
                 <content>
-                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVAmministrazioni" width="65%" />
+                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVTitoli" width="65%" />
                 </content>
             </OverflowToolbar>
         </headerToolbar>
         <infoToolbar>
-            <OverflowToolbar visible="{= ${modelHome>/formSottostrumento/dominio_sstr}.length > 0}">
-                <Text text="{= 'Selezionati: ' + ${modelHome>/formSottostrumento/dominio_sstr}.length }" />
+            <OverflowToolbar visible="{= ${modelHome>/formSottostrumento/missioni}.length > 0}">
+                <Text text="{= 'Selezionati: ' + ${modelHome>/formSottostrumento/missioni}.length }" />
             </OverflowToolbar>
         </infoToolbar>
 		<StandardListItem
-			title="{modelHome>Prctr}"
-			description="{modelHome>PrctrDescr}"
+			title="{modelHome>CODICE_MISSIONE}"
+			description="{modelHome>DESC_BREVE}"
 			iconDensityAware="false"
 			iconInset="false" selected="{ parts: [
-                    {path:'modelHome>Prctr'}
-                ], formatter: '.setSelectedAmm' 
-                }"/>
+                            {path:'modelHome>CODICE_MISSIONE'}
+                        ], formatter: '.setSelectedMissioni' 
+                        }"/>
         <customData>
-            <c:CustomData key="AZIONE" value="CODICE_AZIONE" writeToDom="false" />
-            <c:CustomData key="selezioni" value="dominio_sstr" writeToDom="false" />
+            <c:CustomData key="selezioni" value="missioni" writeToDom="false" />
         </customData>
 	</List>
     </content>

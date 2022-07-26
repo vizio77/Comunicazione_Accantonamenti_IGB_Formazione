@@ -26,12 +26,6 @@
                     </OverflowToolbar>
                 </infoToolbar>
                 <columns>
-                    <Column width="4rem">
-                        <Text text="Azione" />
-                    </Column>
-                    <Column width="12rem">
-                        <Text text="Descr. Azione"/>
-                    </Column>
                     <Column  width="6rem">
                         <Text text="Amm."/>
                     </Column>
@@ -50,6 +44,12 @@
                     <Column width="12rem">
                         <Text text="Desc. Programma"/>
                     </Column>
+                    <Column width="4rem">
+                        <Text text="Azione" />
+                    </Column>
+                    <Column width="12rem">
+                        <Text text="Descr. Azione"/>
+                    </Column>
                 </columns>
                 <items>
                     <ColumnListItem type="Active" selected="{ parts: [
@@ -59,15 +59,15 @@
                                                 {path:'modelHome>CODICE_PROGRAMMA'}
                                                 ], formatter: '.setSelectedAzioni' 
                                                 }">
-                        <cells>          
-                            <Text text="{modelHome>CODICE_AZIONE}"/>
-                            <Text text="{modelHome>DESC_BREVE}"/>
+                        <cells>
                             <Text text="{modelHome>PRCTR}"/>
                             <Text text="{modelHome>DESCR_AMMINISTRAZIONE}"/>
                             <Text text="{modelHome>CODICE_MISSIONE}"/>
                             <Text text="{modelHome>DESCR_MISSIONE}"/>
                             <Text text="{modelHome>CODICE_PROGRAMMA}"/>
                             <Text text="{modelHome>DESCR_PROGRAMMA}"/>
+                            <Text text="{modelHome>CODICE_AZIONE}"/>
+                            <Text text="{modelHome>DESC_BREVE}"/>
                         </cells>
                         <!-- <customData>
                             <c:CustomData key="{homeModel>VALORE}" value="{homeModel>DESCRIZIONE}" writeToDom="false" />
