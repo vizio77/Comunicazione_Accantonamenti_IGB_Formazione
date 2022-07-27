@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
 >
-<Dialog title="Cerca C.E. 2" contentHeight="90%" width="auto">
+<Dialog title="Cerca C.E. 2" contentHeight="90%" >
 		<content>
             <Table
                 growing="true"
@@ -16,7 +16,11 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
-                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVAzioni" width="50%" />
+                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVDomSStr" width="50%" >
+                                <customData>
+                                    <c:CustomData key="ce2" value="Ce2Descr"/>
+                                </customData>
+                            </SearchField>
                         </content>
                     </OverflowToolbar>
                 </headerToolbar>

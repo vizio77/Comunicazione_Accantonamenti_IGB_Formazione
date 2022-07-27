@@ -1020,6 +1020,10 @@ sap.ui.define([
                 let resultCE3= this.__removeDuplicate(oData.results, "ce3")
                                             .filter(ce3 => ce3.Ce3 !== "");
                 modelHome.setProperty("/formSottostrumento/economica3_set", resultCE3)
+            },
+            onSearchHVDomSStr: function (oEvent) {
+                let sPropertyFilter= oEvent.getSource().getCustomData()[0].getValue()
+                oEvent.getSource().getParent().getParent().getBinding("items").filter([new Filter(sPropertyFilter, FilterOperator.Contains, oEvent.getParameter("query"))])
             }
         });
     });

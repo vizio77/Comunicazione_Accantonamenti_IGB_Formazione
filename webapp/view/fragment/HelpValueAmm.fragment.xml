@@ -25,7 +25,11 @@
         <headerToolbar>
             <OverflowToolbar>
                 <content>
-                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVAmministrazioni" width="65%" />
+                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVDomSStr" width="65%" >
+                        <customData>
+                            <c:CustomData key="amm" value="DescrBreve"/>
+                        </customData>
+                    </SearchField>
                 </content>
             </OverflowToolbar>
         </headerToolbar>
