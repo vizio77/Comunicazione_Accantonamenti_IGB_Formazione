@@ -25,7 +25,11 @@
         <headerToolbar>
             <OverflowToolbar>
                 <content>
-                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVTitoli" width="65%" />
+                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVDomSStr" width="65%">
+                        <customData>
+                            <c:CustomData key="missioni" value="MissioneDescr"/>
+                        </customData>
+                    </SearchField>
                 </content>
             </OverflowToolbar>
         </headerToolbar>
@@ -35,11 +39,11 @@
             </OverflowToolbar>
         </infoToolbar>
 		<StandardListItem
-			title="{modelHome>CODICE_MISSIONE}"
-			description="{modelHome>DESC_BREVE}"
+			title="{modelHome>Missione}"
+			description="{modelHome>MissioneDescr}"
 			iconDensityAware="false"
 			iconInset="false" selected="{ parts: [
-                            {path:'modelHome>CODICE_MISSIONE'}
+                            {path:'modelHome>Missione'}
                         ], formatter: '.setSelectedMissioni' 
                         }"/>
         <customData>

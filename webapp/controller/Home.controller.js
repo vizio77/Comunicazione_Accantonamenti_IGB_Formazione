@@ -477,19 +477,17 @@ sap.ui.define([
                         debugger
                     }
                  })
-                //  modelHana.read("/Gest_SH1_MissioneSet", {
-                //     filters: [new Filter("Fase", FilterOperator.EQ, "DLB"),
-                //               new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio"))],
-                //     success: (oData, res) => {
-                //         debugger
-                //         // let result = oData.results.filter((s => a => !(s.has(a.REQUESTID) && s.has(a.REQUESTCOMPANYOWNID)) && (s.add(a.REQUESTID) && s.add(
-				// 		// 	                                a.REQUESTCOMPANYOWNID)))(new Set));
-                //         let result = oData.results.filter((s => a => !(s.has(a.Prctr)) && (s.add(a.Prctr)))(new Set));
-                //     },
-                //     error: (err) => {
-                //         debugger
-                //     }
-                //  })
+                 modelHana.read("/Gest_SH1_MissioneSet", {
+                    filters: [new Filter("Fase", FilterOperator.EQ, "DLB"),
+                              new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio"))],
+                    success: (oData, res) => {
+                        debugger
+                        this.__setPropertyFiltriMissioneDomSStr(oData)
+                    },
+                    error: (err) => {
+                        debugger
+                    }
+                 })
                  //sap.ui.core.BusyIndicator.show();		
                 // var sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
 
@@ -647,8 +645,8 @@ sap.ui.define([
             setSelectedAzioni: function (azione, amm, missione, programma) {
                 let modelHome = this.getView().getModel("modelHome")
                 let aAzioni = modelHome.getProperty("/formSottostrumento/azioni")
-                return  aAzioni.filter(item => (item.PRCTR === amm && item.CODICE_AZIONE === azione && 
-                    item.CODICE_PROGRAMMA === programma && item.CODICE_MISSIONE === missione)).length > 0
+                return  aAzioni.filter(item => (item.Prctr === amm && item.Azione === azione && 
+                    item.Programma === programma && item.Missione === missione)).length > 0
                 
             },
             onUpdateStartedHVDomSStr: function (oEvent) {
@@ -798,7 +796,7 @@ sap.ui.define([
             setSelectedProgrammi: function (missione, amm, programma) {
                 let modelHome = this.getView().getModel("modelHome")
                 let aProgrammi = modelHome.getProperty("/formSottostrumento/programmi")
-                return  aProgrammi.filter(item => ( item.CODICE_PROGRAMMA === programma && item.CODICE_MISSIONE === missione)).length > 0
+                return  aProgrammi.filter(item => ( item.Programma === programma && item.Missione === missione)).length > 0
             },
             setSelectedCE3: function (titolo, categoria, ce2, ce3) {
                 let modelHome = this.getView().getModel("modelHome")
@@ -830,7 +828,7 @@ sap.ui.define([
             setSelectedMissioni: function (missione) {
                 let modelHome = this.getView().getModel("modelHome")
                 let aProgrammi = modelHome.getProperty("/formSottostrumento/missioni")
-                return  aProgrammi.filter(item => ( item.CODICE_MISSIONE === missione)).length > 0
+                return  aProgrammi.filter(item => ( item.Missione === missione)).length > 0
             },
             onSelectionChangeMCBDomSStr: function (oEvent) {
                 debugger
@@ -900,56 +898,116 @@ sap.ui.define([
                             aFilters.push(new Filter("Ce3", FilterOperator.EQ, ce3.Ce3))
                         })
                         break;
+                    case "azioni": //la selezione di azioni ha effetto su Amministrazione/Missione/Programma
+                        let aAzioni =  modelHome.getProperty("/formSottostrumento/" + sPath)
+                        aAzioni.map(azioni => {
+                            aFilters.push(new Filter("Azione", FilterOperator.EQ, azioni.Azione))
+                            aFilters.push(new Filter("Missione", FilterOperator.EQ, azioni.Missione))
+                            aFilters.push(new Filter("Programma", FilterOperator.EQ, azioni.Programma))
+                            aFilters.push(new Filter("Prctr", FilterOperator.EQ, azioni.Prctr))
+                        })
+                        break;
+                    case "programmi": //la selezione di azioni ha effetto su Amministrazione/Missione/Programma
+                        let aProgrammi=  modelHome.getProperty("/formSottostrumento/" + sPath)
+                        aProgrammi.map(programmi => {
+                            aFilters.push(new Filter("Missione", FilterOperator.EQ, programmi.Missione))
+                            aFilters.push(new Filter("Programma", FilterOperator.EQ, programmi.Programma))
+                        })
+                        break;
+                    case "missioni": //la selezione di azioni ha effetto su Amministrazione/Missione/Programma
+                        let aMissioni=  modelHome.getProperty("/formSottostrumento/" + sPath)
+                        aMissioni.map(missioni => {
+                            aFilters.push(new Filter("Missione", FilterOperator.EQ, missioni.Missione))
+                        })
+                        break;
                     default:
                         break;
                 }
-                modelHana.read("/Gest_SH1_TitoloSet", {
-                    filters: aFilters,
-                    success: (oData, res) => {
-                        debugger
-                        //this.__setPropertyFiltriTitoloDomSStr(oData)
-                        this.__setPropertyHVChildren(sPath, oData)
-                        let modelHome = this.getView().getModel("modelHome")
-                        let aCategoriaAutoSelected = []
-                        let aTitoliAutoSelected = []
-                        let aCE2AutoSelected = []
-                        switch (sPath) {
-                            case "categoria":
-                                aTitoliAutoSelected = oData.results.filter((s => a => !(s.has(a.Titolo)) && (s.add(a.Titolo)))(new Set))
-                                                                .filter(tit => tit.Titolo !== "");
-                                modelHome.setProperty("/formSottostrumento/titoli", aTitoliAutoSelected)
-                                break;
-                            case "economica2":
-                                aCategoriaAutoSelected = this.__removeDuplicate(oData.results, "categoria")
-                                                                .filter(cat => cat.Titolo !== "");
-                                modelHome.setProperty("/formSottostrumento/categoria", aCategoriaAutoSelected)
-                                aTitoliAutoSelected = oData.results.filter((s => a => !(s.has(a.Titolo)) && (s.add(a.Titolo)))(new Set))
-                                                                .filter(tit => tit.Titolo !== "");
-                                modelHome.setProperty("/formSottostrumento/titoli", aTitoliAutoSelected)
-                                break;
-                            case "economica3":
-                                aCE2AutoSelected = this.__removeDuplicate(oData.results, "ce2").filter(ce2 => ce2.Ce2 !== "");
-                                modelHome.setProperty("/formSottostrumento/economica2", aCE2AutoSelected)
 
-                                aCategoriaAutoSelected = this.__removeDuplicate(oData.results, "categoria")
-                                                                .filter(cat => cat.Titolo !== "");
-                                modelHome.setProperty("/formSottostrumento/categoria", aCategoriaAutoSelected)
-                                
-                                aTitoliAutoSelected = oData.results.filter((s => a => !(s.has(a.Titolo)) && (s.add(a.Titolo)))(new Set))
-                                                                .filter(tit => tit.Titolo !== "");
-                                modelHome.setProperty("/formSottostrumento/titoli", aTitoliAutoSelected)
-                                break;
-                            default:
-                                break;
+                if(sPath === "titoli" || sPath === "categoria" ||sPath === "economica2" ||sPath === "economica3")
+                    modelHana.read("/Gest_SH1_TitoloSet", {
+                        filters: aFilters,
+                        success: (oData, res) => {
+                            debugger
+                            //this.__setPropertyFiltriTitoloDomSStr(oData)
+                            this.__setPropertyHVChildren(sPath, oData)
+                            let modelHome = this.getView().getModel("modelHome")
+                            let aCategoriaAutoSelected = []
+                            let aTitoliAutoSelected = []
+                            let aCE2AutoSelected = []
+                            switch (sPath) {
+                                case "categoria":
+                                    aTitoliAutoSelected = oData.results.filter((s => a => !(s.has(a.Titolo)) && (s.add(a.Titolo)))(new Set))
+                                                                    .filter(tit => tit.Titolo !== "");
+                                    modelHome.setProperty("/formSottostrumento/titoli", aTitoliAutoSelected)
+                                    break;
+                                case "economica2":
+                                    aCategoriaAutoSelected = this.__removeDuplicate(oData.results, "categoria")
+                                                                    .filter(cat => cat.Titolo !== "");
+                                    modelHome.setProperty("/formSottostrumento/categoria", aCategoriaAutoSelected)
+                                    aTitoliAutoSelected = oData.results.filter((s => a => !(s.has(a.Titolo)) && (s.add(a.Titolo)))(new Set))
+                                                                    .filter(tit => tit.Titolo !== "");
+                                    modelHome.setProperty("/formSottostrumento/titoli", aTitoliAutoSelected)
+                                    break;
+                                case "economica3":
+                                    aCE2AutoSelected = this.__removeDuplicate(oData.results, "ce2").filter(ce2 => ce2.Ce2 !== "");
+                                    modelHome.setProperty("/formSottostrumento/economica2", aCE2AutoSelected)
+
+                                    aCategoriaAutoSelected = this.__removeDuplicate(oData.results, "categoria")
+                                                                    .filter(cat => cat.Titolo !== "");
+                                    modelHome.setProperty("/formSottostrumento/categoria", aCategoriaAutoSelected)
+                                    
+                                    aTitoliAutoSelected = oData.results.filter((s => a => !(s.has(a.Titolo)) && (s.add(a.Titolo)))(new Set))
+                                                                    .filter(tit => tit.Titolo !== "");
+                                    modelHome.setProperty("/formSottostrumento/titoli", aTitoliAutoSelected)
+                                    break;
+                                default:
+                                    break;
+                            }
+                        },
+                        error: (err) => {
+                            debugger
                         }
-                    },
-                    error: (err) => {
-                        debugger
-                    }
-                 })
+                    })
+                if(sPath === "azioni" || sPath === "programmi" || sPath === "missioni"){
+                    modelHana.read("/Gest_SH1_MissioneSet", {
+                        filters: aFilters,
+                        success: (oData, res) => {
+                            this.__setPropertyHVChildren(sPath, oData)
+                            let modelHome = this.getView().getModel("modelHome")
+                            let aMissioniAutoSelected = []
+                            let aProgrammaAutoSelected = []
+                            let aAmministrazioniAutoSelected = []
+                            
+                            switch (sPath) {
+                                case "azioni":
+                                    aMissioniAutoSelected = this.__removeDuplicate(oData.results, "missioni").filter(ms => ms.Missione !== "");
+                                    modelHome.setProperty("/formSottostrumento/missioni", aMissioniAutoSelected)
+
+                                    aProgrammaAutoSelected = this.__removeDuplicate(oData.results, "programma")
+                                                                    .filter(pr => pr.Programma !== "");
+                                    modelHome.setProperty("/formSottostrumento/programmi", aProgrammaAutoSelected)
+                                    
+                                    aAmministrazioniAutoSelected = modelHome.getProperty("/formSottostrumento/dominio_sstrSet").filter(amm => oData.results.filter(od => od.Prctr === amm.Prctr).length > 0);
+                                    modelHome.setProperty("/formSottostrumento/dominio_sstr", aAmministrazioniAutoSelected)
+                                    break;
+                                case "programmi":
+                                    aMissioniAutoSelected = this.__removeDuplicate(oData.results, "missioni").filter(ms => ms.Missione !== "");
+                                    modelHome.setProperty("/formSottostrumento/missioni", aMissioniAutoSelected)
+                                    break;
+                                default:
+                                    break;
+                            }
+                        },
+                        error: (err) => {
+                            debugger
+                        }
+                    })
+                }
+                    
             },
             __setPropertyHVChildren: function (sPath, oData) {
-                //Scelto un genitore, aggiorno lista dei
+                //Scelto un genitore, aggiorno lista dei figli
                 let modelHome = this.getView().getModel("modelHome")
 
                 // let resultTitoli = oData.results.filter((s => a => !(s.has(a.Titolo)) && (s.add(a.Titolo)))(new Set))
@@ -969,6 +1027,15 @@ sap.ui.define([
                     let resultCE3= this.__removeDuplicate(oData.results, "ce3")
                                                 .filter(ce3 => ce3.Ce3 !== "");
                     modelHome.setProperty("/formSottostrumento/economica3_set", resultCE3)
+                }
+                if(sPath === "missioni"){
+                    let resultProgramma= this.__removeDuplicate(oData.results, "programma")
+                                                .filter(pr => pr.Programma !== "");
+                    modelHome.setProperty("/formSottostrumento/programma_set", resultProgramma)
+
+                    let resultAzioni = this.__removeDuplicate(oData.results, "azioni")
+                                                .filter(pr => pr.Azione !== "");
+                    modelHome.setProperty("/formSottostrumento/azione_set", resultAzioni)
                 }
             },
             __removeDuplicate(arr, property){
@@ -991,6 +1058,25 @@ sap.ui.define([
                         for(let i = 0; i <  arr.length; i++){
                             if(results.filter(item => item.Categoria === arr[i].Categoria && item.Titolo === arr[i].Titolo
                                             && item.Ce2 === arr[i].Ce2 && item.Ce3 === arr[i].Ce3).length === 0)
+                                results.push(arr[i])
+                        }
+                        break; 
+                    case "missioni":
+                        for(let i = 0; i <  arr.length; i++){
+                            if(results.filter(item => item.Missione === arr[i].Missione).length === 0)
+                                results.push(arr[i])
+                        }
+                        break; 
+                    case "programma":
+                        for(let i = 0; i <  arr.length; i++){
+                            if(results.filter(item => item.Missione === arr[i].Missione && item.Programma === arr[i].Programma).length === 0)
+                                results.push(arr[i])
+                        }
+                        break; 
+                    case "azioni":
+                        for(let i = 0; i <  arr.length; i++){
+                            if(results.filter(item => item.Missione === arr[i].Missione && item.Programma === arr[i].Programma
+                                                && item.Azione === arr[i].Azione).length === 0)
                                 results.push(arr[i])
                         }
                         break; 
@@ -1024,6 +1110,21 @@ sap.ui.define([
             onSearchHVDomSStr: function (oEvent) {
                 let sPropertyFilter= oEvent.getSource().getCustomData()[0].getValue()
                 oEvent.getSource().getParent().getParent().getBinding("items").filter([new Filter(sPropertyFilter, FilterOperator.Contains, oEvent.getParameter("query"))])
+            },
+            __setPropertyFiltriMissioneDomSStr: function (oData) {
+                let modelHome = this.getView().getModel("modelHome")
+
+                let resultMissioni = oData.results.filter((s => a => !(s.has(a.Missione)) && (s.add(a.Missione)))(new Set))
+                                    .filter(tit => tit.Missione !== "");
+                modelHome.setProperty("/formSottostrumento/missione_set", resultMissioni)
+
+                let resultProgramma = oData.results.filter((s => a => !(s.has(a.Programma)) && (s.add(a.Programma)))(new Set))
+                                    .filter(tit => tit.Programma !== "");
+                modelHome.setProperty("/formSottostrumento/programma_set", resultProgramma)
+
+                let resultAzione= oData.results.filter((s => a => !(s.has(a.Azione)) && (s.add(a.Azione)))(new Set))
+                                    .filter(tit => tit.Azione !== "");
+                modelHome.setProperty("/formSottostrumento/azione_set", resultAzione)
             }
         });
     });

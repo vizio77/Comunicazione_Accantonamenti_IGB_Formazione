@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
 >
-<Dialog title="Cerca" contentHeight="90%" width="auto">
+<Dialog title="Cerca" contentHeight="90%">
 		<content>
             <Table
                 growing="true"
@@ -16,7 +16,11 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
-                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVAzioni" width="65%" />
+                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVDomSStr" width="65%">
+                                <customData>
+                                    <c:CustomData key="azione" value="AzioneDescr"/>
+                                </customData>
+                            </SearchField>
                         </content>
                     </OverflowToolbar>
                 </headerToolbar>
@@ -53,21 +57,21 @@
                 </columns>
                 <items>
                     <ColumnListItem type="Active" selected="{ parts: [
-                                                {path: 'modelHome>CODICE_AZIONE'},
-                                                    {path:'modelHome>PRCTR'},
-                                                    {path:'modelHome>CODICE_MISSIONE'}, 
-                                                {path:'modelHome>CODICE_PROGRAMMA'}
+                                                {path: 'modelHome>Azione'},
+                                                    {path:'modelHome>Prctr'},
+                                                    {path:'modelHome>Missione'}, 
+                                                {path:'modelHome>Programma'}
                                                 ], formatter: '.setSelectedAzioni' 
                                                 }">
                         <cells>
-                            <Text text="{modelHome>PRCTR}"/>
-                            <Text text="{modelHome>DESCR_AMMINISTRAZIONE}"/>
-                            <Text text="{modelHome>CODICE_MISSIONE}"/>
-                            <Text text="{modelHome>DESCR_MISSIONE}"/>
-                            <Text text="{modelHome>CODICE_PROGRAMMA}"/>
-                            <Text text="{modelHome>DESCR_PROGRAMMA}"/>
-                            <Text text="{modelHome>CODICE_AZIONE}"/>
-                            <Text text="{modelHome>DESC_BREVE}"/>
+                            <Text text="{modelHome>Prctr}"/>
+                            <Text text="{modelHome>PrctrDescr}"/>
+                            <Text text="{modelHome>Missione}"/>
+                            <Text text="{modelHome>MissioneDescr}"/>
+                            <Text text="{modelHome>Programma}"/>
+                            <Text text="{modelHome>ProgrammaDescr}"/>
+                            <Text text="{modelHome>Azione}"/>
+                            <Text text="{modelHome>AzioneDescr}"/>
                         </cells>
                         <!-- <customData>
                             <c:CustomData key="{homeModel>VALORE}" value="{homeModel>DESCRIZIONE}" writeToDom="false" />
@@ -75,7 +79,7 @@
                     </ColumnListItem>
                 </items>
                 <customData>
-                    <c:CustomData key="AZIONE" value="CODICE_AZIONE" writeToDom="false" />
+                    <c:CustomData key="AZIONE" value="Azione" writeToDom="false" />
                     <c:CustomData key="selezioni" value="azioni" writeToDom="false" />
                 </customData>
             </Table>

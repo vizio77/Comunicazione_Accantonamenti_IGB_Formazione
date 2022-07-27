@@ -132,9 +132,9 @@
                             <tokens>
                                 <Token
                                     editable="true"
-                                    key="{modelHome>CODICE_MISSIONE}"
+                                    key="{modelHome>Missione}"
                                     selected="false"
-                                    text="{modelHome>CODICE_MISSIONE} - {modelHome>DESC_BREVE}"
+                                    text="{modelHome>Missione} - {modelHome>MissioneDescr}"
                                     textDirection="Inherit" />
                             </tokens>
                             <customData>
@@ -148,9 +148,9 @@
                             <tokens>
                                 <Token
                                     editable="true"
-                                    key="{modelHome>CODICE_PROGRAMMA}-{modelHome>CODICE_MISSIONE}-{modelHome>PRCTR}"
+                                    key="{modelHome>Programma}-{modelHome>Missione}-{modelHome>Prctr}"
                                     selected="false"
-                                    text="{modelHome>CODICE_PROGRAMMA} - {modelHome>DESC_BREVE}"
+                                    text="{modelHome>Programma} - {modelHome>ProgrammaDescr}"
                                     textDirection="Inherit" />
                             </tokens>
                             <customData>
@@ -164,9 +164,9 @@
                                 <tokens>
                                     <Token
                                         editable="true"
-                                        key="{modelHome>CODICE_AZIONE}-{modelHome>CODICE_PROGRAMMA}-{modelHome>CODICE_MISSIONE}-{modelHome>CODICE_MISSIONE}-{modelHome>PRCTR}"
+                                        key="{modelHome>Azione}-{modelHome>Programma}-{modelHome>Missione}-{modelHome>Missione}-{modelHome>Prctr}"
                                         selected="false"
-                                        text="{modelHome>CODICE_AZIONE} - {modelHome>DESC_BREVE}"
+                                        text="{modelHome>Azione} - {modelHome>AzioneDescr}"
                                         textDirection="Inherit" />
                                 </tokens>
                                 <customData>

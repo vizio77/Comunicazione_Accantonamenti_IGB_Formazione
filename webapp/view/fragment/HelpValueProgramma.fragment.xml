@@ -16,7 +16,11 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
-                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVAzioni" width="50%" />
+                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVDomSStr" width="50%">
+                                <customData>
+                                    <c:CustomData key="programma" value="ProgrammaDescr"/>
+                                </customData>
+                            </SearchField>
                         </content>
                     </OverflowToolbar>
                 </headerToolbar>
@@ -41,16 +45,16 @@
                 </columns>
                 <items>
                     <ColumnListItem type="Active" selected="{ parts: [
-                                                    {path: 'modelHome>CODICE_MISSIONE'},
-                                                    {path:'modelHome>PRCTR'}, 
-                                                    {path:'modelHome>CODICE_PROGRAMMA'}
+                                                    {path: 'modelHome>Missione'},
+                                                    {path:'modelHome>Prctr'}, 
+                                                    {path:'modelHome>Programma'}
                                                 ], formatter: '.setSelectedProgrammi' 
                                                 }">
                         <cells>
-                            <Text text="{modelHome>CODICE_MISSIONE}"/>
-                            <Text text="{modelHome>DESCR_MISSIONE}"/>
-                            <Text text="{modelHome>CODICE_PROGRAMMA}"/>
-                            <Text text="{modelHome>DESC_BREVE}"/>
+                            <Text text="{modelHome>Missione}"/>
+                            <Text text="{modelHome>MissioneDescr}"/>
+                            <Text text="{modelHome>Programma}"/>
+                            <Text text="{modelHome>ProgrammaDescr}"/>
                         </cells>
                         <!-- <customData>
                             <c:CustomData key="{homeModel>VALORE}" value="{homeModel>DESCRIZIONE}" writeToDom="false" />
@@ -58,7 +62,7 @@
                     </ColumnListItem>
                 </items>
                 <customData>
-                    <c:CustomData key="PROGRAMMA" value="CODICE_PROGRAMMA" writeToDom="false" />
+                    <c:CustomData key="PROGRAMMA" value="Programma" writeToDom="false" />
                     <c:CustomData key="selezioni" value="programmi"/>
                 </customData>
             </Table>
