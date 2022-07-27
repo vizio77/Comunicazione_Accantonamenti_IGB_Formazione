@@ -62,15 +62,14 @@ sap.ui.define([
                                 modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", oData.results)
                             }
                         })
-                        // oModel.read("/Gest_PosFin_SH_AmministrazioniSet",{
-                        //     filters:[new Filter("Fikrs", FilterOperator.EQ, "S001"),
-                        //              new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio")),
-                        //              new Filter("Fase", FilterOperator.EQ, "DLB")],
-                        //     success:  (oData) => {
-                        //         //oData.results.unshift({Prctr: null, DescrBreve: ""})
-                        //         modelHome.setProperty("/formSottostrumento/dominio_sstrSet", oData.results)
-                        //     }
-                        // })
+                        oModel.read("/Gest_PosFin_SH_AmministrazioniSet",{
+                            filters:[new Filter("Fikrs", FilterOperator.EQ, "S001"),
+                                     new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio")),
+                                     new Filter("Fase", FilterOperator.EQ, "DLB")],
+                            success:  (oData) => {
+                                modelHome.setProperty("/formSottostrumento/dominio_sstrSet", oData.results)
+                            }
+                        })
                         oModel.read("/Gest_SH1Set",{
                             urlParameters: {
                                 $expand: 'ToSHEsposizione,ToSHTipologia,ToSHVisibilita'
@@ -100,7 +99,9 @@ sap.ui.define([
                 }
             },
             onClose: function (oEvent) {
-                this.__resetFiltri()
+                let customDataTableSStr= oEvent.getSource().getCustomData().find(item => item.getKey() === "TableSStr")
+                if(customDataTableSStr === undefined)
+                    this.__resetFiltri()
                 let sDialog = oEvent.getSource().getCustomData().find(item => item.getKey() === "HVSottostrumento").getValue()
                 this[sDialog].close()
                 this[sDialog].destroy()
@@ -681,7 +682,8 @@ sap.ui.define([
                 modelHome.updateBindings(true)
             },
             __deleteTokenChildrenDomSStr: function (aSplitPathDeleted) {
-                let modelHome = this.getView().getModel("modelHome") 
+                let modelHome = this.getView().getModel("modelHome")
+                const modelHana = this.getOwnerComponent().getModel("sapHanaS2");
                 //determino i figli da eliminare
                 let aEconomica3New = []
                 let aEconomica3 = []
@@ -690,6 +692,7 @@ sap.ui.define([
                 let aCategoriaNew = []
                 let aCategoria = []
                 let oFatherDeleted = {}
+                let aFilters = []
                 switch (aSplitPathDeleted[2]) {
                     case "economica2": //economica 2 ha figlio economica3
                         //estrazione padre in eliminazione
@@ -697,10 +700,18 @@ sap.ui.define([
                          aEconomica3 = modelHome.getProperty("/formSottostrumento/economica3")
                        if(oFatherDeleted !== undefined){
                             for(let i = 0; i < aEconomica3.length; i++){
-                                if(aEconomica3[i].Ce2 !== oFatherDeleted.Ce2)
+                                if(!(aEconomica3[i].Ce2 === oFatherDeleted.Ce2 && aEconomica3[i].Categoria === oFatherDeleted.Categoria &&
+                                    aEconomica3[i].Titolo === oFatherDeleted.Titolo) )
                                     aEconomica3New.push(aEconomica3[i])
                             }
                             modelHome.setProperty("/formSottostrumento/economica3", aEconomica3New)
+
+                            let aEconomica2 =  modelHome.getProperty("/formSottostrumento/economica2")
+                            aEconomica2.map(ce2 => {
+                                aFilters.push(new Filter("Categoria", FilterOperator.EQ, ce2.Categoria))
+                                aFilters.push(new Filter("Titolo", FilterOperator.EQ, ce2.Titolo))
+                                aFilters.push(new Filter("Ce2", FilterOperator.EQ, ce2.Ce2))
+                            })
                         }
                         break;
                     case "categoria": //categoria  figlio economica2 e economica3
@@ -710,7 +721,7 @@ sap.ui.define([
                          aEconomica2 = modelHome.getProperty("/formSottostrumento/economica2")
                        if(oFatherDeleted !== undefined){
                             for(let i = 0; i < aEconomica3.length; i++){
-                                if(aEconomica3[i].Categoria !== oFatherDeleted.Categoria)
+                                if(!(aEconomica3[i].Categoria === oFatherDeleted.Categoria && aEconomica3[i].Ce2 === oFatherDeleted.Ce2))
                                     aEconomica3New.push(aEconomica3[i])
                             }
                             modelHome.setProperty("/formSottostrumento/economica3", aEconomica3New)
@@ -720,6 +731,12 @@ sap.ui.define([
                                     aEconomica2New.push(aEconomica2[i])
                             }
                             modelHome.setProperty("/formSottostrumento/economica2", aEconomica2New)
+
+                            let aCategoria=  modelHome.getProperty("/formSottostrumento/categoria")
+                            aCategoria.map(cat => {
+                                aFilters.push(new Filter("Titolo", FilterOperator.EQ, cat.Titolo))
+                                aFilters.push(new Filter("Categoria", FilterOperator.EQ, cat.Categoria))
+                            })
                         }
                         break;
                     case "titoli": //categoria  figlio economica2 e economica3
@@ -730,13 +747,14 @@ sap.ui.define([
                          aCategoria = modelHome.getProperty("/formSottostrumento/categoria")
                        if(oFatherDeleted !== undefined){
                             for(let i = 0; i < aEconomica3.length; i++){
-                                if(aEconomica3[i].Titolo !== oFatherDeleted.Titolo)
+                                if(!(aEconomica3[i].Categoria === oFatherDeleted.Categoria && aEconomica3[i].Ce2 === oFatherDeleted.Ce2 &&
+                                    aEconomica3[i].Titolo === oFatherDeleted.Titolo))
                                     aEconomica3New.push(aEconomica3[i])
                             }
                             modelHome.setProperty("/formSottostrumento/economica3", aEconomica3New)
 
                             for(let i = 0; i < aEconomica2.length; i++){
-                                if(aEconomica2[i].Titolo !== oFatherDeleted.Titolo)
+                                if(!(aEconomica2[i].Titolo === oFatherDeleted.Titolo && aEconomica2[i].Categoria === oFatherDeleted.Categoria))
                                     aEconomica2New.push(aEconomica2[i])
                             }
                             modelHome.setProperty("/formSottostrumento/economica2", aEconomica2New)
@@ -746,11 +764,29 @@ sap.ui.define([
                                     aCategoriaNew.push(aCategoria[i])
                             }
                             modelHome.setProperty("/formSottostrumento/categoria", aCategoriaNew)
+
+                            let aTitoli=  modelHome.getProperty("/formSottostrumento/titoli")
+                            aTitoli.map(tit => {
+                                aFilters.push(new Filter("Titolo", FilterOperator.EQ, tit.Titolo))
+                            })
                         }
                         break;
                     default:
                         break;
                 }
+                //refres dati lista valori dei value Help
+                modelHana.read("/Gest_SH1_TitoloSet", {
+                    filters: aFilters,
+                    success: (oData, res) => {
+                        debugger
+                        //this.__setPropertyFiltriTitoloDomSStr(oData)
+                        this.__setPropertyHVChildren(aSplitPathDeleted[2], oData)
+                    },
+                    error: (err) => {
+                        debugger
+                    }
+                 })
+
             },
             __getAllIndexes(arr, val, property) {
                 var indexes = [], i;
@@ -834,10 +870,17 @@ sap.ui.define([
                 let aFilters = [new Filter("Fase", FilterOperator.EQ, "DLB"),
                                 new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio"))]
                 switch (sPath) {
+                    case "titoli": //la selezione di titoli ha effetto su Categoria/CE2/CE3
+                        let aTitoli=  modelHome.getProperty("/formSottostrumento/" + sPath)
+                        aTitoli.map(tit => {
+                            aFilters.push(new Filter("Titolo", FilterOperator.EQ, tit.Titolo))
+                        })
+                        break;
                     case "categoria": //la selezione di azioni ha effetto su Amministrazione/Missione/Programma
                         let aCategoria=  modelHome.getProperty("/formSottostrumento/" + sPath)
                         aCategoria.map(cat => {
                             aFilters.push(new Filter("Titolo", FilterOperator.EQ, cat.Titolo))
+                            aFilters.push(new Filter("Categoria", FilterOperator.EQ, cat.Categoria))
                         })
                         break;
                     case "economica2": //la selezione di azioni ha effetto su Amministrazione/Missione/Programma
@@ -845,6 +888,7 @@ sap.ui.define([
                         aEconomica2.map(ce2 => {
                             aFilters.push(new Filter("Categoria", FilterOperator.EQ, ce2.Categoria))
                             aFilters.push(new Filter("Titolo", FilterOperator.EQ, ce2.Titolo))
+                            aFilters.push(new Filter("Ce2", FilterOperator.EQ, ce2.Ce2))
                         })
                         break;
                     case "economica3": //la selezione di azioni ha effetto su Amministrazione/Missione/Programma
@@ -853,6 +897,7 @@ sap.ui.define([
                             aFilters.push(new Filter("Ce2", FilterOperator.EQ, ce3.Ce2))
                             aFilters.push(new Filter("Categoria", FilterOperator.EQ, ce3.Categoria))
                             aFilters.push(new Filter("Titolo", FilterOperator.EQ, ce3.Titolo))
+                            aFilters.push(new Filter("Ce3", FilterOperator.EQ, ce3.Ce3))
                         })
                         break;
                     default:
@@ -862,7 +907,8 @@ sap.ui.define([
                     filters: aFilters,
                     success: (oData, res) => {
                         debugger
-                        // this.__setPropertyFiltriTitoloDomSStr(oData)
+                        //this.__setPropertyFiltriTitoloDomSStr(oData)
+                        this.__setPropertyHVChildren(sPath, oData)
                         let modelHome = this.getView().getModel("modelHome")
                         let aCategoriaAutoSelected = []
                         let aTitoliAutoSelected = []
@@ -902,6 +948,29 @@ sap.ui.define([
                     }
                  })
             },
+            __setPropertyHVChildren: function (sPath, oData) {
+                //Scelto un genitore, aggiorno lista dei
+                let modelHome = this.getView().getModel("modelHome")
+
+                // let resultTitoli = oData.results.filter((s => a => !(s.has(a.Titolo)) && (s.add(a.Titolo)))(new Set))
+                //                     .filter(tit => tit.Titolo !== "");
+                // modelHome.setProperty("/formSottostrumento/titolo_set", resultTitoli)
+                if(sPath === "titoli"){
+                    let resultCategoria = this.__removeDuplicate(oData.results, "categoria")
+                                                .filter(cat => cat.Titolo !== "");
+                    modelHome.setProperty("/formSottostrumento/categoria_set", resultCategoria)
+                }
+                if(sPath === "titoli" || sPath === "categoria" ) {
+                    let resultCE2= this.__removeDuplicate(oData.results, "ce2")
+                                                .filter(ce2 => ce2.Ce2 !== "");
+                    modelHome.setProperty("/formSottostrumento/economica2_set", resultCE2)
+                }
+                if(sPath === "titoli" || sPath === "categoria" || sPath === "economica2") {
+                    let resultCE3= this.__removeDuplicate(oData.results, "ce3")
+                                                .filter(ce3 => ce3.Ce3 !== "");
+                    modelHome.setProperty("/formSottostrumento/economica3_set", resultCE3)
+                }
+            },
             __removeDuplicate(arr, property){
                 let results = []
                 switch (property) {
@@ -932,9 +1001,9 @@ sap.ui.define([
             },
             __setPropertyFiltriTitoloDomSStr: function (oData) {
                 let modelHome = this.getView().getModel("modelHome")
-                let resultAmm = oData.results.filter((s => a => !(s.has(a.Prctr)) && (s.add(a.Prctr)))(new Set))
-                                        .filter(amm => amm.Prctr !== "");
-                modelHome.setProperty("/formSottostrumento/dominio_sstrSet", resultAmm)
+                // let resultAmm = oData.results.filter((s => a => !(s.has(a.Prctr)) && (s.add(a.Prctr)))(new Set))
+                //                         .filter(amm => amm.Prctr !== "");
+                // modelHome.setProperty("/formSottostrumento/dominio_sstrSet", resultAmm)
 
                 let resultTitoli = oData.results.filter((s => a => !(s.has(a.Titolo)) && (s.add(a.Titolo)))(new Set))
                                     .filter(tit => tit.Titolo !== "");

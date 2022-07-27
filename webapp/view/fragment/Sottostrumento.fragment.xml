@@ -50,6 +50,7 @@
 			<Button press="onClose"  type="Emphasized" text="{i18n>close}">
 				<customData>
 					<core:CustomData key="HVSottostrumento" value="_oDialog"/>
+					<core:CustomData key="TableSStr" value="chiusura"/>
 				</customData>
 			</Button>
 		</beginButton>

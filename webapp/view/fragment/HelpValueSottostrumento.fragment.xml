@@ -54,8 +54,8 @@
                                     editable="true"
                                     key="{modelHome>Prctr}"
                                     selected="false"
-                                    text="{= ${modelHome>Prctr} !== null ? ${modelHome>Prctr} + ' - ' + ${modelHome>PrctrDescr} : '' }"
-                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                                    text="{= ${modelHome>Prctr} !== null ? ${modelHome>Prctr} + ' - ' + ${modelHome>DescrBreve} : '' }"
+                                    textDirection="Inherit" />
                             </tokens>
                             <customData>
                                 <c:CustomData key="popup" value="HelpValueAmm"/>
@@ -71,7 +71,7 @@
                                     key="{modelHome>Titolo}"
                                     selected="false"
                                     text="{modelHome>Titolo} - {modelHome>TitoloDescr}"
-                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                                    textDirection="Inherit"  />
                             </tokens>
                             <customData>
                                 <c:CustomData key="popup" value="HelpValueTitolo"/>
@@ -87,7 +87,7 @@
                                     key="{modelHome>Categoria}-{modelHome>Titolo}"
                                     selected="false"
                                     text="{modelHome>Categoria} - {modelHome>CategoriaDescr}"
-                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                                    textDirection="Inherit"  />
                             </tokens>
                             <customData>
                                 <c:CustomData key="popup" value="HelpValueCategoria"/>
@@ -103,7 +103,7 @@
                                     key="{modelHome>Ce2}-{modelHome>Titolo}-{modelHome>Categoria}"
                                     selected="false"
                                     text="{modelHome>Ce2} - {modelHome>Ce2Descr}"
-                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                                    textDirection="Inherit" />
                             </tokens>
                             <customData>
                                 <c:CustomData key="popup" value="HelpValueEconomica2"/>
@@ -119,7 +119,7 @@
                                     key="{modelHome>Ce3}-{modelHome>Titolo}-{modelHome>Categoria}-{modelHome>Ce2}"
                                     selected="false"
                                     text="{modelHome>Ce3} - {modelHome>Ce3Descr}"
-                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                                    textDirection="Inherit" />
                             </tokens>
                             <customData>
                                 <c:CustomData key="popup" value="HelpValueEconomica3"/>
@@ -135,7 +135,7 @@
                                     key="{modelHome>CODICE_MISSIONE}"
                                     selected="false"
                                     text="{modelHome>CODICE_MISSIONE} - {modelHome>DESC_BREVE}"
-                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                                    textDirection="Inherit" />
                             </tokens>
                             <customData>
                                 <c:CustomData key="popup" value="HelpValueMissione"/>
@@ -151,7 +151,7 @@
                                     key="{modelHome>CODICE_PROGRAMMA}-{modelHome>CODICE_MISSIONE}-{modelHome>PRCTR}"
                                     selected="false"
                                     text="{modelHome>CODICE_PROGRAMMA} - {modelHome>DESC_BREVE}"
-                                    textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                                    textDirection="Inherit" />
                             </tokens>
                             <customData>
                                 <c:CustomData key="popup" value="HelpValueProgramma"/>
@@ -167,7 +167,7 @@
                                         key="{modelHome>CODICE_AZIONE}-{modelHome>CODICE_PROGRAMMA}-{modelHome>CODICE_MISSIONE}-{modelHome>CODICE_MISSIONE}-{modelHome>PRCTR}"
                                         selected="false"
                                         text="{modelHome>CODICE_AZIONE} - {modelHome>DESC_BREVE}"
-                                        textDirection="Inherit" delete=".onDeleteTokenDomSStr" />
+                                        textDirection="Inherit" />
                                 </tokens>
                                 <customData>
                                     <c:CustomData key="popup" value="HelpValueAzione"/>

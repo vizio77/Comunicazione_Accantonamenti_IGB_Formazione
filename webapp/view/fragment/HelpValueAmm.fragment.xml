@@ -36,7 +36,7 @@
         </infoToolbar>
 		<StandardListItem
 			title="{modelHome>Prctr}"
-			description="{modelHome>PrctrDescr}"
+			description="{modelHome>DescrBreve}"
 			iconDensityAware="false"
 			iconInset="false" selected="{ parts: [
                     {path:'modelHome>Prctr'}
