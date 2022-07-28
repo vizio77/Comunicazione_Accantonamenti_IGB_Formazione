@@ -58,16 +58,23 @@ sap.ui.define([
 			// })
 		},
 		__getSottoStrumento(oKeySStr){
-			this.getView().setBusy(true)
+			//this.getView().setBusy(true)
 			const oModel = this.getView().getModel("sapHanaS2");
-			let sUrl = `/Gest_fasi_sstrSet(Fikrs='${oKeySStr.Fikrs}',CodiceStrumento='${oKeySStr.CodiceStrumento}'`+
-						`,CodiceStrumentoOri='${oKeySStr.CodiceStrumentoOri}',CodiceSottostrumento='${oKeySStr.CodiceSottostrumento}',Datbis=datetime'${oKeySStr.Datbis}')`
-			oModel.read(sUrl,{
+			// let sUrl = `/Gest_fasi_sstrSet(Fikrs='${oKeySStr.Fikrs}',CodiceStrumento='${oKeySStr.CodiceStrumento}'`+
+			// 			`,CodiceStrumentoOri='${oKeySStr.CodiceStrumentoOri}',CodiceSottostrumento='${oKeySStr.CodiceSottostrumento}',Datbis=datetime'${oKeySStr.Datbis}')`
+			oModel.read("/Gest_fasi_sstrSet",{
+				filters: [
+					new Filter("Fikrs", FilterOperator.EQ, oKeySStr.Fikrs),
+					new Filter("CodiceStrumento", FilterOperator.EQ, oKeySStr.CodiceStrumento),
+					new Filter("CodiceStrumentoOri", FilterOperator.EQ, oKeySStr.CodiceStrumentoOri),
+					new Filter("CodiceSottostrumento", FilterOperator.EQ, oKeySStr.CodiceSottostrumento)
+					//new Filter("Datbis", FilterOperator.EQ, new Date(oKeySStr.Datbis))
+				],
 				success: (oData, res) => {
 					this.getView().setBusy(false)
 					let modelPosFin = this.getView().getModel("modelPosFin")
-					modelPosFin.setProperty("/Sottostrumento", `${oData.DescrTipoSottostrumento} - ${oData.NumeroSottostrumento}`)
-					modelPosFin.setProperty("/infoSottoStrumento", oData)
+					modelPosFin.setProperty("/Sottostrumento", `${oData.results[0].DescrTipoSottostrumento} - ${oData.results[0].NumeroSottostrumento}`)
+					modelPosFin.setProperty("/infoSottoStrumento", oData.results[0])
 				},
 				error: function (res) {
 					this.getView().setBusy(false)
@@ -336,18 +343,18 @@ sap.ui.define([
 			//homeModel.setProperty("/DetailInitial", false)
 
 			//controlla che il sotto strumento sia stato selezionato
-			if(!modelPosFin.getProperty("/Sottostrumento")) {
-				return MessageBox.warning("Selezionare  un Sottostrumento", 
-					{ 	
-						title: "Attenzione",
-						actions: sap.m.MessageBox.Action.OK,                
-						emphasizedAction: sap.m.MessageBox.Action.OK,       
-						onClose: () => {
-							this.onHelpValueSottoStrumento()
-						}
-					}
-				)
-			}
+			// if(!modelPosFin.getProperty("/Sottostrumento")) {
+			// 	return MessageBox.warning("Selezionare  un Sottostrumento", 
+			// 		{ 	
+			// 			title: "Attenzione",
+			// 			actions: sap.m.MessageBox.Action.OK,                
+			// 			emphasizedAction: sap.m.MessageBox.Action.OK,       
+			// 			onClose: () => {
+			// 				this.onHelpValueSottoStrumento()
+			// 			}
+			// 		}
+			// 	)
+			// }
 			//fine controllo
 			modelPosFin.setProperty("/idCompetenzaTab", false)
 			modelPosFin.setProperty("/idCassTab", false)
