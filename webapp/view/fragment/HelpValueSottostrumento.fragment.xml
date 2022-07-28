@@ -35,6 +35,21 @@
                         path:'modelHome>/formSottostrumento/visibilitaSet/'}" forceSelection="false" change=".onChangeSelect($event)">
                     <c:Item key="{modelHome>Reale}" text="{modelHome>RealeDescr}" />
                 </Select>
+                <Label text="{i18n>authgiust}" labelFor="id_auth_giust"/>
+                    <MultiInput id="id_auth_giust" width="70%">
+                        <!-- <tokens>
+                            <Token
+                                editable="true"
+                                key=""
+                                selected="false"
+                                text=""
+                                textDirection="Inherit" />
+                        </tokens> -->
+                        <!-- <customData>
+                            <c:CustomData key="popup" value="HelpValueAmm"/>
+                            <c:CustomData key="deleteToken" value="dominio_sstr"/>
+                        </customData> -->
+                    </MultiInput>
                 <Toolbar visible="false"/>
                 <Panel expandable="true" width="100%" class="marginHeaderSStr">
                     <headerToolbar>
@@ -191,7 +206,7 @@
                         </RadioButtonGroup> -->
                         <FlexBox id="id_dom_tipo_var" justifyContent="SpaceAround" width="60%">
                             <CheckBox text="Solo variazioni struttura" enabled="{= !!${modelHome>/formSottostrumento/esposizione_contabile} &amp;&amp; ${modelHome>/formSottostrumento/esposizione_contabile}.split('-')[0] === '0'}"/>
-                            <CheckBox text="Solo variazioni contabili"/>
+                            <CheckBox text="Solo variazioni contabili" selected="{= ${modelHome>/formSottostrumento/tipologia} === '53'}"/>
                         </FlexBox>
                     </f:content>
                 </f:SimpleForm>
