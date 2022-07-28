@@ -20,7 +20,7 @@
         <List
         mode="MultiSelect"
 		items="{
-			path: 'modelHome>/formSottostrumento/missione_set'
+			path: 'modelHome>/formSottostrumento/missione_set', sorter: {path:'Missione', comparator: '.sorterHVDomSStr'}
 		}" >
         <headerToolbar>
             <OverflowToolbar>

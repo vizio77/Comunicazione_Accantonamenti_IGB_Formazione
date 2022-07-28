@@ -20,7 +20,7 @@
         <List
         mode="MultiSelect"
 		items="{
-			path: 'modelHome>/formSottostrumento/dominio_sstrSet'
+			path: 'modelHome>/formSottostrumento/dominio_sstrSet', sorter: [{path: 'Prctr', comparator: '.sorterAmmByNumericCode'}]
 		}" >
         <headerToolbar>
             <OverflowToolbar>

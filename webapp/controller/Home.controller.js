@@ -689,6 +689,10 @@ sap.ui.define([
                 let aEconomica2 = []
                 let aCategoriaNew = []
                 let aCategoria = []
+                let aProgramma = []
+                let aProgrammaNew = []
+                let aAzioniNew = []
+                let aAzioni = []
                 let oFatherDeleted = {}
                 let aFilters = []
                 switch (aSplitPathDeleted[2]) {
@@ -769,21 +773,72 @@ sap.ui.define([
                             })
                         }
                         break;
+                    case "missioni":
+                        oFatherDeleted = modelHome.getProperty(`/formSottostrumento/${aSplitPathDeleted[2]}/${aSplitPathDeleted[3]}`)
+                        aProgramma = modelHome.getProperty("/formSottostrumento/programmi")
+                        aAzioni = modelHome.getProperty("/formSottostrumento/azioni")
+
+                        for(let i = 0; i < aProgramma.length; i++){
+                            if(!(aProgramma[i].Missione === oFatherDeleted.Missione && aProgramma[i].Programma === oFatherDeleted.Programma ))
+                                aProgrammaNew.push(aProgramma[i])
+                        }
+                        modelHome.setProperty("/formSottostrumento/programmi", aProgrammaNew)
+
+                        for(let i = 0; i < aAzioni.length; i++){
+                            if(!(aAzioni[i].Missione === oFatherDeleted.Missione && aAzioni[i].Programma === oFatherDeleted.Programma 
+                                && aAzioni[i].Azione === oFatherDeleted.Azione))
+                                aAzioniNew.push(aAzioni[i])
+                        }
+                        modelHome.setProperty("/formSottostrumento/azioni", aAzioniNew)
+
+                        let aMissioni = modelHome.getProperty("/formSottostrumento/missioni").filter(mis => mis.Missione !== oFatherDeleted.Missione)
+                        aMissioni.map(ms => {
+                            aFilters.push(new Filter("Missione", FilterOperator.EQ, ms.Missione))
+                        })
+                        break;
+                    case "programmi":
+                        oFatherDeleted = modelHome.getProperty(`/formSottostrumento/${aSplitPathDeleted[2]}/${aSplitPathDeleted[3]}`)
+                        aAzioni = modelHome.getProperty("/formSottostrumento/azioni")
+                        for(let i = 0; i < aAzioni.length; i++){
+                            if(!(aAzioni[i].Missione === oFatherDeleted.Missione && aAzioni[i].Programma === oFatherDeleted.Programma 
+                                && aAzioni[i].Azione === oFatherDeleted.Azione))
+                                aAzioniNew.push(aAzioni[i])
+                        }
+                        modelHome.setProperty("/formSottostrumento/azioni", aAzioniNew)
+
+                        aProgramma= modelHome.getProperty("/formSottostrumento/programmi").filter(pr => pr.Programma !== oFatherDeleted.Programma)
+                        aProgramma.map(pr => {
+                            aFilters.push(new Filter("Programma", FilterOperator.EQ, pr.Programma))
+                        })
+                        break;
                     default:
                         break;
                 }
                 //refres dati lista valori dei value Help
-                modelHana.read("/Gest_SH1_TitoloSet", {
-                    filters: aFilters,
-                    success: (oData, res) => {
-                        debugger
-                        //this.__setPropertyFiltriTitoloDomSStr(oData)
-                        this.__setPropertyHVChildren(aSplitPathDeleted[2], oData)
-                    },
-                    error: (err) => {
-                        debugger
-                    }
-                 })
+                if(aSplitPathDeleted[2] === "titoli" || aSplitPathDeleted[2] ==="categoria" || aSplitPathDeleted[2] ==="economica2")
+                    modelHana.read("/Gest_SH1_TitoloSet", {
+                        filters: aFilters,
+                        success: (oData, res) => {
+                            debugger
+                            //this.__setPropertyFiltriTitoloDomSStr(oData)
+                            this.__setPropertyHVChildren(aSplitPathDeleted[2], oData)
+                        },
+                        error: (err) => {
+                            debugger
+                        }
+                    })
+                if(aSplitPathDeleted[2] === "missioni" || aSplitPathDeleted[2] === "programmi" || aSplitPathDeleted[2] === "azioni")
+                    modelHana.read("/Gest_SH1_MissioneSet", {
+                        filters: aFilters,
+                        success: (oData, res) => {
+                            debugger
+                            //this.__setPropertyFiltriTitoloDomSStr(oData)
+                            this.__setPropertyHVChildren(aSplitPathDeleted[2], oData)
+                        },
+                        error: (err) => {
+                            debugger
+                        }
+                    })
 
             },
             __getAllIndexes(arr, val, property) {
@@ -1037,6 +1092,11 @@ sap.ui.define([
                                                 .filter(pr => pr.Azione !== "");
                     modelHome.setProperty("/formSottostrumento/azione_set", resultAzioni)
                 }
+                if(sPath === "programmi"){
+                    let resultAzioni = this.__removeDuplicate(oData.results, "azioni")
+                    .filter(pr => pr.Azione !== "");
+                    modelHome.setProperty("/formSottostrumento/azione_set", resultAzioni)
+                }
             },
             __removeDuplicate(arr, property){
                 let results = []
@@ -1125,6 +1185,14 @@ sap.ui.define([
                 let resultAzione= oData.results.filter((s => a => !(s.has(a.Azione)) && (s.add(a.Azione)))(new Set))
                                     .filter(tit => tit.Azione !== "");
                 modelHome.setProperty("/formSottostrumento/azione_set", resultAzione)
+            },
+            sorterHVDomSStr: function (a, b) {
+                return Number(a) - Number(b)
+            },
+            sorterAmmByNumericCode: function (a,b) {
+                const subStrAmm1 = Number(a.substring(1, a.length))
+                const subStrAmm2 = Number(b.substring(1, a.length))
+                return subStrAmm1 - subStrAmm2;
             }
         });
     });

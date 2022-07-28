@@ -2,13 +2,16 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
 >
-<Dialog title="Cerca" contentHeight="90%">
+<Dialog title="Cerca Azione" contentHeight="90%">
 		<content>
             <Table
                 growing="true"
                 mode="MultiSelect"
                 growingScrollToLoad="true"
-                items="{path: 'modelHome>/formSottostrumento/azione_set/', length: '1000'}"
+                items="{path: 'modelHome>/formSottostrumento/azione_set/', length: '1000', sorter: [{path: 'Prctr', comparator: '.sorterAmmByNumericCode'},
+                                                                                                    {path: 'Missione', comparator: '.sorterHVDomSStr'},
+                                                                                                    {path: 'Programma', comparator: '.sorterHVDomSStr'},
+                                                                                                    {path: 'Azione', comparator: '.sorterHVDomSStr'}]}"
                 sticky="InfoToolbar,HeaderToolbar,ColumnHeaders"
                 updateStarted="onUpdateStartedHVDomSStr"
                 updateFinished="onUpdateFinishedHVDomSStr"

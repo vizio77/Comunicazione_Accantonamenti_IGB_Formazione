@@ -9,8 +9,8 @@
                 mode="MultiSelect"
                 growingScrollToLoad="true"
                 items="{path: 'modelHome>/formSottostrumento/categoria_set/', length: '1000', sorter: [
-                    {path: 'Categoria', descending: 'false'},
-                    {path: 'Titolo', descending: 'false'}
+                    {path: 'Categoria', comparator: '.sorterHVDomSStr'},
+                    {path: 'Titolo', comparator: '.sorterHVDomSStr'}
                   ]}"
                 sticky="InfoToolbar,HeaderToolbar,ColumnHeaders"
                 updateStarted="onUpdateStartedHVDomSStr"
