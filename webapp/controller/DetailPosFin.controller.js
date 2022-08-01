@@ -14,8 +14,9 @@ sap.ui.define([
 		 * @override
 		 */
 		onInit: async function() {
-			let modelHome = this.getOwnerComponent().getModel("modelHome")
-			modelHome.setProperty("/CompetenzaAuth", {})
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			modelPosFin.setProperty("/CompetenzaAuth", {Auth : null})
+			modelPosFin.setProperty("/formCodingBlock", {checkedPercentAps: false, nuovaAuth: false})
 		},
 		onSottostrumento: function () {
 			var oModel = this.getOwnerComponent().getModel("sapHanaS2");
@@ -569,9 +570,13 @@ sap.ui.define([
 			}
 		},
 		handleConfirmAuth: function (oEvent) {
-			let modelHome = this.getOwnerComponent().getModel("modelHome")
-			let selectedItem = modelHome.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath());
-			modelHome.setProperty("/CompetenzaAuth/Auth", selectedItem.desc)
+			let modelHome = this.getView().getModel("modelHome")
+			let modelPosFin = this.getView().getModel("modelPosFin")
+			let selectedItem = modelPosFin.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath());
+			if(modelPosFin.getProperty("/formCodingBlock/nuovaAuth"))
+				modelPosFin.setProperty("/formCodingBlock/Auth", selectedItem.desc)
+			else
+				modelPosFin.setProperty("/CompetenzaAuth/Auth",selectedItem.desc)
 		},
 		handleConfirmAuthCollegata: function (oEvent) {
 			let modelHome = this.getOwnerComponent().getModel("modelHome")
@@ -579,28 +584,46 @@ sap.ui.define([
 			modelHome.setProperty("/CompetenzaAuth/AuthAssociata", selectedItem.desc)
 		},
 		onResetAuth: function() {
-			let modelHome = this.getOwnerComponent().getModel("modelHome")
-			modelHome.setProperty("/CompetenzaAuth/AuthAssociata", null)
-			modelHome.setProperty("/CompetenzaAuth/Auth", null)
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			modelPosFin.setProperty("/CompetenzaAuth/AuthAssociata", null)
+			modelPosFin.setProperty("/CompetenzaAuth/Auth", null)
 		},
 		onNuovaAuth: function() {
-			if(!this.oDialogAssNuovaAuth) {
-				Fragment.load({
-					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HVAssNuovaAuth",
-					controller: this
-				}).then(oDialog => {
-					this.oDialogAssNuovaAuth = oDialog;
-					this.getView().addDependent(oDialog);
-					this.oDialogAssNuovaAuth.open();
-				})
-			} else {
-				this.oDialogAssNuovaAuth.open();
-			}
+			let modelPosFin = this.getView().getModel("modelPosFin")
+			modelPosFin.setProperty("/formCodingBlock/nuovaAuth", true)
+			this.onGestisciCodingBlock()
 		},
 		onChooseNuovaAuth: function(oEvent) {
 			let modelHome = this.getOwnerComponent().getModel("modelHome")
 			let selectedItem = modelHome.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath());
 			modelHome.setProperty("/CompetenzaAuth/Auth", selectedItem.desc)
+		},
+		onGestisciCodingBlock:function () {
+			let modelPosFin = this.getView().getModel("modelPosFin")
+			modelPosFin.setProperty("/formCodingBlock/Auth", modelPosFin.getProperty("/CompetenzaAuth/Auth"))
+			if(!this.FormCodingBlock) {
+				Fragment.load({
+					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.FormCodingBlock",
+					controller: this
+				}).then(oDialog => {
+					this.FormCodingBlock = oDialog;
+					this.getView().addDependent(oDialog);
+					this.FormCodingBlock.open();
+				})
+			} else {
+				this.FormCodingBlock.open();
+			}
+		},
+		resetFiltriCodingBlock: function(){
+			let modelPosFin = this.getView().getModel("modelPosFin")
+			modelPosFin.setProperty("/formCodingBlock/checkedPercentAps", false)
+			modelPosFin.setProperty("/formCodingBlock/APS", null)
+			modelPosFin.setProperty("/formCodingBlock/TcrC", null)
+			modelPosFin.setProperty("/formCodingBlock/TcrF", null)
+			modelPosFin.setProperty("/formCodingBlock/percentQuotaAggredibilita", null)
+			if(modelPosFin.getProperty("/formCodingBlock/nuovaAuth")){
+				modelPosFin.setProperty("/formCodingBlock/Auth", null)
+			}
 		}
 	});
 });

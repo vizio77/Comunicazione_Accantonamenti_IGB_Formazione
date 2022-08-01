@@ -1,0 +1,49 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+>
+<Dialog  title="Gestisci Coding Block" contentWidth="80%" contentHeight="auto" id="FormCodingBlock">
+    <content>
+       <f:SimpleForm id="formInserimentoCodingBlock" editable="true" singleContainerFullSize="false" adjustLabelSpan="false"
+            layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" emptySpanXL="2" emptySpanL="0" emptySpanM="2"
+            emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1">
+            <f:content>
+                <Label text="Posizione Finanziaria"/>
+                <Text text="{modelPosFin>/posFin}" />
+                <Label text="Autorizzazione"/>
+                <Input editable="{= ${modelPosFin>/formCodingBlock/nuovaAuth} === true }"  value="{modelPosFin>/formCodingBlock/Auth}" showValueHelp="true" valueHelpRequest=".onAuth"/>
+                <Label text="FO/FP"/>
+                <RadioButtonGroup >
+                    <buttons>
+                        <RadioButton text="Fondo Progetti ai sensi del D.Lgs 229/2011 articolo 10 comma 2"/>
+                        <RadioButton text="Fondo Opere ai sensi del D.Lgs 229/2011 articolo 10 comma 2"/>
+                    </buttons>
+                </RadioButtonGroup>
+                <Label text="APS"/>
+                <HBox >
+                    <CheckBox selected="{modelPosFin>/formCodingBlock/checkedPercentAps}"/>
+                    <Input value="{modelPosFin>/formCodingBlock/APS}" type="Number" />
+                    <Label text="%" visible="{modelPosFin>/formCodingBlock/checkedPercentAps}" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+                </HBox>
+                <Label text="{i18n>TcrC}"/>
+                <Input value="{modelPosFin>/formCodingBlock/TcrC}" type="Number" width="50%"/>
+                <Label text="{i18n>TcrF}"/>
+                <Input value="{modelPosFin>/formCodingBlock/TcrF}" type="Number" width="50%"/>
+                <Label text="{i18n>percentQuotaAggredibilita}"/>
+                <Input value="{modelPosFin>/formCodingBlock/percentQuotaAggredibilita}" type="Number" width="50%"/>
+            </f:content>
+       </f:SimpleForm>
+    </content>
+    <buttons>
+        <Button press="onClose" type="Emphasized" text="{i18n>close}">
+            <customData>
+            </customData>
+        </Button>
+        <Button press="resetFiltriCodingBlock" type="Emphasized" text="{i18n>Resetta}">
+        </Button>
+        <Button press="onSaveCodingBlock" type="Emphasized" text="{i18n>Cerca}"/>
+    </buttons>
+</Dialog>
+</c:FragmentDefinition>

@@ -523,6 +523,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 									</FlexBox>
 									<OverflowToolbar id="autorizzazioniCompButton" class="sapUiSmallMarginBottom" style="Clear">
 										<ToolbarSpacer/>
+										<Button text="{i18n>gestCondingBlock}" type="Emphasized" enabled="{= !!${modelPosFin>/CompetenzaAuth/Auth} }" press=".onGestisciCodingBlock"/>
 										<Button text="{i18n>associaNuovaAuth}" type="Emphasized" press=".onNuovaAuth"/>
 										<Button text="{i18n>resetta}" type="Emphasized" press="onResetAuth"/>
 										<Button text="{i18n>avvia}" type="Emphasized"/>
