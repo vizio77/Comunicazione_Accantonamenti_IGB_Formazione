@@ -82,7 +82,8 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 																<layout:GridData span="XL3 L3 M4 S4" />
 															</layoutData>
 														</Text>
-														<Switch state="true" visible="{= ${modelPosFin>/onModify} }" >
+														<Label text="Attiva / Disattiva:" visible="{= ${modelPosFin>/onModify} }" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+														<Switch state="true" visible="{= ${modelPosFin>/onModify} }" type="AcceptReject">
 															<customData>
 																<core:CustomData key="switch" value="switch"/>
 															</customData>
@@ -102,7 +103,8 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 																<layout:GridData span="XL2 L2 M4 S4" />
 															</layoutData>
 														</Text>
-														<Switch state="true" visible="{= ${modelPosFin>/onModify} }"/>	
+														<Label text="Attiva / Disattiva:" visible="{= ${modelPosFin>/onModify} }" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+														<Switch state="true" visible="{= ${modelPosFin>/onModify} }" type="AcceptReject"/>	
 													</HBox>	
 												</form:content>
 											</form:SimpleForm>	
@@ -231,7 +233,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													
 													<Toolbar visible="false"/>
 													<Label text="{i18n>TipoFondo}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="{= !${modelPosFin>/onModify} }"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="true"/>
 													<Label text="{i18n>TipoSpesa}"/>
 													<Select width="auto" selectedKey="{anagraficaModel>/tipoSpesa}">
 														<core:Item key="Obbligatoria" text="Obbligatoria"/>
@@ -508,7 +510,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 									<FlexBox justifyContent="SpaceAround" width="40%">
 										<items>
 											<VBox>
-												
 												<Label text="Autorizzazione:" labelFor="idAuthComp"/>
 												<Input value="{modelPosFin>/CompetenzaAuth/Auth}" showValueHelp="true" valueHelpRequest=".onAuth" id="idAuthComp" valueHelpOnly="true" width="130%">
 												</Input>
