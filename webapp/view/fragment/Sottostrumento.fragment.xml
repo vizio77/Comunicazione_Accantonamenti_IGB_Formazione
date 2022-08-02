@@ -5,7 +5,7 @@
 			<l:VerticalLayout width="100%">
 				<l:content>
 					<Table id="idTableSottostrumento2" inset="false" items="{sottostrumentiModel>/}" mode="SingleSelectLeft" selectionChange="onScegliSottostrumento"
-                        sticky="ColumnHeaders,HeaderToolbar,InfoToolbar">
+                        sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" updateFinished=".onUpdateFinishedHVDomSStr">
 						<columns>
                             <Column width="8%">
 								<Text text="{i18n>TipoSottoStr}" class="boldCss"/>

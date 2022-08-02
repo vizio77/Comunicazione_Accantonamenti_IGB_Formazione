@@ -249,7 +249,18 @@ sap.ui.define([
             },
             onSearchSottostrumento: function () {
                 var oModel = this.getOwnerComponent().getModel("sapHanaS2");
-                
+
+                if(!this._oDialog){
+                    this._oDialog = sap.ui.xmlfragment(
+                        "zsap.com.r3.cobi.s4.gestposfin.view.fragment.Sottostrumento",
+                        this);
+                        this._oDialog.setModel("sottostrumentiModel");
+                        this.getView().addDependent(this._oDialog);
+                        this._oDialog.open();
+                } else {
+                    this._oDialog.open();
+                }
+                sap.ui.getCore().byId("idTableSottostrumento2").setBusy(true)
                 let annoSStr = new Date(new Date().setFullYear(new Date().getFullYear() + 1)) 
                 var sottostrumentiModel = new JSONModel();
 
@@ -347,16 +358,7 @@ sap.ui.define([
     
                     }
                 });
-                if(!this._oDialog){
-                    this._oDialog = sap.ui.xmlfragment(
-                        "zsap.com.r3.cobi.s4.gestposfin.view.fragment.Sottostrumento",
-                        this);
-                    this._oDialog.setModel("sottostrumentiModel");
-                    this.getView().addDependent(this._oDialog);
-                    this._oDialog.open();
-                } else {
-                    this._oDialog.open();
-                }
+                
             },
             onPressConfermaSottostrumento: function (oEvent) {
                 let modelSottoStrumenti = this.getView().getModel("sottostrumentiModel")
