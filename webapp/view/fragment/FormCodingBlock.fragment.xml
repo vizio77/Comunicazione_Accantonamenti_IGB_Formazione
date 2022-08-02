@@ -24,15 +24,15 @@
                 <Label text="APS"/>
                 <HBox >
                     <CheckBox selected="{modelPosFin>/formCodingBlock/checkedPercentAps}"/>
-                    <Input value="{modelPosFin>/formCodingBlock/APS}" type="Number" />
+                    <Input value="{modelPosFin>/formCodingBlock/APS}" type="Number" width="50%"/>
                     <Label text="%" visible="{modelPosFin>/formCodingBlock/checkedPercentAps}" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
                 </HBox>
                 <Label text="{i18n>TcrC}"/>
-                <Input value="{modelPosFin>/formCodingBlock/TcrC}" type="Number" width="50%"/>
+                <Input value="{modelPosFin>/formCodingBlock/TcrC}" type="Number" width="10%"/>
                 <Label text="{i18n>TcrF}"/>
-                <Input value="{modelPosFin>/formCodingBlock/TcrF}" type="Number" width="50%"/>
+                <Input value="{modelPosFin>/formCodingBlock/TcrF}" type="Number" width="10%"/>
                 <Label text="{i18n>percentQuotaAggredibilita}"/>
-                <Input value="{modelPosFin>/formCodingBlock/percentQuotaAggredibilita}" type="Number" width="50%"/>
+                <Input value="{modelPosFin>/formCodingBlock/percentQuotaAggredibilita}" type="Number" width="10%"/>
             </f:content>
        </f:SimpleForm>
     </content>
