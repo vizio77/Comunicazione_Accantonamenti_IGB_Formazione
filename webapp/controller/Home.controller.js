@@ -380,13 +380,14 @@ sap.ui.define([
                 let modelHome = this.getView().getModel("modelHome")
                 let oSottostrumento = modelHome.getProperty("/infoSottoStrumento")
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			    oRouter.navTo("HomePosFin",{
-                    Fikrs: oSottostrumento.Fikrs,
-                    CodiceStrumento: oSottostrumento.CodiceStrumento,
-                    CodiceStrumentoOri: oSottostrumento.CodiceStrumentoOri,
-                    CodiceSottostrumento: oSottostrumento.CodiceSottostrumento,
-                    Datbis: oSottostrumento.Datbis.toISOString(),
-                });
+                if(oSottostrumento.TipoEsposizione === "0" || oSottostrumento.TipoEsposizione === "2")
+                    oRouter.navTo("HomePosFin",{
+                        Fikrs: oSottostrumento.Fikrs,
+                        CodiceStrumento: oSottostrumento.CodiceStrumento,
+                        CodiceStrumentoOri: oSottostrumento.CodiceStrumentoOri,
+                        CodiceSottostrumento: oSottostrumento.CodiceSottostrumento,
+                        Datbis: oSottostrumento.Datbis.toISOString(),
+                    });
             },
             onFormatTipoEsposizione:function (sTipoEsposizione) {
                    const modelHome = this.getView().getModel("modelHome")

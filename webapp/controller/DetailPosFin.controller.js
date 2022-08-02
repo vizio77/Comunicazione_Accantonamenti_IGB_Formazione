@@ -624,6 +624,16 @@ sap.ui.define([
 			if(modelPosFin.getProperty("/formCodingBlock/nuovaAuth")){
 				modelPosFin.setProperty("/formCodingBlock/Auth", null)
 			}
+		},
+		checkModifiableValue: function () {
+			let bCheck = true
+			const modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			if(modelPosFin.getProperty("/onModify")){
+				if(modelPosFin.getProperty("/infoSottoStrumento/TipoEsposizione") === '2'){
+					bCheck = false
+				}
+			}
+			return bCheck
 		}
 	});
 });

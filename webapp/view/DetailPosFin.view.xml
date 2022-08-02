@@ -83,7 +83,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 															</layoutData>
 														</Text>
 														<Label text="Attiva / Disattiva:" visible="{= ${modelPosFin>/onModify} }" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
-														<Switch state="true" visible="{= ${modelPosFin>/onModify} }" type="AcceptReject">
+														<Switch state="true" visible="{= ${modelPosFin>/onModify} }" type="AcceptReject" enabled="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }">
 															<customData>
 																<core:CustomData key="switch" value="switch"/>
 															</customData>
@@ -104,7 +104,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 															</layoutData>
 														</Text>
 														<Label text="Attiva / Disattiva:" visible="{= ${modelPosFin>/onModify} }" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
-														<Switch state="true" visible="{= ${modelPosFin>/onModify} }" type="AcceptReject"/>	
+														<Switch state="true" visible="{= ${modelPosFin>/onModify} }" type="AcceptReject" enabled="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>	
 													</HBox>	
 												</form:content>
 											</form:SimpleForm>	
@@ -210,7 +210,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<Toolbar visible="false"/>
 
 													<Label text="{i18n>Mac}" required="true"/>
-													<Input width="auto" value="{anagraficaModel>/mac}" editable="true" showValueHelp="true" valueHelpOnly="true">
+													<Input width="auto" value="{anagraficaModel>/mac}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
@@ -233,17 +233,17 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													
 													<Toolbar visible="false"/>
 													<Label text="{i18n>TipoFondo}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="true"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													<Label text="{i18n>TipoSpesa}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/tipoSpesa}">
+													<Select width="auto" selectedKey="{anagraficaModel>/tipoSpesa}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }">
 														<core:Item key="Obbligatoria" text="Obbligatoria"/>
 													</Select>
 													<Label text="{i18n>TipoNaturaSpesa}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/tipoNaturaSpesa}"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/tipoNaturaSpesa}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													<Label text="{i18n>Memoria}"/>
-													<CheckBox selected="{anagraficaModel>/memoria}"/>
+													<CheckBox selected="{anagraficaModel>/memoria}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													<Label text="{i18n>Capitolone}"/>
-													<CheckBox selected="{anagraficaModel>/capitolone}"/>
+													<CheckBox selected="{anagraficaModel>/capitolone}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 												</form:content>
 											</form:SimpleForm>		
 											<!-- CU/IRAP/NON CU - NOIPA - Posizione Finanziaria IRAP -->
@@ -265,15 +265,15 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												singleContainerFullSize="false" >
 												<form:content>																				
 													<Label text="{i18n>Cu}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/cu}">
+													<Select width="auto" selectedKey="{anagraficaModel>/cu}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }">
 														<core:Item key="noipa" text="NoiPa NON Cu"/>
 													</Select>
 													<Label text="{i18n>Noipa}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/noipa}">
+													<Select width="auto" selectedKey="{anagraficaModel>/noipa}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }">
 														<core:Item key="altro" text="ALTRO"/>
 													</Select>
 													<Label text="{i18n>CapitoloIrap}"/>
-													<Input width="auto" value="{anagraficaModel>/capitoloIrap}" editable="{visibleCheckModel>/enableInputAnagrafica}"/>
+													<Input width="auto" value="{anagraficaModel>/capitoloIrap}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 												</form:content>
 											</form:SimpleForm>		
 											<!-- Denominazione Capitolo -->
@@ -296,7 +296,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<form:content>
 													<core:Title text="{i18n>DenominazioneCapitolo}" /> 	
 													<Label text="{i18n>CodStandard}" required="false" labelFor="test"/>
-													<Input width="auto" showValueHelp="true">
+													<Input width="auto" showValueHelp="true" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }">
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
@@ -307,7 +307,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<TextArea rows="5" value="{modelPosFin>/detailAnagrafica/DESC_CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" />
 													<core:Title text="" />
 													<Label text="{i18n>DenRid}" required="false" labelFor="test"/>
-													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>
+													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 												</form:content>
 											</form:SimpleForm>	
 											<!-- Denominazione PG -->
@@ -330,7 +330,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<form:content>
 													<core:Title text="{i18n>DenominazionePG}" /> 	
 													<Label text="{i18n>CodStandard}" required="false" labelFor="test"/>
-													<Input width="auto" showValueHelp="true">
+													<Input width="auto" showValueHelp="true" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }">
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
@@ -341,7 +341,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<TextArea rows="5" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="{= !${modelPosFin>/onModify} }" />
 													<core:Title text="" />
 													<Label text="{i18n>DenRid}" required="false" labelFor="test"/>
-													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}"/>																			
+													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>																			
 												</form:content>
 											</form:SimpleForm>	
 											<!-- Anagrafica Piano Di Gestione -->
@@ -380,14 +380,14 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												
 													<core:Title text="" />
 													<Label text="{i18n>TipoSpesa}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/tipoSpesa2}"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/tipoSpesa2}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													<Label text="{i18n>AreeDDI}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/aree}"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/aree}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													<core:Title text="" />
 													<Label text="{i18n>ObiettiviMinisteri}"/>
-													<CheckBox selected="{anagraficaModel>/obiettivi}"/>
+													<CheckBox selected="{anagraficaModel>/obiettivi}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													<Label text="{i18n>RuoliSpesaFissa}"/>
-													<CheckBox selected="{anagraficaModel>/ruoliSpesa}"/>
+													<CheckBox selected="{anagraficaModel>/ruoliSpesa}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 												</form:content>
 											</form:SimpleForm>
 										<!-- Elenchi -->
@@ -401,7 +401,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<headerToolbar>
 													<Toolbar >
 														<ToolbarSpacer />
-														<Button type="Emphasized" icon="sap-icon://add" text="{i18n>btnAddRowCapitoloPg}" press="handleAddElenco" enabled="true"/>
+														<Button type="Emphasized" icon="sap-icon://add" text="{i18n>btnAddRowCapitoloPg}" press="handleAddElenco" enabled="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													</Toolbar>
 												</headerToolbar>
 												<columns>
@@ -437,7 +437,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<headerToolbar>
 													<Toolbar >
 														<ToolbarSpacer />
-														<Button type="Emphasized" icon="sap-icon://add" text="{i18n>btnAddRowCofog}" press="handleAddCOFOG" enabled="true"/>
+														<Button type="Emphasized" icon="sap-icon://add" text="{i18n>btnAddRowCofog}" press="handleAddCOFOG" enabled="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													</Toolbar>
 												</headerToolbar>
 												<columns>
@@ -506,7 +506,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 										</Panel>
 									</Panel>
 								</IconTabFilter>
-								<IconTabFilter icon="sap-icon://process" key="attachments" text="{i18n>competenza}" id="idCompetenzaTab" visible="{modelPosFin>/idCompetenzaTab}" >
+								<IconTabFilter icon="sap-icon://process" key="attachments" text="{i18n>competenza}" id="idCompetenzaTab" visible="{= ${modelPosFin>/infoSottoStrumento/TipoEsposizione} !== '2'  &amp;&amp; ${modelPosFin>/onModify} === true }" >
 									<FlexBox justifyContent="SpaceAround" width="40%">
 										<items>
 											<VBox>
@@ -530,8 +530,8 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 									</OverflowToolbar>
 									<html:iframe id ="attachmentframe" height="100%" width="100%" src=""> </html:iframe>
 								</IconTabFilter>
-								<IconTabFilter icon="sap-icon://accounting-document-verification" key="people" text="{i18n>cassa}"  id="idCassTab" visible="{modelPosFin>/idCassTab}"></IconTabFilter>
-								<IconTabFilter icon="sap-icon://commission-check" key="RimOrizzontali" text="{i18n>RimOrizzontali}">
+								<IconTabFilter icon="sap-icon://accounting-document-verification" key="people" text="{i18n>cassa}"  id="idCassTab" visible="{= ${modelPosFin>/infoSottoStrumento/TipoEsposizione} !== '2' &amp;&amp; ${modelPosFin>/onModify} === true }"></IconTabFilter>
+								<IconTabFilter icon="sap-icon://commission-check" key="RimOrizzontali" text="{i18n>RimOrizzontali}" visible="{= ${modelPosFin>/infoSottoStrumento/TipoEsposizione} === '2'  &amp;&amp; ${modelPosFin>/onModify} === true }">
 									<FlexBox justifyContent="Start" width="40%" class="sapUiSmallMarginBegin">
 										<items>
 											<VBox>
