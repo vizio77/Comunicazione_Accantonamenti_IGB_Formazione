@@ -12,8 +12,13 @@
             <f:content>
                 <Label text="Posizione Finanziaria"/>
                 <Text text="{modelPosFin>/posFin}" />
+
                 <Label text="Autorizzazione"/>
                 <Input editable="{= ${modelPosFin>/formCodingBlock/nuovaAuth} === true }"  value="{modelPosFin>/formCodingBlock/Auth}" showValueHelp="true" valueHelpRequest=".onAuth"/>
+
+                <Label text="Classificazione"/>
+                <Text text=""/>
+
                 <Label text="FO/FP"/>
                 <RadioButtonGroup >
                     <buttons>
@@ -21,16 +26,20 @@
                         <RadioButton text="Fondo Opere ai sensi del D.Lgs 229/2011 articolo 10 comma 2"/>
                     </buttons>
                 </RadioButtonGroup>
+
                 <Label text="APS"/>
                 <HBox width="8rem">
                     <CheckBox selected="{modelPosFin>/formCodingBlock/checkedPercentAps}"/>
                     <Input value="{modelPosFin>/formCodingBlock/APS}" type="Number" width="5rem"/>
                     <Label text="{= ${modelPosFin>/formCodingBlock/checkedPercentAps} === true ? '%' : ' '}" visible="true" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
                 </HBox>
+
                 <Label text="{i18n>TcrC}"/>
                 <Input value="{modelPosFin>/formCodingBlock/TcrC}" type="Number" width="10%"/>
+
                 <Label text="{i18n>TcrF}"/>
                 <Input value="{modelPosFin>/formCodingBlock/TcrF}" type="Number" width="10%"/>
+                
                 <Label text="{i18n>percentQuotaAggredibilita}"/>
                 <Input value="{modelPosFin>/formCodingBlock/percentQuotaAggredibilita}" type="Number" width="10%"/>
             </f:content>
