@@ -22,10 +22,10 @@
                     </buttons>
                 </RadioButtonGroup>
                 <Label text="APS"/>
-                <HBox >
+                <HBox width="8rem">
                     <CheckBox selected="{modelPosFin>/formCodingBlock/checkedPercentAps}"/>
-                    <Input value="{modelPosFin>/formCodingBlock/APS}" type="Number" width="50%"/>
-                    <Label text="%" visible="{modelPosFin>/formCodingBlock/checkedPercentAps}" class="sapUiTinyMarginBegin sapUiTinyMarginTop"/>
+                    <Input value="{modelPosFin>/formCodingBlock/APS}" type="Number" width="5rem"/>
+                    <Label text="{= ${modelPosFin>/formCodingBlock/checkedPercentAps} === true ? '%' : ' '}" visible="true" class="sapUiTinyMarginTop sapUiTinyMarginBegin"/>
                 </HBox>
                 <Label text="{i18n>TcrC}"/>
                 <Input value="{modelPosFin>/formCodingBlock/TcrC}" type="Number" width="10%"/>
