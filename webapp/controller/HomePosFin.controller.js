@@ -21,15 +21,17 @@ sap.ui.define([
 			this.getOwnerComponent().getModel("modelPosFin").setProperty("/",itemsMock)
 			this.getOwnerComponent().getModel("modelPosFin").setProperty("/initialDetail",true)
 			this.getOwnerComponent().getModel("modelPosFin").setProperty("/form",{})
-			
+			this.getView().setBusy(true)
 			const router = sap.ui.core.UIComponent.getRouterFor(this)
 			const aSubHashes = router.getHashChanger().getHash().split("/")
 			const oKeySStr = {
 				Fikrs: aSubHashes[1],
-				CodiceStrumento: aSubHashes[2],
-				CodiceStrumentoOri: aSubHashes[3],
-				CodiceSottostrumento: aSubHashes[4],
-				Datbis: encodeURIComponent(new Date(aSubHashes[5]).toISOString()).replace(".000Z", "")
+				Anno: aSubHashes[2],
+				Fase: aSubHashes[3],
+				Reale: aSubHashes[4],
+				CodiceStrumento: aSubHashes[5],
+				CodiceStrumentoOri: aSubHashes[6],
+				CodiceSottostrumento: aSubHashes[7]
 			}
 			this.__getSottoStrumento(oKeySStr)
 			var oRouter = this.getOwnerComponent().getRouter();
@@ -41,21 +43,7 @@ sap.ui.define([
 			const oKeySStr = oEvent.getParameter("arguments")
 			const oModel = this.getView().getModel("sapHanaS2");
 			this.getView().setBusy(true)
-			oKeySStr.Datbis = encodeURIComponent(new Date(oKeySStr.Datbis).toISOString()).replace(".000Z", "")
 			this.__getSottoStrumento(oKeySStr)
-			// let sUrl = `/Gest_fasi_sstrSet(Fikrs='${oKeySStr.Fikrs}',CodiceStrumento='${oKeySStr.CodiceStrumento}'`+
-			// 			`,CodiceStrumentoOri='${oKeySStr.CodiceStrumentoOri}',CodiceSottostrumento='${oKeySStr.CodiceSottostrumento}',Datbis=datetime'${oKeySStr.Datbis}')`
-			// oModel.read(sUrl,{
-			// 	success: (oData, res) => {
-			// 		this.getView().setBusy(false)
-			// 		let modelPosFin = this.getView().getModel("modelPosFin")
-			// 		modelPosFin.setProperty("/Sottostrumento", `${oData.DescrTipoSottostrumento} - ${oData.NumeroSottostrumento}`)
-			// 		modelPosFin.setProperty("/itemSottostrumento", oData)
-			// 	},
-			// 	error: function (res) {
-			// 		this.getView().setBusy(false)
-			// 	}
-			// })
 		},
 		__getSottoStrumento(oKeySStr){
 			//this.getView().setBusy(true)

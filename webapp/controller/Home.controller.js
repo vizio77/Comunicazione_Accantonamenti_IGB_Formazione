@@ -385,10 +385,12 @@ sap.ui.define([
                 if(oSottostrumento.TipoEsposizione === "0" || oSottostrumento.TipoEsposizione === "2")
                     oRouter.navTo("HomePosFin",{
                         Fikrs: oSottostrumento.Fikrs,
+                        Anno: oSottostrumento.Anno,
+                        Fase: oSottostrumento.Fase,
+                        Reale: oSottostrumento.Reale,
                         CodiceStrumento: oSottostrumento.CodiceStrumento,
                         CodiceStrumentoOri: oSottostrumento.CodiceStrumentoOri,
                         CodiceSottostrumento: oSottostrumento.CodiceSottostrumento,
-                        Datbis: oSottostrumento.Datbis.toISOString(),
                     });
             },
             onFormatTipoEsposizione:function (sTipoEsposizione) {

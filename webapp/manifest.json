@@ -115,7 +115,7 @@
         },
         {
           "name": "HomePosFin",
-          "pattern": "HomePosFin/{Fikrs}/{CodiceStrumento}/{CodiceStrumentoOri}/{CodiceSottostrumento}/{Datbis}",
+          "pattern": "HomePosFin/{Fikrs}/{Anno}/{Fase}/{Reale}/{CodiceStrumento}/{CodiceStrumentoOri}/{CodiceSottostrumento}",
           "target": [
             "HomePosFin"
           ]
