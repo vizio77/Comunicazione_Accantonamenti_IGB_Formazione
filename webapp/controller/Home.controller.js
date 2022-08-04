@@ -54,14 +54,14 @@ sap.ui.define([
                         let oModel = this.getOwnerComponent().getModel("sapHanaS2");
                         let modelHome = this.getView().getModel("modelHome")
                         this.initDataDomSStr()
-                        oModel.read("/Gest_PosFin_SH_TiesSet",{
-                            filters:[ new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio")),
-                                      new Filter("Fase", FilterOperator.EQ, "DLB")],
-                            success:  (oData) => {
-                                oData.results.unshift({TipoEsposizione: null, Descr: null, Fase: null, Anno: null})
-                                modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", oData.results)
-                            }
-                        })
+                        // oModel.read("/Gest_PosFin_SH_TiesSet",{
+                        //     filters:[ new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio")),
+                        //               new Filter("Fase", FilterOperator.EQ, "DLB")],
+                        //     success:  (oData) => {
+                        //         oData.results.unshift({TipoEsposizione: null, Descr: null, Fase: null, Anno: null})
+                        //         modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", oData.results)
+                        //     }
+                        // })
                         oModel.read("/Gest_PosFin_SH_AmministrazioniSet",{
                             filters:[new Filter("Fikrs", FilterOperator.EQ, "S001"),
                                      new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio")),
@@ -70,24 +70,37 @@ sap.ui.define([
                                 modelHome.setProperty("/formSottostrumento/dominio_sstrSet", oData.results)
                             }
                         })
-                        oModel.read("/Gest_SH1Set",{
-                            urlParameters: {
-                                $expand: 'ToSHEsposizione,ToSHTipologia,ToSHVisibilita'
-                            },
+                        oModel.read("/TipologiaEsposizioneVisibilitaSet",{
+                            // urlParameters: {
+                            //     $expand: 'ToSHEsposizione,ToSHTipologia,ToSHVisibilita'
+                            // },
                             filters:[new Filter("Anno", FilterOperator.EQ, "2023"),
                                     new Filter("Fase", FilterOperator.EQ, "DLB"),
+                                    new Filter("Fikrs", FilterOperator.EQ, "S001")
                                     // new Filter("TipoSstr", FilterOperator.EQ, "03"),
                                     // new Filter("TipoEsposizione", FilterOperator.EQ, "2"),
                                     // new Filter("Reale", FilterOperator.EQ, "R")
                                 ],
                             success:  (oData) => {
                                 debugger
-                                oData.results[0].ToSHTipologia.results.unshift({ TipoSstr: null, TipoSstrDescr: ""})
-                                modelHome.setProperty("/formSottostrumento/tipologieSet", oData.results[0].ToSHTipologia.results)
-                                oData.results[0].ToSHEsposizione.results.unshift({TipoEsposizione: null, TipoEsposizioneDescr: "", Fase: null, Anno: null})
-                                modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", oData.results[0].ToSHEsposizione.results)
-                                oData.results[0].ToSHVisibilita.results.unshift({Fase: null, Anno: null})
-                                modelHome.setProperty("/formSottostrumento/visibilitaSet", oData.results[0].ToSHVisibilita.results)
+                                //Lista Tipologie
+                                let aTipologia = this.__removeDuplicate(oData.results, "tipologia")
+                                aTipologia.unshift({Esposizione: null, DescrEsposizione: "", Fase: null, Anno: null})
+                                modelHome.setProperty("/formSottostrumento/tipologieSet", aTipologia)
+                                // oData.results[0].ToSHTipologia.results.unshift({ TipoSstr: null, TipoSstrDescr: ""})
+                                // modelHome.setProperty("/formSottostrumento/tipologieSet", oData.results[0].ToSHTipologia.results)
+                                //lista esposizione contabile
+                                let aEsposizioneContabile = this.__removeDuplicate(oData.results, "esposizione")
+                                aEsposizioneContabile.unshift({Esposizione: null, DescrEsposizione: "", Fase: null, Anno: null})
+                                modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", aEsposizioneContabile)
+                                // oData.results[0].ToSHEsposizione.results.unshift({TipoEsposizione: null, TipoEsposizioneDescr: "", Fase: null, Anno: null})
+                                // modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", oData.results[0].ToSHEsposizione.results)
+                                //Lista Visibilità
+                                let aVisibilita = this.__removeDuplicate(oData.results, "visibilita")
+                                aVisibilita.unshift({Reale: null, DescrReale: "", Fase: null, Anno: null})
+                                modelHome.setProperty("/formSottostrumento/visibilitaSet", aVisibilita)
+                                // oData.results[0].ToSHVisibilita.results.unshift({Fase: null, Anno: null})
+                                // modelHome.setProperty("/formSottostrumento/visibilitaSet", oData.results[0].ToSHVisibilita.results)
                             },
                             error: function (res) {
                                 debugger
@@ -1145,6 +1158,24 @@ sap.ui.define([
                                 results.push(arr[i])
                         }
                         break; 
+                    case "esposizione":
+                        for (let i = 0; i < arr.length; i++) {
+                            if(results.filter(item => item.Esposizione === arr[i].Esposizione).length === 0)
+                                    results.push(arr[i])  
+                        }
+                        break;
+                    case "tipologia":
+                        for (let i = 0; i < arr.length; i++) {
+                            if(results.filter(item => item.Tipologia === arr[i].Tipologia).length === 0)
+                                    results.push(arr[i])  
+                        }
+                        break;
+                    case "visibilita":
+                        for (let i = 0; i < arr.length; i++) {
+                            if(results.filter(item => item.Reale === arr[i].Reale).length === 0)
+                                    results.push(arr[i])  
+                        }
+                        break;
                     default:
                         break;
                 }

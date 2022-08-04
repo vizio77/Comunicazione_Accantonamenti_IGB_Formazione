@@ -43,7 +43,7 @@
 									<Text text="Bilancio"/>
 									<Text text=""/>
 									<!-- <Text text="{path: 'sottostrumentiModel>TipoEsposizione', formatter: '.onFormatTipoEsposizione' }"/>  -->
-									<Text text=""/>
+									<Text text="{sottostrumentiModel>DescrGiust}"/>
 								</cells>
 							</ColumnListItem>
 						</items>
