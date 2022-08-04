@@ -236,10 +236,22 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													<Label text="{i18n>TipoSpesa}"/>
 													<Select width="auto" selectedKey="{anagraficaModel>/tipoSpesa}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }">
-														<core:Item key="Obbligatoria" text="Obbligatoria"/>
+														<items>
+															<core:Item key="" text=""/>
+															<core:Item key="RIP" text="Ripartita"/>
+															<core:Item key="OBB" text="Obbligatoria"/>
+															<core:Item key="FIS" text="Fissa"/>	
+															<core:Item key="ORD" text="Ordinaria"/>		
+														</items>
 													</Select>
 													<Label text="{i18n>TipoNaturaSpesa}"/>
-													<Select width="auto" selectedKey="{anagraficaModel>/tipoNaturaSpesa}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
+													<Select width="auto" selectedKey="{anagraficaModel>/tipoNaturaSpesa}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }">
+														<items>
+															<core:Item key="" text=""/>
+															<core:Item key="MUT" text="Mutui"/>	
+															<core:Item key="LIM" text="Limite di impegno"/>		
+														</items>
+													</Select>
 													<Toolbar visible="false"/>
 													<Label text="{i18n>Memoria}"/>
 													<CheckBox selected="{anagraficaModel>/memoria}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
