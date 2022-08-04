@@ -1462,7 +1462,7 @@ sap.ui.define([
 
                 //Controllo scelta Tipologia Variazioni
                 if(obj.ToInterno.results.length > 0) {
-                    if(modelHome.getProperty("/formSottostrumento/var_struttura") === true && modelHome.getProperty("/formSottostrumento/var_contabilil") === true){
+                    if(modelHome.getProperty("/formSottostrumento/var_struttura") === true || modelHome.getProperty("/formSottostrumento/var_contabili") === true){
                         if(obj.ToInterno.results.filter(ti => ti.TipologiaVariazioni === "S" || ti.TipologiaVariazioni === "C").length > 0)
                             checkTipologiaVariazioni = true
                     } else {
@@ -1474,13 +1474,16 @@ sap.ui.define([
                             if(obj.ToInterno.results.filter(ti => ti.TipologiaVariazioni === "C" ).length > 0)
                                 checkTipologiaVariazioni = true
                         }
+
+                        if(modelHome.getProperty("/formSottostrumento/var_struttura") === false && modelHome.getProperty("/formSottostrumento/var_contabili") === false)
+                            checkTipologiaVariazioni = true
                     }
                 } else {
                     checkTipologiaVariazioni = true
                 }
 
                 //Controllo scelta Autorizzazioni CheckBox
-                if(obj.ToInterno.results.length > 0){
+                if(obj.ToInterno.results.length > 0 ){
                     if(modelHome.getProperty("/formSottostrumento/FB") && modelHome.getProperty("/formSottostrumento/FL") && modelHome.getProperty("/formSottostrumento/OI")) {
                         if(obj.ToInterno.results.filter( item => item.FlagFb === modelHome.getProperty("/formSottostrumento/FB") &&
                                                             item.FlagFl === modelHome.getProperty("/formSottostrumento/FL") && 
@@ -1499,6 +1502,17 @@ sap.ui.define([
                             if(obj.ToInterno.results.filter( item => item.FlagFb === modelHome.getProperty("/formSottostrumento/FB") &&
                                                                     item.FlagOi === modelHome.getProperty("/formSottostrumento/OI") ).length > 0)
                                     checkCBAuth = true
+                        if(modelHome.getProperty("/formSottostrumento/FB"))
+                            if(obj.ToInterno.results.filter( item => item.FlagFb === modelHome.getProperty("/formSottostrumento/FB") ).length > 0)
+                                    checkCBAuth = true
+                        if(modelHome.getProperty("/formSottostrumento/FL"))
+                            if(obj.ToInterno.results.filter( item => item.FlagFl === modelHome.getProperty("/formSottostrumento/FL") ).length > 0)
+                                    checkCBAuth = true
+                        if(modelHome.getProperty("/formSottostrumento/OI"))
+                            if(obj.ToInterno.results.filter( item => item.FlagOi === modelHome.getProperty("/formSottostrumento/OI") ).length > 0)
+                                    checkCBAuth = true 
+                        if(modelHome.getProperty("/formSottostrumento/FB") === false && modelHome.getProperty("/formSottostrumento/FL") === false && modelHome.getProperty("/formSottostrumento/OI") === false)
+                                    checkCBAuth = true   
                     }
                 } else {
                     checkCBAuth = true
