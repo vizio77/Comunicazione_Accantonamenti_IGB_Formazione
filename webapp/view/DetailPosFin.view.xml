@@ -216,7 +216,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														</layoutData>
 													</Input>
 													<Input width="auto" value="{anagraficaModel>/mac}" editable="false"/>
-													<Label text="{i18n>TcrC}"/>
+													<!-- <Label text="{i18n>TcrC}"/>
 													<Input width="auto" value="{anagraficaModel>/tctr}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
@@ -229,9 +229,9 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
 													</Input>
-													<Input width="auto" value="{anagraficaModel>/tcrf}" editable="false"/> 
+													<Input width="auto" value="{anagraficaModel>/tcrf}" editable="false"/>  -->
 													
-													<Toolbar visible="false"/>
+													<!-- <Toolbar visible="false"/> -->
 													<Label text="{i18n>TipoFondo}"/>
 													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													<Label text="{i18n>TipoSpesa}"/>
@@ -240,6 +240,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													</Select>
 													<Label text="{i18n>TipoNaturaSpesa}"/>
 													<Select width="auto" selectedKey="{anagraficaModel>/tipoNaturaSpesa}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
+													<Toolbar visible="false"/>
 													<Label text="{i18n>Memoria}"/>
 													<CheckBox selected="{anagraficaModel>/memoria}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													<Label text="{i18n>Capitolone}"/>
