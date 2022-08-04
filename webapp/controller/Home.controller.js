@@ -33,6 +33,7 @@ sap.ui.define([
                     economica2: [],
                     categoria: [],
                     titoli: [],
+                    auth_giust: null,
                     amministrazioni: [],
                     solo_struttura: false,
                     solo_contabili: false,
@@ -282,6 +283,14 @@ sap.ui.define([
                                        new Filter("Fase", FilterOperator.Contains, "DLB")];
 
                 let modelHome = this.getView().getModel("modelHome")
+                //Autorizzazione Giustificativa
+                if(modelHome.getProperty("/formSottostrumento/auth_giust")){
+                    aFiltersCompose.push(new Filter({
+                        path: "DescrGiust",
+                        operator: FilterOperator.Contains,
+                        value1: modelHome.getProperty("/formSottostrumento/auth_giust").toUpperCase()
+                    }),)
+                }
                 //Esposizione Contabile
                 if(modelHome.getProperty("/formSottostrumento/esposizione_contabile") && modelHome.getProperty("/formSottostrumento/esposizione_contabile").length > 1){
                     aFiltersCompose.push(new Filter({
@@ -292,11 +301,11 @@ sap.ui.define([
                 } else {
                     let aFilterEspContCompose = []
                     modelHome.getProperty("/formSottostrumento/esposizione_contabileSet").map((espCont) => {
-                            if (espCont.TipoEsposizione) {
+                            if (espCont.Esposizione) {
                                 aFilterEspContCompose.push(new Filter({
                                     path: "TipoEsposizione",
                                     operator: FilterOperator.EQ,
-                                    value1: espCont.TipoEsposizione.split("-")[0]
+                                    value1: espCont.Esposizione.split("-")[0]
                                 }))
                             }   
                     })
@@ -335,11 +344,11 @@ sap.ui.define([
                 } else {
                     let aFilterTipologiaCompose = []
                     modelHome.getProperty("/formSottostrumento/tipologieSet").map((tipologie) => {
-                        if (tipologie.TipoSstr) {
+                        if (tipologie.Tipologia) {
                             aFilterTipologiaCompose.push(new Filter({
                                 path: "TipoSottostrumento",
                                 operator: FilterOperator.EQ,
-                                value1: tipologie.TipoSstr
+                                value1: tipologie.Tipologia
                             }))
                         }   
                     })
@@ -352,6 +361,35 @@ sap.ui.define([
                     
                     aFiltersCompose.push(afiltersTipologia)
                 }
+
+                //Visibilità
+                if(modelHome.getProperty("/formSottostrumento/visibilita")){
+                    aFiltersCompose.push(new Filter({
+                        path: "Reale",
+                        operator: FilterOperator.EQ,
+                        value1: modelHome.getProperty("/formSottostrumento/visibilita")
+                    }),)
+                } else {
+                    let aFilterVisibilitaCompose = []
+                    modelHome.getProperty("/formSottostrumento/visibilitaSet").map((vis) => {
+                        if (vis.Reale) {
+                            aFilterVisibilitaCompose.push(new Filter({
+                                path: "Reale",
+                                operator: FilterOperator.EQ,
+                                value1: vis.Reale
+                            }))
+                        }   
+                    })
+                    let afiltersVisibilita = 
+                        new Filter({
+                            filters: aFilterVisibilitaCompose,
+                            and: false,
+                            or : true
+                            })
+                    
+                    aFiltersCompose.push(afiltersVisibilita)
+                }
+
                 var _filters = [
                     new Filter({
                         filters: aFiltersCompose,
@@ -359,11 +397,92 @@ sap.ui.define([
                       })
                 ]
                 oModel.read("/Gest_fasi_sstrSet", {
+                    urlParameters: {
+                        $expand: "ToMissione,ToTitolo"
+                    },
                     filters: _filters,
                     sorters: [new sap.ui.model.Sorter("TipoSottostrumento", false),
                               new sap.ui.model.Sorter("NumeroSottostrumento", false)],//new sap.ui.model.Sorter("NumeroSottostrumento", false),
                     success: (oData, response) => {
-                        sottostrumentiModel.setData(oData.results);
+                        //Filtro per Dominio Sottostrumento
+                        let arrDataResults = []
+                        let filtersDom =   modelHome.getProperty("/formSottostrumento")
+                        for(let i =0; i < oData.results.length;  i ++){
+                            if(oData.results[i].ToTitolo.results.length === 0 && oData.results[i].ToMissione.results.length === 0) {
+                                arrDataResults.push(oData.results[i])
+                            } else {
+                                let check = false
+                                let oResults = this.__checkDominioSStr(oData.results[i])
+                                if(oResults !== null){
+                                    arrDataResults.push(oData.results[i])
+                                }
+                                //Sottogruppo Titolo
+                                // if(filtersDom.titoli.length > 0) { //Titoli
+                                //     if(oData.results[i].ToTitolo.results.filter(item => filtersDom.titoli.filter(tit => tit === item.Titolo )).length > 0) {
+                                //         check = true
+                                //     }
+                                // } else {
+                                //     check = true
+                                // }
+                                // if(filtersDom.categoria.length > 0) { //Categoria
+                                //     if(oData.results[i].ToTitolo.results.filter(item => filtersDom.categoria.filter(tit => tit === item.Categoria )).length > 0) {
+                                //         check = false
+                                //     }
+                                // } else {
+                                //     check = true
+                                // }
+                                // if(filtersDom.economica2.length > 0) { //Ce2
+                                //     if(oData.results[i].ToTitolo.results.filter(item => filtersDom.economica2.filter(tit => tit === item.Ce2 )).length > 0) {
+                                //         check = true
+                                //     }
+                                // } else {
+                                //     check = true
+                                // }
+
+                                // if(filtersDom.economica3.length > 0) { //cE3
+                                //     if(oData.results[i].ToTitolo.results.filter(item => filtersDom.economica3.filter(tit => tit === item.Ce3 )).length > 0) {
+                                //         check = true
+                                //     }
+                                // } else {
+                                //     check = true
+                                // }
+
+                                // //Sottogruppo Missioni
+                                // if(filtersDom.missioni.length > 0) { //Missione 
+                                //     if(oData.results[i].ToMissione.results.filter(item => filtersDom.missioni.filter(tit => tit === item.Missione )).length > 0) {
+                                //         check = true
+                                //     }
+                                // } else {
+                                //     check = true
+                                // }
+                                // if(filtersDom.programmi.length > 0) { //Programma 
+                                //     if(oData.results[i].ToMissione.results.filter(item => filtersDom.programmi.filter(tit => tit === item.Programma )).length > 0) {
+                                //         check = true
+                                //     }
+                                // } else {
+                                //     check = true
+                                // }
+                                // if(filtersDom.azioni.length > 0) { //Azione 
+                                //     if(oData.results[i].ToMissione.results.filter(item => filtersDom.azioni.filter(tit => tit === item.Azione )).length > 0) {
+                                //         check = true
+                                //     }
+                                // } else {
+                                //     check = true
+                                // }
+                                // //Amministrazione
+                                // if(filtersDom.dominio_sstr.length > 0) { //Amministrazione 
+                                //     if(oData.results[i].ToMissione.results.filter(item => filtersDom.dominio_sstr.filter(tit => tit.Prctr === item.Prctr )).length > 0) {
+                                //         check = true
+                                //     }
+                                // } else {
+                                //     check = true
+                                // }
+                                // if(check){
+                                //     arrDataResults.push(oData.results[i])
+                                // }
+                            }
+                        }
+                        sottostrumentiModel.setData(arrDataResults);
                         sottostrumentiModel.setSizeLimit(2000);
                         oView.setModel(sottostrumentiModel, "sottostrumentiModel");
                     },
@@ -421,20 +540,21 @@ sap.ui.define([
                 const sIdChange = oEvent.getParameter("id")
                 let sExpand = ""
                 let aFilter = [new Filter("Anno", FilterOperator.EQ, "2023"),
-                               new Filter("Fase", FilterOperator.EQ, "DLB")]
+                               new Filter("Fase", FilterOperator.EQ, "DLB"),
+                                new Filter("Fikrs", FilterOperator.EQ, "S001")]
                 switch (sIdChange) {
                     case 'idformStTipologia':
                         if(modelHome.getProperty("/formSottostrumento/tipologia")){
-                            aFilter.push(new Filter("TipoSstr", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/tipologia")))
-                            sExpand = sExpand + "ToSHEsposizione,ToSHVisibilita"
+                            aFilter.push(new Filter("Tipologia", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/tipologia")))
+                            //sExpand = sExpand + "ToSHEsposizione,ToSHVisibilita"
                         }
                         break;
                     case 'idformStEspCont':
                         if(modelHome.getProperty("/formSottostrumento/esposizione_contabile").length > 1){
                             let arrKeyTipoEsp = modelHome.getProperty("/formSottostrumento/esposizione_contabile").split("-")
-                            aFilter.push(new Filter("TipoEsposizione", FilterOperator.EQ, arrKeyTipoEsp[0]))
-                            aFilter.push(new Filter("Progr", FilterOperator.EQ, arrKeyTipoEsp[1]))
-                            sExpand = sExpand + "ToSHTipologia,ToSHVisibilita"
+                            aFilter.push(new Filter("Esposizione", FilterOperator.EQ, arrKeyTipoEsp[0]))
+                            // aFilter.push(new Filter("Progr", FilterOperator.EQ, arrKeyTipoEsp[1]))
+                            // sExpand = sExpand + "ToSHTipologia,ToSHVisibilita"
                             if(modelHome.getProperty("/formSottostrumento/esposizione_contabile") !== '0' && modelHome.getProperty("/formSottostrumento/solo_struttura") === true){
                                 modelHome.setProperty("/formSottostrumento/solo_struttura", false)
                                 modelHome.setProperty("/formSottostrumento/nessuna_restrizione", true)
@@ -444,31 +564,53 @@ sap.ui.define([
                     case 'idFormStVisibilita':
                         if(modelHome.getProperty("/formSottostrumento/visibilita")){
                             aFilter.push(new Filter("Reale", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/visibilita")))
-                            sExpand = sExpand + "ToSHTipologia,ToSHEsposizione"
+                            // sExpand = sExpand + "ToSHTipologia,ToSHEsposizione"
                         }
                         break
                     default:
                         break;
                 }
-                oModel.read("/Gest_SH1Set",{
-                    urlParameters: {
-                        $expand: sExpand || 'ToSHEsposizione,ToSHTipologia,ToSHVisibilita'
-                    },
+                oModel.read("/TipologiaEsposizioneVisibilitaSet", { //{"/Gest_SH1Set"
+                    // urlParameters: {
+                    //     $expand: sExpand || 'ToSHEsposizione,ToSHTipologia,ToSHVisibilita'
+                    // },
                     filters: aFilter,
                     success:  (oData) => {
                         debugger
-                        if(Array.isArray(oData.results[0].ToSHTipologia.results)) {
-                            oData.results[0].ToSHTipologia.results.unshift({ TipoSstr: null, TipoSstrDescr: ""})
-                            modelHome.setProperty("/formSottostrumento/tipologieSet", oData.results[0].ToSHTipologia.results)
-                        }
-                        if(Array.isArray(oData.results[0].ToSHEsposizione.results)){
-                            oData.results[0].ToSHEsposizione.results.unshift({TipoEsposizione: null, TipoEsposizioneDescr: "", Fase: null, Anno: null})
-                            modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", oData.results[0].ToSHEsposizione.results)
-                        }
-                        if(Array.isArray(oData.results[0].ToSHVisibilita.results)){
-                            oData.results[0].ToSHVisibilita.results.unshift({Fase: null, Anno: null})
-                            modelHome.setProperty("/formSottostrumento/visibilitaSet", oData.results[0].ToSHVisibilita.results)
-                        }
+                         //Lista Tipologie
+                         if(sIdChange !== "idformStTipologia") {
+                            let aTipologia = this.__removeDuplicate(oData.results, "tipologia")
+                            aTipologia.unshift({Esposizione: null, DescrEsposizione: "", Fase: null, Anno: null})
+                            modelHome.setProperty("/formSottostrumento/tipologieSet", aTipologia)
+                         }
+
+                         //lista esposizione contabile
+                         if(sIdChange !== "idformStEspCont") {
+                            let aEsposizioneContabile = this.__removeDuplicate(oData.results, "esposizione")
+                            aEsposizioneContabile.unshift({Esposizione: null, DescrEsposizione: "", Fase: null, Anno: null})
+                            modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", aEsposizioneContabile)
+                         }
+ 
+                         //Lista Visibilità
+                         if(sIdChange !== "idFormStVisibilita") {
+                            let aVisibilita = this.__removeDuplicate(oData.results, "visibilita")
+                            aVisibilita.unshift({Reale: null, DescrReale: "", Fase: null, Anno: null})
+                            modelHome.setProperty("/formSottostrumento/visibilitaSet", aVisibilita)
+                         }
+                         // oData.results[0].ToSHVisibilita.results.unshift({Fase: null, Anno: null})
+                         // modelHome.setProperty("/formSottostrumento/visibilitaSet", oData.results[0].ToSHVisibilita.results)
+                        // if(Array.isArray(oData.results[0].ToSHTipologia.results)) {
+                        //     oData.results[0].ToSHTipologia.results.unshift({ TipoSstr: null, TipoSstrDescr: ""})
+                        //     modelHome.setProperty("/formSottostrumento/tipologieSet", oData.results[0].ToSHTipologia.results)
+                        // }
+                        // if(Array.isArray(oData.results[0].ToSHEsposizione.results)){
+                        //     oData.results[0].ToSHEsposizione.results.unshift({TipoEsposizione: null, TipoEsposizioneDescr: "", Fase: null, Anno: null})
+                        //     modelHome.setProperty("/formSottostrumento/esposizione_contabileSet", oData.results[0].ToSHEsposizione.results)
+                        // }
+                        // if(Array.isArray(oData.results[0].ToSHVisibilita.results)){
+                        //     oData.results[0].ToSHVisibilita.results.unshift({Fase: null, Anno: null})
+                        //     modelHome.setProperty("/formSottostrumento/visibilitaSet", oData.results[0].ToSHVisibilita.results)
+                        // }
                     },
                     error: function (res) {
                         debugger
@@ -1229,6 +1371,101 @@ sap.ui.define([
                 const subStrAmm1 = Number(a.substring(1, a.length))
                 const subStrAmm2 = Number(b.substring(1, a.length))
                 return subStrAmm1 - subStrAmm2;
+            },
+            __checkDominioSStr: function (obj) {
+                let checkMissioniMass = false
+                let checkTitoloMass = false
+                let modelHome = this.getView().getModel("modelHome")
+                let filtersDom =   modelHome.getProperty("/formSottostrumento")
+                let checkCe3 = false
+                let checkCe2 = false
+                let checkCategoria = false
+                let checkTitoli = false
+                let checkMissione = false
+                let checkProgramma = false
+                let checkAzione = false
+                let checkAmministrazione = false
+                //checkMissioni
+                if(filtersDom.economica3.length > 0) { //cE3
+                    if(obj.ToTitolo.results.filter(item => filtersDom.economica3.filter(tit => tit === item.Ce3 )).length > 0 &&
+                         obj.ToTitolo.results.filter(item => filtersDom.economica2.filter(tit => tit === item.Ce2 )).length > 0 &&
+                         obj.ToTitolo.results.filter(item => filtersDom.categoria.filter(tit => tit === item.Categoria )).length > 0 &&
+                         obj.ToTitolo.results.filter(item => filtersDom.titoli.filter(tit => tit === item.Titolo )).length > 0) {
+                        checkCe3 = true
+                    }
+                } else {
+                    checkCe3 = true
+                    if(filtersDom.economica2.length > 0){
+                        if(obj.ToTitolo.results.filter(item => filtersDom.economica2.filter(tit => tit === item.Ce2 )).length > 0 &&
+                            obj.ToTitolo.results.filter(item => filtersDom.categoria.filter(tit => tit === item.Categoria )).length > 0 &&
+                            obj.ToTitolo.results.filter(item => filtersDom.titoli.filter(tit => tit === item.Titolo )).length > 0) {
+                            checkCe2 = true
+                        }
+                    } else {
+                        checkCe2 = true
+                        if(filtersDom.categoria.length > 0){
+                            if(obj.ToTitolo.results.filter(item => filtersDom.categoria.filter(tit => tit === item.Categoria )).length > 0 &&
+                                obj.ToTitolo.results.filter(item => filtersDom.titoli.filter(tit => tit === item.Titolo )).length > 0) {
+                                    checkCategoria = true
+                            }
+                        } else {
+                            checkCategoria = true
+                            if(filtersDom.titoli.length > 0){
+                                if ( obj.ToTitolo.results.filter(item => filtersDom.titoli.filter(tit => tit === item.Titolo )).length > 0) {
+                                    checkTitoli = true
+                                }
+                            } else {
+                                checkTitoli = true
+                            }
+                        }
+                    }
+                }
+                if(checkCe3 === true && checkCe2 === true && checkCategoria === true && checkTitoli === true){
+                    checkTitoloMass = true
+                }
+
+                if(filtersDom.azioni.length > 0) { //cE3
+                    if(obj.ToMissione.results.filter(item => filtersDom.azioni.filter(tit => tit === item.Azione )).length > 0 &&
+                        obj.ToMissione.results.filter(item => filtersDom.programmi.filter(tit => tit === item.Programma )).length > 0 &&
+                        obj.ToMissione.results.filter(item => filtersDom.missioni.filter(tit => tit === item.Missione )).length > 0 ) {
+                            checkAzione = true
+                    }
+                } else {
+                    checkAzione = true
+                    if(filtersDom.programmi.length > 0){
+                        if(obj.ToMissione.results.filter(item => filtersDom.missioni.filter(tit => tit === item.Missione )).length > 0 &&
+                            obj.ToMissione.results.filter(item => filtersDom.programmi.filter(tit => tit === item.Programma )).length > 0 ) {
+                                checkProgramma = true
+                        }
+                    } else {
+                        checkProgramma = true
+                        if(filtersDom.missioni.length > 0){
+                            if(obj.ToMissione.results.filter(item => filtersDom.missioni.filter(tit => tit === item.Missione )).length > 0) {
+                                checkMissione = true
+                            }
+                        } else {
+                            checkMissione = true
+                        }
+                    }
+                }
+                if(filtersDom.dominio_sstr.length > 0) { //Amministrazione 
+                    if(obj.ToMissione.results.filter(item => filtersDom.dominio_sstr.filter(tit => tit.Prctr === item.Prctr )).length > 0) {
+                        checkAmministrazione = true
+                    }
+                } else {
+                    checkAmministrazione = true
+                }
+
+                if(checkAzione === true && checkProgramma === true && checkMissione === true){
+                    checkMissioniMass = true
+                }
+
+                if(checkMissioniMass === true && checkTitoloMass === true && checkAmministrazione === true){
+                    return obj
+                } else {
+                    return null
+                }
+
             }
         });
     });

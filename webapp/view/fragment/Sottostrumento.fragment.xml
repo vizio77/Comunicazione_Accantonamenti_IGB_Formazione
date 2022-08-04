@@ -41,7 +41,7 @@
 									<Text text="{sottostrumentiModel>DescrEstesa}"/>
 									<Text text="Aperto"/>
 									<Text text="Bilancio"/>
-									<Text text=""/>
+									<Text text="{sottostrumentiModel>DescrTipoEsposizione}"/>
 									<!-- <Text text="{path: 'sottostrumentiModel>TipoEsposizione', formatter: '.onFormatTipoEsposizione' }"/>  -->
 									<Text text="{sottostrumentiModel>DescrGiust}"/>
 								</cells>

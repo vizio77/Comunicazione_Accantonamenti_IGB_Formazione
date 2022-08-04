@@ -15,8 +15,7 @@
                 <Label text="{i18n>TipoSottoStr}" labelFor="idformStTipologia"/>
 				<!-- <Input id="idformStTipologia" value="{modelHome>/formSottostrumento/tipologia}" width="70%" showValueHelp="true"/> -->
                 <Select id="idformStTipologia"  width="70%"  selectedKey="{modelHome>/formSottostrumento/tipologia}" items="{
-                    path: 'modelHome>/formSottostrumento/tipologieSet/',
-                    sorter: { path: 'Tipologia' }
+                    path: 'modelHome>/formSottostrumento/tipologieSet/'
                 }" change=".onChangeSelect($event)">
                     <c:Item key="{modelHome>Tipologia}" text="{modelHome>DescrTipologia}" />
                 </Select>
@@ -33,23 +32,23 @@
 				<Select id="idFormStVisibilita" selectedKey="{modelHome>/formSottostrumento/visibilita}" width="70%"
                     items="{
                         path:'modelHome>/formSottostrumento/visibilitaSet/'}" forceSelection="false" change=".onChangeSelect($event)">
-                    <c:Item key="{modelHome>Reale}" text="{modelHome>RealeDescr}" />
+                    <c:Item key="{modelHome>Reale}" text="{modelHome>DescrReale}" />
                 </Select>
                 <Label text="{i18n>authgiust}" labelFor="id_auth_giust"/>
-                    <MultiInput id="id_auth_giust" width="70%">
-                        <!-- <tokens>
-                            <Token
-                                editable="true"
-                                key=""
-                                selected="false"
-                                text=""
-                                textDirection="Inherit" />
-                        </tokens> -->
-                        <!-- <customData>
-                            <c:CustomData key="popup" value="HelpValueAmm"/>
-                            <c:CustomData key="deleteToken" value="dominio_sstr"/>
-                        </customData> -->
-                    </MultiInput>
+                <Input id="id_auth_giust" width="70%" value="{modelHome>/formSottostrumento/auth_giust}">
+                    <!-- <tokens>
+                        <Token
+                            editable="true"
+                            key=""
+                            selected="false"
+                            text=""
+                            textDirection="Inherit" />
+                    </tokens> -->
+                    <!-- <customData>
+                        <c:CustomData key="popup" value="HelpValueAmm"/>
+                        <c:CustomData key="deleteToken" value="dominio_sstr"/>
+                    </customData> -->
+                </Input>
                 <Toolbar visible="false"/>
                 <Panel expandable="true" width="100%" class="marginHeaderSStr">
                     <headerToolbar>
