@@ -38,6 +38,11 @@ sap.ui.define([
                     solo_struttura: false,
                     solo_contabili: false,
                     nessuna_restrizione: true,
+                    var_struttura: false,
+                    var_contabili: false,
+                    OI: false,
+                    FB: false,
+                    FL: false,
                     esercizio: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear().toString()
                 }}), "modelHome")
                 //this.getView().setModel(new JSONModel({Sottostrumento: null, visibleAuth: false}), "modelFilterHome")
@@ -263,7 +268,9 @@ sap.ui.define([
             },
             onSearchSottostrumento: function () {
                 var oModel = this.getOwnerComponent().getModel("sapHanaS2");
-
+                if(this.getView().getModel("sottostrumentiModel") !== undefined){
+                    this.getView().getModel("sottostrumentiModel").setProperty("/", [])
+                }
                 if(!this._oDialog){
                     this._oDialog = sap.ui.xmlfragment(
                         "zsap.com.r3.cobi.s4.gestposfin.view.fragment.Sottostrumento",
@@ -398,7 +405,7 @@ sap.ui.define([
                 ]
                 oModel.read("/Gest_fasi_sstrSet", {
                     urlParameters: {
-                        $expand: "ToMissione,ToTitolo"
+                        $expand: "ToMissione,ToTitolo,ToInterno"
                     },
                     filters: _filters,
                     sorters: [new sap.ui.model.Sorter("TipoSottostrumento", false),
@@ -406,88 +413,22 @@ sap.ui.define([
                     success: (oData, response) => {
                         //Filtro per Dominio Sottostrumento
                         let arrDataResults = []
-                        let filtersDom =   modelHome.getProperty("/formSottostrumento")
                         for(let i =0; i < oData.results.length;  i ++){
                             if(oData.results[i].ToTitolo.results.length === 0 && oData.results[i].ToMissione.results.length === 0) {
                                 arrDataResults.push(oData.results[i])
                             } else {
-                                let check = false
                                 let oResults = this.__checkDominioSStr(oData.results[i])
                                 if(oResults !== null){
                                     arrDataResults.push(oData.results[i])
                                 }
-                                //Sottogruppo Titolo
-                                // if(filtersDom.titoli.length > 0) { //Titoli
-                                //     if(oData.results[i].ToTitolo.results.filter(item => filtersDom.titoli.filter(tit => tit === item.Titolo )).length > 0) {
-                                //         check = true
-                                //     }
-                                // } else {
-                                //     check = true
-                                // }
-                                // if(filtersDom.categoria.length > 0) { //Categoria
-                                //     if(oData.results[i].ToTitolo.results.filter(item => filtersDom.categoria.filter(tit => tit === item.Categoria )).length > 0) {
-                                //         check = false
-                                //     }
-                                // } else {
-                                //     check = true
-                                // }
-                                // if(filtersDom.economica2.length > 0) { //Ce2
-                                //     if(oData.results[i].ToTitolo.results.filter(item => filtersDom.economica2.filter(tit => tit === item.Ce2 )).length > 0) {
-                                //         check = true
-                                //     }
-                                // } else {
-                                //     check = true
-                                // }
-
-                                // if(filtersDom.economica3.length > 0) { //cE3
-                                //     if(oData.results[i].ToTitolo.results.filter(item => filtersDom.economica3.filter(tit => tit === item.Ce3 )).length > 0) {
-                                //         check = true
-                                //     }
-                                // } else {
-                                //     check = true
-                                // }
-
-                                // //Sottogruppo Missioni
-                                // if(filtersDom.missioni.length > 0) { //Missione 
-                                //     if(oData.results[i].ToMissione.results.filter(item => filtersDom.missioni.filter(tit => tit === item.Missione )).length > 0) {
-                                //         check = true
-                                //     }
-                                // } else {
-                                //     check = true
-                                // }
-                                // if(filtersDom.programmi.length > 0) { //Programma 
-                                //     if(oData.results[i].ToMissione.results.filter(item => filtersDom.programmi.filter(tit => tit === item.Programma )).length > 0) {
-                                //         check = true
-                                //     }
-                                // } else {
-                                //     check = true
-                                // }
-                                // if(filtersDom.azioni.length > 0) { //Azione 
-                                //     if(oData.results[i].ToMissione.results.filter(item => filtersDom.azioni.filter(tit => tit === item.Azione )).length > 0) {
-                                //         check = true
-                                //     }
-                                // } else {
-                                //     check = true
-                                // }
-                                // //Amministrazione
-                                // if(filtersDom.dominio_sstr.length > 0) { //Amministrazione 
-                                //     if(oData.results[i].ToMissione.results.filter(item => filtersDom.dominio_sstr.filter(tit => tit.Prctr === item.Prctr )).length > 0) {
-                                //         check = true
-                                //     }
-                                // } else {
-                                //     check = true
-                                // }
-                                // if(check){
-                                //     arrDataResults.push(oData.results[i])
-                                // }
                             }
                         }
                         sottostrumentiModel.setData(arrDataResults);
                         sottostrumentiModel.setSizeLimit(2000);
                         oView.setModel(sottostrumentiModel, "sottostrumentiModel");
                     },
-                    error: function(e) {
-    
+                    error: (e) => {
+                        sap.ui.getCore().byId("idTableSottostrumento2").setBusy(true)
                     }
                 });
                 
@@ -547,6 +488,11 @@ sap.ui.define([
                         if(modelHome.getProperty("/formSottostrumento/tipologia")){
                             aFilter.push(new Filter("Tipologia", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/tipologia")))
                             //sExpand = sExpand + "ToSHEsposizione,ToSHVisibilita"
+                            if(modelHome.getProperty("/formSottostrumento/tipologia") === "53"){
+                                modelHome.setProperty("/formSottostrumento/var_contabili", true)
+                            } else {
+                                modelHome.setProperty("/formSottostrumento/var_contabili", false)
+                            }
                         }
                         break;
                     case 'idformStEspCont':
@@ -1385,6 +1331,8 @@ sap.ui.define([
                 let checkProgramma = false
                 let checkAzione = false
                 let checkAmministrazione = false
+                let checkTipologiaVariazioni = false
+                let checkCBAuth = false
                 //checkMissioni
                 if(filtersDom.economica3.length > 0) { //cE3
                     // if(obj.ToTitolo.results.filter(item => filtersDom.economica3.filter(tit => tit === item.Ce3 ).length > 0).length > 0 &&
@@ -1512,7 +1460,52 @@ sap.ui.define([
                     checkMissioniMass = true
                 }
 
-                if(checkMissioniMass === true && checkTitoloMass === true && checkAmministrazione === true){
+                //Controllo scelta Tipologia Variazioni
+                if(obj.ToInterno.results.length > 0) {
+                    if(modelHome.getProperty("/formSottostrumento/var_struttura") === true && modelHome.getProperty("/formSottostrumento/var_contabilil") === true){
+                        if(obj.ToInterno.results.filter(ti => ti.TipologiaVariazioni === "S" || ti.TipologiaVariazioni === "C").length > 0)
+                            checkTipologiaVariazioni = true
+                    } else {
+                        if(modelHome.getProperty("/formSottostrumento/var_struttura") === true) {
+                            if(obj.ToInterno.results.filter(ti => ti.TipologiaVariazioni === "S" ).length > 0)
+                                checkTipologiaVariazioni = true
+                        }
+                        if(modelHome.getProperty("/formSottostrumento/var_contabili") === true){
+                            if(obj.ToInterno.results.filter(ti => ti.TipologiaVariazioni === "C" ).length > 0)
+                                checkTipologiaVariazioni = true
+                        }
+                    }
+                } else {
+                    checkTipologiaVariazioni = true
+                }
+
+                //Controllo scelta Autorizzazioni CheckBox
+                if(obj.ToInterno.results.length > 0){
+                    if(modelHome.getProperty("/formSottostrumento/FB") && modelHome.getProperty("/formSottostrumento/FL") && modelHome.getProperty("/formSottostrumento/OI")) {
+                        if(obj.ToInterno.results.filter( item => item.FlagFb === modelHome.getProperty("/formSottostrumento/FB") &&
+                                                            item.FlagFl === modelHome.getProperty("/formSottostrumento/FL") && 
+                                                            item.FlagOi === modelHome.getProperty("/formSottostrumento/OI") ).length > 0)
+                            checkCBAuth = true
+                    } else {
+                        if(modelHome.getProperty("/formSottostrumento/FB") && modelHome.getProperty("/formSottostrumento/FL") )
+                            if(obj.ToInterno.results.filter( item => item.FlagFb === modelHome.getProperty("/formSottostrumento/FB") &&
+                                                                                    item.FlagFl === modelHome.getProperty("/formSottostrumento/FL") ).length > 0)
+                                    checkCBAuth = true
+                        if(modelHome.getProperty("/formSottostrumento/FL") && modelHome.getProperty("/formSottostrumento/OI"))
+                            if(obj.ToInterno.results.filter( item => item.FlagFl === modelHome.getProperty("/formSottostrumento/FL") &&
+                                                                    item.FlagOi === modelHome.getProperty("/formSottostrumento/OI") ).length > 0)
+                                    checkCBAuth = true
+                        if(modelHome.getProperty("/formSottostrumento/FB") && modelHome.getProperty("/formSottostrumento/OI"))
+                            if(obj.ToInterno.results.filter( item => item.FlagFb === modelHome.getProperty("/formSottostrumento/FB") &&
+                                                                    item.FlagOi === modelHome.getProperty("/formSottostrumento/OI") ).length > 0)
+                                    checkCBAuth = true
+                    }
+                } else {
+                    checkCBAuth = true
+                }
+
+                if(checkMissioniMass === true && checkTitoloMass === true && checkAmministrazione === true && checkTipologiaVariazioni === true 
+                            && checkCBAuth === true){
                     return obj
                 } else {
                     return null

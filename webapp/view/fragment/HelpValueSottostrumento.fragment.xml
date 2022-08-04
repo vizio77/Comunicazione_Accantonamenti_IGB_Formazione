@@ -190,9 +190,9 @@
                         </MultiInput>
                         <Label text="{i18n>dom_tipolog_auth}" labelFor="id_dom_tipo_auth"/>
                         <FlexBox id="id_dom_tipo_auth" justifyContent="SpaceAround" width="60%">
-                            <CheckBox text="FL"/>
-                            <CheckBox text="FB"/>
-                            <CheckBox text="OI"/>
+                            <CheckBox text="FL" selected="{modelHome>/formSottostrumento/FL}"/>
+                            <CheckBox text="FB" selected="{modelHome>/formSottostrumento/FB}"/>
+                            <CheckBox text="OI" selected="{modelHome>/formSottostrumento/OI}"/>
                             <CheckBox text="E" enabled="false"/>
                         </FlexBox>
                         <Label text="{i18n>dom_tipo_var}" labelFor="id_dom_tipo_var"/>
@@ -204,8 +204,9 @@
                             </buttons>
                         </RadioButtonGroup> -->
                         <FlexBox id="id_dom_tipo_var" justifyContent="SpaceAround" width="60%">
-                            <CheckBox text="Solo variazioni struttura" enabled="{= !!${modelHome>/formSottostrumento/esposizione_contabile} &amp;&amp; ${modelHome>/formSottostrumento/esposizione_contabile}.split('-')[0] === '0'}"/>
-                            <CheckBox text="Solo variazioni contabili" selected="{= ${modelHome>/formSottostrumento/tipologia} === '53'}"/>
+                            <CheckBox text="Solo variazioni struttura" selected="{modelHome>/formSottostrumento/var_struttura}" enabled="{= !!${modelHome>/formSottostrumento/esposizione_contabile} &amp;&amp; ${modelHome>/formSottostrumento/esposizione_contabile}.split('-')[0] === '0'}"/>
+                            <CheckBox text="Solo variazioni contabili" selected="{modelHome>/formSottostrumento/var_contabili}"/>
+                            <!-- <CheckBox text="Solo variazioni contabili" selected="{= ${modelHome>/formSottostrumento/tipologia} === '53'}"/> -->
                         </FlexBox>
                     </f:content>
                 </f:SimpleForm>

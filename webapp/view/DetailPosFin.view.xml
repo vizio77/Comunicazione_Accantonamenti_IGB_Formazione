@@ -286,7 +286,10 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														<core:Item key="altro" text="ALTRO"/>
 													</Select>
 													<Label text="{i18n>CapitoloIrap}"/>
-													<Input width="auto" value="{anagraficaModel>/capitoloIrap}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
+													<!-- <Input width="auto" value="{anagraficaModel>/capitoloIrap}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/> -->
+													<Select width="auto" selectedKey="" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }">
+														
+													</Select>
 												</form:content>
 											</form:SimpleForm>		
 											<!-- Denominazione Capitolo -->
