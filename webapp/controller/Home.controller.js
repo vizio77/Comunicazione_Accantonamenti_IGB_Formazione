@@ -409,7 +409,7 @@ sap.ui.define([
                 ]
                 oModel.read("/Gest_fasi_sstrSet", {
                     urlParameters: {
-                        $expand: "ToMissione,ToTitolo,ToInterno"
+                        $expand: "ToMissione,ToTitolo,ToInterno,ToAmministrazione"
                     },
                     filters: _filters,
                     sorters: [new sap.ui.model.Sorter("TipoSottostrumento", false),
@@ -418,7 +418,8 @@ sap.ui.define([
                         //Filtro per Dominio Sottostrumento
                         let arrDataResults = []
                         for(let i =0; i < oData.results.length;  i ++){
-                            if(oData.results[i].ToTitolo.results.length === 0 && oData.results[i].ToMissione.results.length === 0) {
+                            if(oData.results[i].ToTitolo.results.length === 0 && oData.results[i].ToMissione.results.length === 0 &&
+                                 oData.results[i].ToAmministrazione.results.length === 0) {
                                 arrDataResults.push(oData.results[i])
                             } else {
                                 let oResults = this.__checkDominioSStr(oData.results[i])
@@ -426,6 +427,12 @@ sap.ui.define([
                                     arrDataResults.push(oData.results[i])
                                 }
                             }
+                        }
+                        if((modelHome.getProperty("/formSottostrumento/var_struttura") === true || modelHome.getProperty("/formSottostrumento/var_contabili") === true ||
+                                modelHome.getProperty("/formSottostrumento/FB") === true || modelHome.getProperty("/formSottostrumento/FL") === true 
+                                || modelHome.getProperty("/formSottostrumento/OI") === true) ) {
+                            arrDataResults = arrDataResults.filter(item => item.ToAmministrazione.results.length !== 0 &&
+                                            item.ToMissione.results.length !== 0 && item.ToInterno.results.length !== 0 && item.ToTitolo.results.length !== 0)     
                         }
                         sottostrumentiModel.setData(arrDataResults);
                         sottostrumentiModel.setSizeLimit(2000);
@@ -1337,15 +1344,59 @@ sap.ui.define([
                 let checkAmministrazione = false
                 let checkTipologiaVariazioni = false
                 let checkCBAuth = false
+
                 //checkMissioni
+                // if(obj.ToTitolo.results.length > 0) {
+                //     if(filtersDom.economica3.length > 0) { //cE3
+                        
+                //         for (let i = 0; i < filtersDom.economica3.length; i++){
+                //             let currentFilter = filtersDom.economica3[i]
+                //             let itemPresentCE3 = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo && item.Categoria === currentFilter.Categoria
+                //                                     && item.Ce2 === currentFilter.Ce2 && item.Ce3 === currentFilter.Ce3)
+                //             if(itemPresentCE3.length > 0)
+                //                 checkCe3 = true
+                //         }
+                //     } else {
+                //         checkCe3 = true
+                //         if(filtersDom.economica2.length > 0){
+                           
+                //             for (let i = 0; i < filtersDom.economica2.length; i++){
+                //                 let currentFilter = filtersDom.economica2[i]
+                //                 let itemPresentCE2 = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo && item.Categoria === currentFilter.Categoria
+                //                                         && item.Ce2 === currentFilter.Ce2)
+                //                 if(itemPresentCE2.length > 0)
+                //                     checkCe2 = true
+                //             }
+                //         } else {
+                //             checkCe2 = true
+                //             if(filtersDom.categoria.length > 0){
+                            
+                //                 for (let i = 0; i < filtersDom.categoria.length; i++){
+                //                     let currentFilter = filtersDom.categoria[i]
+                //                     let itemPresentCategoria = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo && item.Categoria === currentFilter.Categoria)
+                //                     if(itemPresentCE2.length > 0)
+                //                         checkCategoria = true
+                //                 }
+                //             } else {
+                //                 checkCategoria = true
+                //                 if(filtersDom.titoli.length > 0){
+                //                     for (let i = 0; i < filtersDom.titoli.length; i++){
+                //                         let currentFilter = filtersDom.titoli[i]
+                //                         let itemPresentTitolo = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo )
+                //                         if(itemPresentTitolo.length > 0)
+                //                         checkTitoli = true
+                //                     }
+                //                 } else {
+                //                     checkTitoli = true
+                //                 }
+                //             }
+                //         }
+                //     }
+                // } else {
+                //     checkTitoloMass = true
+                // }
                 if(obj.ToTitolo.results.length > 0) {
                     if(filtersDom.economica3.length > 0) { //cE3
-                        // if(obj.ToTitolo.results.filter(item => filtersDom.economica3.filter(tit => tit === item.Ce3 ).length > 0).length > 0 &&
-                        //      obj.ToTitolo.results.filter(item => filtersDom.economica2.filter(tit => tit === item.Ce2 ).length > 0).length > 0 &&
-                        //      obj.ToTitolo.results.filter(item => filtersDom.categoria.filter(tit => tit === item.Categoria ).length > 0).length > 0 &&
-                        //      obj.ToTitolo.results.filter(item => filtersDom.titoli.filter(tit => tit === item.Titolo ).length > 0).length > 0) {
-                        //     checkCe3 = true
-                        // }
                         for (let i = 0; i < filtersDom.economica3.length; i++){
                             let currentFilter = filtersDom.economica3[i]
                             let itemPresentCE3 = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo && item.Categoria === currentFilter.Categoria
@@ -1355,123 +1406,136 @@ sap.ui.define([
                         }
                     } else {
                         checkCe3 = true
-                        if(filtersDom.economica2.length > 0){
-                            // if(obj.ToTitolo.results.filter(item => filtersDom.economica2.filter(tit => tit === item.Ce2 ).length > 0).length > 0 &&
-                            //     obj.ToTitolo.results.filter(item => filtersDom.categoria.filter(tit => tit === item.Categoria ).length > 0).length > 0 &&
-                            //     obj.ToTitolo.results.filter(item => filtersDom.titoli.filter(tit => tit === item.Titolo ).length > 0).length > 0) {
-                            //     checkCe2 = true
-                            // }
-                            for (let i = 0; i < filtersDom.economica2.length; i++){
-                                let currentFilter = filtersDom.economica2[i]
-                                let itemPresentCE2 = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo && item.Categoria === currentFilter.Categoria
-                                                        && item.Ce2 === currentFilter.Ce2)
-                                if(itemPresentCE2.length > 0)
-                                    checkCe2 = true
-                            }
-                        } else {
-                            checkCe2 = true
-                            if(filtersDom.categoria.length > 0){
-                                // if(obj.ToTitolo.results.filter(item => filtersDom.categoria.filter(tit => tit === item.Categoria ).length > 0).length > 0 &&
-                                //     obj.ToTitolo.results.filter(item => filtersDom.titoli.filter(tit => tit === item.Titolo ).length > 0).length > 0) {
-                                //         checkCategoria = true
-                                // }
-                                for (let i = 0; i < filtersDom.categoria.length; i++){
-                                    let currentFilter = filtersDom.categoria[i]
-                                    let itemPresentCategoria = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo && item.Categoria === currentFilter.Categoria)
-                                    if(itemPresentCE2.length > 0)
-                                        checkCategoria = true
-                                }
-                            } else {
-                                checkCategoria = true
-                                if(filtersDom.titoli.length > 0){
-                                    // if ( obj.ToTitolo.results.filter(item => filtersDom.titoli.filter(tit => tit === item.Titolo ).length > 0).length > 0) {
-                                    //     checkTitoli = true
-                                    // }
-                                    for (let i = 0; i < filtersDom.titoli.length; i++){
-                                        let currentFilter = filtersDom.titoli[i]
-                                        let itemPresentTitolo = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo )
-                                        if(itemPresentTitolo.length > 0)
-                                        checkTitoli = true
-                                    }
-                                } else {
-                                    checkTitoli = true
-                                }
-                            }
-                        }
                     }
+                    if(filtersDom.economica2.length > 0){ //cE2
+                           
+                        for (let i = 0; i < filtersDom.economica2.length; i++){
+                            let currentFilter = filtersDom.economica2[i]
+                            let itemPresentCE2 = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo && item.Categoria === currentFilter.Categoria
+                                                    && item.Ce2 === currentFilter.Ce2)
+                            if(itemPresentCE2.length > 0)
+                                checkCe2 = true
+                        }
+                   } else {
+                        checkCe2 = true
+                   }
+                   if(filtersDom.categoria.length > 0){ //Categoria
+                            
+                        for (let i = 0; i < filtersDom.categoria.length; i++){
+                            let currentFilter = filtersDom.categoria[i]
+                            let itemPresentCategoria = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo && item.Categoria === currentFilter.Categoria)
+                            if(itemPresentCategoria.length > 0)
+                                checkCategoria = true
+                        }
+                    } else {
+                        checkCategoria = true
+                    }
+                    if(filtersDom.titoli.length > 0){ //Titolo
+                        for (let i = 0; i < filtersDom.titoli.length; i++){
+                            let currentFilter = filtersDom.titoli[i]
+                            let itemPresentTitolo = obj.ToTitolo.results.filter(item => item.Titolo === currentFilter.Titolo )
+                            if(itemPresentTitolo.length > 0)
+                            checkTitoli = true
+                        }
+                    } else {
+                        checkTitoli = true
+                    } 
                 } else {
+                   checkTitoloMass = true
+                }
+
+
+                if(checkCe3 === true && checkCe2 === true && checkCategoria === true && checkTitoli === true){
                     checkTitoloMass = true
                 }
 
-                if(checkCe3 === true || checkCe2 === true || checkCategoria === true || checkTitoli === true){
-                    checkTitoloMass = true
-                }
+                // if(obj.ToMissione.results.length > 0) {
+                //     if(filtersDom.azioni.length > 0) { //cE3
+                //         for (let i = 0; i < filtersDom.azioni.length; i++){
+                //             let currentFilter = filtersDom.azioni[i]
+                //             let itemPresentAzioni = obj.ToMissione.results.filter(item => item.Azione  === currentFilter.Azione && item.Programma === item.Programma &&
+                //                                                                           item.Missione  === currentFilter.Missione && item.Prctr === currentFilter.Prctr)
+                //             if(itemPresentAzioni.length > 0)
+                //                 checkAzione = true
+                //         }
+                //     } else {
+                //         checkAzione = true
+                //         if(filtersDom.programmi.length > 0){
+                //             for (let i = 0; i < filtersDom.programmi.length; i++){
+                //                 let currentFilter = filtersDom.programmi[i]
+                //                 let itemPresentProgramma = obj.ToMissione.results.filter(item =>  item.Programma === item.Programma &&
+                //                                                                                     item.Missione  === currentFilter.Missione)
+                //                 if(itemPresentProgramma.length > 0)
+                //                     checkProgramma = true
+                //             }
+                //         } else {
+                //             checkProgramma = true
+                //             if(filtersDom.missioni.length > 0){
+                //                 for (let i = 0; i < filtersDom.missioni.length; i++){
+                //                     let currentFilter = filtersDom.missioni[i]
+                //                     let itemPresentMissione = obj.ToMissione.results.filter(item => item.Missione  === currentFilter.Missione)
+                //                     if(itemPresentMissione.length > 0)
+                //                         checkMissione = true
+                //                 }
+                //             } else {
+                //                 checkMissione = true
+                //             }
+                //         }
+                //     }
+                // } else {
+                //     checkMissioniMass = true
+                // }
 
                 if(obj.ToMissione.results.length > 0) {
                     if(filtersDom.azioni.length > 0) { //cE3
-                        // if(obj.ToMissione.results.filter(item => filtersDom.azioni.filter(tit => tit === item.Azione ).length > 0).length > 0 &&
-                        //     obj.ToMissione.results.filter(item => filtersDom.programmi.filter(tit => tit === item.Programma ).length > 0).length > 0 &&
-                        //     obj.ToMissione.results.filter(item => filtersDom.missioni.filter(tit => tit === item.Missione ).length > 0).length > 0 ) {
-                        //         checkAzione = true
-                        // }
                         for (let i = 0; i < filtersDom.azioni.length; i++){
                             let currentFilter = filtersDom.azioni[i]
                             let itemPresentAzioni = obj.ToMissione.results.filter(item => item.Azione  === currentFilter.Azione && item.Programma === item.Programma &&
-                                                                                          item.Missione  === currentFilter.Missione && item.Prctr === currentFilter.Prctr)
+                                                                                            item.Missione  === currentFilter.Missione && item.Prctr === currentFilter.Prctr)
                             if(itemPresentAzioni.length > 0)
                                 checkAzione = true
                         }
                     } else {
                         checkAzione = true
-                        if(filtersDom.programmi.length > 0){
-                            // if(obj.ToMissione.results.filter(item => filtersDom.missioni.filter(tit => tit === item.Missione ).length > 0).length > 0 &&
-                            //     obj.ToMissione.results.filter(item => filtersDom.programmi.filter(tit => tit === item.Programma ).length > 0).length > 0 ) {
-                            //         checkProgramma = true
-                            // }
-                            for (let i = 0; i < filtersDom.programmi.length; i++){
-                                let currentFilter = filtersDom.programmi[i]
-                                let itemPresentProgramma = obj.ToMissione.results.filter(item =>  item.Programma === item.Programma &&
-                                                                                                    item.Missione  === currentFilter.Missione)
-                                if(itemPresentProgramma.length > 0)
-                                    checkProgramma = true
-                            }
-                        } else {
-                            checkProgramma = true
-                            if(filtersDom.missioni.length > 0){
-                                // if(obj.ToMissione.results.filter(item => filtersDom.missioni.filter(tit => tit === item.Missione ).length > 0).length > 0) {
-                                //     checkMissione = true
-                                // }
-                                for (let i = 0; i < filtersDom.missioni.length; i++){
-                                    let currentFilter = filtersDom.missioni[i]
-                                    let itemPresentMissione = obj.ToMissione.results.filter(item => item.Missione  === currentFilter.Missione)
-                                    if(itemPresentMissione.length > 0)
-                                        checkMissione = true
-                                }
-                            } else {
-                                checkMissione = true
-                            }
+                    }
+                    if(filtersDom.programmi.length > 0){
+                        for (let i = 0; i < filtersDom.programmi.length; i++){
+                            let currentFilter = filtersDom.programmi[i]
+                            let itemPresentProgramma = obj.ToMissione.results.filter(item =>  item.Programma === item.Programma &&
+                                                                                                item.Missione  === currentFilter.Missione)
+                            if(itemPresentProgramma.length > 0)
+                                checkProgramma = true
                         }
+                    } else {
+                        checkProgramma = true
+                    }
+                    if(filtersDom.missioni.length > 0){
+                        for (let i = 0; i < filtersDom.missioni.length; i++){
+                            let currentFilter = filtersDom.missioni[i]
+                            let itemPresentMissione = obj.ToMissione.results.filter(item => item.Missione  === currentFilter.Missione)
+                            if(itemPresentMissione.length > 0)
+                                checkMissione = true
+                        }
+                    } else {
+                        checkMissione = true
                     }
                 } else {
                     checkMissioniMass = true
                 }
 
-                if(checkAzione === true || checkProgramma === true || checkMissione === true){
+                if(checkAzione === true && checkProgramma === true && checkMissione === true){
                     checkMissioniMass = true
                 }
 
-                let aAmminIsolate = filtersDom.dominio_sstr.map(amm => {  //Calcolo Amministrazioni non determinate da Azioni
-                    if(filtersDom.azioni.filter(az => az.Prctr !== amm.Prctr).length > 0)
-                        return amm
-                }).filter(res => res !== undefined)
+                // let aAmminIsolate = filtersDom.dominio_sstr.map(amm => {  //Calcolo Amministrazioni non determinate da Azioni
+                //     if(filtersDom.azioni.filter(az => az.Prctr !== amm.Prctr).length > 0)
+                //         return amm
+                // }).filter(res => res !== undefined)
 
-                if(aAmminIsolate.length > 0 && checkAzione === false) { //Amministrazioni escluse da quelle presenti in Azioni 
-                    // if(obj.ToMissione.results.filter(item => filtersDom.dominio_sstr.filter(tit => tit.Prctr === item.Prctr ).length > 0).length > 0) {
-                    //     checkAmministrazione = true
-                    // }
-                    for (let i = 0; i < aAmminIsolate.length; i++){
-                        let currentFilter = aAmminIsolate[i]
-                        let itemPresentAmm = obj.ToMissione.results.filter(item => item.Prctr  === currentFilter.Prctr)
+                if(filtersDom.dominio_sstr.length > 0) { //Amministrazioni escluse da quelle presenti in Azioni
+                    for (let i = 0; i < filtersDom.dominio_sstr.length; i++){
+                        let currentFilter = filtersDom.dominio_sstr[i]
+                        let itemPresentAmm = obj.ToAmministrazione.results.filter(item => item.Prctr  === currentFilter.Prctr)
                         if(itemPresentAmm.length > 0)
                             checkAmministrazione = true
                     }
@@ -1499,7 +1563,11 @@ sap.ui.define([
                             checkTipologiaVariazioni = true
                     }
                 } else {
-                    checkTipologiaVariazioni = true
+                    if(modelHome.getProperty("/formSottostrumento/var_struttura") === true || modelHome.getProperty("/formSottostrumento/var_contabili") === true) {
+                        checkTipologiaVariazioni = false
+                    } else {
+                        checkTipologiaVariazioni = true
+                    }
                 }
 
                 //Controllo scelta Autorizzazioni CheckBox
@@ -1535,7 +1603,12 @@ sap.ui.define([
                                     checkCBAuth = true   
                     }
                 } else {
-                    checkCBAuth = true
+                    if(modelHome.getProperty("/formSottostrumento/FB") === true || modelHome.getProperty("/formSottostrumento/FL") === true 
+                        || modelHome.getProperty("/formSottostrumento/OI") === true){
+                            checkCBAuth = false
+                    } else {
+                        checkCBAuth = true
+                    }
                 }
 
                 if(checkMissioniMass === true && checkTitoloMass === true && checkAmministrazione === true && checkTipologiaVariazioni === true 
