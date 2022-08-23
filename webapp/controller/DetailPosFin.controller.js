@@ -210,6 +210,72 @@ sap.ui.define([
 							}
 						})
 					break
+					case "HVCategoria":
+						//se si apre help value di Categoria, controllare che sia stato valorizzata Titolo e filtrare per tale valore
+						if(modelPosFin.getProperty("/detailAnagrafica/TITOLO"))
+							aFilters.push(new Filter("Titolo", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/TITOLO")))
+						modelHana.read("/TipTitoloSet",{
+							filters: aFilters,
+							success: (oData) => {
+								debugger
+								modelPosFin.setProperty("/formPosFin/categorie", function() {
+									let aCategoria = []
+									for(let i = 0; i < oData.results.length; i++)
+										if(aCategoria.filter(item => item.Titolo === oData.results[i].Titolo &&
+																  item.Categoria === oData.results[i].Categoria).length === 0 )
+											aCategoria.push(oData.results[i])
+									return aCategoria
+								})
+							},
+							error:  (err) => {
+								debugger
+							}
+						})
+					break
+					case "HVCe2":
+						//se si apre help value di Categoria, controllare che sia stato valorizzata Titolo e filtrare per tale valore
+						if(modelPosFin.getProperty("/detailAnagrafica/TITOLO"))
+							aFilters.push(new Filter("Titolo", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/TITOLO")))
+						if(modelPosFin.getProperty("/detailAnagrafica/CATEGORIA"))
+							aFilters.push(new Filter("Categoria", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/CATEGORIA")))
+						modelHana.read("/TipTitoloSet",{
+							filters: aFilters,
+							success: (oData) => {
+								debugger
+								modelPosFin.setProperty("/formPosFin/ce2", function() {
+									let aCe2 = []
+									for(let i = 0; i < oData.results.length; i++)
+										if(aCe2.filter(item => item.Titolo === oData.results[i].Titolo &&
+																	 item.Categoria === oData.results[i].Categoria &&
+																	 item.Ce2 === oData.results[i].Ce2).length === 0 )
+											aCe2.push(oData.results[i])
+									return aCe2
+								})
+							},
+							error:  (err) => {
+								debugger
+							}
+						})
+					break
+					case "HVCe3":
+						//se si apre help value di Categoria, controllare che sia stato valorizzata Titolo e filtrare per tale valore
+						if(modelPosFin.getProperty("/detailAnagrafica/TITOLO"))
+							aFilters.push(new Filter("Titolo", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/TITOLO")))
+						if(modelPosFin.getProperty("/detailAnagrafica/CATEGORIA"))
+							aFilters.push(new Filter("Categoria", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/CATEGORIA")))
+						if(modelPosFin.getProperty("/detailAnagrafica/CE2"))
+							aFilters.push(new Filter("Ce2", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/CE2")))
+						modelHana.read("/TipTitoloSet",{
+							filters: aFilters,
+							success: (oData) => {
+								debugger
+								modelPosFin.setProperty("/formPosFin/ce3", oData.results)
+							},
+							error:  (err) => {
+								debugger
+							}
+						})
+					break
 				default:
 					break;
 			}
@@ -483,6 +549,63 @@ sap.ui.define([
 					modelPosFin.setProperty("/detailAnagrafica/DESC_PROGRAMMA", modelPosFin.getProperty(sPath[0] + "/DescEstesaProgramma"))
 					modelPosFin.setProperty("/detailAnagrafica/AZIONE", modelPosFin.getProperty(sPath[0] + "/Azione"))
 					modelPosFin.setProperty("/detailAnagrafica/DESC_AZIONE", modelPosFin.getProperty(sPath[0] + "/DescEstesaAzione"))
+
+					break;
+				case "Titolo":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					//check se sono stati selezionati figli; in caso di Missione non combaciante, resettare input
+					if(modelPosFin.getProperty(sPath + "/Titolo") !== modelPosFin.getProperty("/detailAnagrafica/TITOLO")) {
+						modelPosFin.setProperty("/detailAnagrafica/CATEGORIA", null)
+						modelPosFin.setProperty("/detailAnagrafica/DESC_CATEGORIA",null)
+						modelPosFin.setProperty("/detailAnagrafica/CE2", null)
+						modelPosFin.setProperty("/detailAnagrafica/DESC_CE2",null)
+						modelPosFin.setProperty("/detailAnagrafica/CE3", null)
+						modelPosFin.setProperty("/detailAnagrafica/DESC_CE3",null)
+					}
+					modelPosFin.setProperty("/detailAnagrafica/TITOLO", modelPosFin.getProperty(sPath + "/Titolo"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_TITOLO", modelPosFin.getProperty(sPath + "/DescEstesaTitolo"))
+
+					break;
+				case "Categoria":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					//check se sono stati selezionati figli; in caso di Missione non combaciante, resettare input
+					if(modelPosFin.getProperty(sPath[0] + "/Categoria") !== modelPosFin.getProperty("/detailAnagrafica/CATEGORIA")) {
+						modelPosFin.setProperty("/detailAnagrafica/CE2", null)
+						modelPosFin.setProperty("/detailAnagrafica/DESC_CE2",null)
+						modelPosFin.setProperty("/detailAnagrafica/CE3", null)
+						modelPosFin.setProperty("/detailAnagrafica/DESC_CE3",null)
+					}
+					modelPosFin.setProperty("/detailAnagrafica/TITOLO", modelPosFin.getProperty(sPath[0] + "/Titolo"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_TITOLO", modelPosFin.getProperty(sPath[0]  + "/DescEstesaTitolo"))
+					modelPosFin.setProperty("/detailAnagrafica/CATEGORIA", modelPosFin.getProperty(sPath[0]  + "/Categoria"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_CATEGORIA", modelPosFin.getProperty(sPath[0] + "/DescEstesaCategoria"))
+
+					break;
+				case "Ce2":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					//check se sono stati selezionati figli; in caso di Missione non combaciante, resettare input
+					if(modelPosFin.getProperty(sPath[0] + "/Ce2") !== modelPosFin.getProperty("/detailAnagrafica/CE2")) {
+						modelPosFin.setProperty("/detailAnagrafica/CE3", null)
+						modelPosFin.setProperty("/detailAnagrafica/DESC_CE3",null)
+					}
+					modelPosFin.setProperty("/detailAnagrafica/TITOLO", modelPosFin.getProperty(sPath[0] + "/Titolo"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_TITOLO", modelPosFin.getProperty(sPath[0]  + "/DescEstesaTitolo"))
+					modelPosFin.setProperty("/detailAnagrafica/CATEGORIA", modelPosFin.getProperty(sPath[0]  + "/Categoria"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_CATEGORIA", modelPosFin.getProperty(sPath[0] + "/DescEstesaCategoria"))
+					modelPosFin.setProperty("/detailAnagrafica/CE2", modelPosFin.getProperty(sPath[0]  + "/Ce2"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_CE2", modelPosFin.getProperty(sPath[0] + "/DescEstesaCe2"))
+
+					break;
+				case "Ce2":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					modelPosFin.setProperty("/detailAnagrafica/TITOLO", modelPosFin.getProperty(sPath[0] + "/Titolo"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_TITOLO", modelPosFin.getProperty(sPath[0]  + "/DescEstesaTitolo"))
+					modelPosFin.setProperty("/detailAnagrafica/CATEGORIA", modelPosFin.getProperty(sPath[0]  + "/Categoria"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_CATEGORIA", modelPosFin.getProperty(sPath[0] + "/DescEstesaCategoria"))
+					modelPosFin.setProperty("/detailAnagrafica/CE2", modelPosFin.getProperty(sPath[0]  + "/Ce2"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_CE2", modelPosFin.getProperty(sPath[0] + "/DescEstesaCe2"))
+					modelPosFin.setProperty("/detailAnagrafica/CE3", modelPosFin.getProperty(sPath[0]  + "/Ce3"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_CE3", modelPosFin.getProperty(sPath[0] + "/DescEstesaCe3"))
 
 					break;
 				default:
