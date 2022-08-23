@@ -61,19 +61,25 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												<form:content>
 													<core:Title text="" /> 
 													<Label text="Amministrazione"  required="{= !${modelPosFin>/onModify} }"/>
-													<Input value="{modelPosFin>/detailAnagrafica/AMMINISTAZIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" >
+													<Input value="{modelPosFin>/detailAnagrafica/AMMINISTAZIONE}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpRequest="onHVFormPosFin">
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVAmmin" />
+														</customData>
 													</Input>
 													<Input  value="{modelPosFin>/detailAnagrafica/DESC_AMMINISTAZIONE}" editable="false"/>
 
 													<core:Title text="" /> 
 													<Label text="{i18n>Capitolo}"  required="{= !${modelPosFin>/onModify} }"/>
-													<Input  value="{modelPosFin>/detailAnagrafica/CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
+													<Input  value="{modelPosFin>/detailAnagrafica/CAPITOLO}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onHVFormPosFin">
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVCapitolo" />
+														</customData>
 													</Input>
 													<HBox >
 														<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
@@ -91,10 +97,13 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													</HBox>
 													<core:Title text="" /> 
 													<Label text="{i18n>Pg}" required="{= !${modelPosFin>/onModify} }" />
-													<Input  value="{modelPosFin>/detailAnagrafica/pg}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true">
+													<Input  value="{modelPosFin>/detailAnagrafica/pg}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpRequest="onHVFormPosFin">
 														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVPg" />
+														</customData>
 													</Input>
 													<HBox >
 														<Text text="Provvisorio" visible="{= !${modelPosFin>/onModify} }" class="sapUiMediumMarginEnd">
@@ -127,33 +136,42 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												singleContainerFullSize="false" >
 												<form:content>
 													<Label text="{i18n>mission}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/MISSIONE}" editable="{= !${modelPosFin>/onModify} }" >
+													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/MISSIONE}" editable="{= !${modelPosFin>/onModify} }" valueHelpRequest="onHVFormPosFin">
 														<layoutData>
 															 <layout:GridData span="XL2 L3 M4 S4" /> 
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVMissione" />
+														</customData>
 													</Input>
 													<Input value="{modelPosFin>/detailAnagrafica/DESC_MISSIONE}" editable="false" showValueHelp="false"/>
 													<Label text="{i18n>programma}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/PROGRAMMA}" editable="{= !${modelPosFin>/onModify} }" >
+													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/PROGRAMMA}" editable="{= !${modelPosFin>/onModify} }" valueHelpRequest="onHVFormPosFin">
 														<layoutData>
 															 <layout:GridData span="XL2 L3 M4 S4" /> 
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVProgramma" />
+														</customData>
 													</Input>
 														
 													
 													<Input value="{modelPosFin>/detailAnagrafica/DESC_PROGRAMMA}" editable="false" showValueHelp="false"/>
 													<Label text="{i18n>azione}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/AZIONE}" editable="{= !${modelPosFin>/onModify} }" >
+													<Input showValueHelp="true" value="{modelPosFin>/detailAnagrafica/AZIONE}" editable="{= !${modelPosFin>/onModify} }" valueHelpRequest="onHVFormPosFin">
 														<layoutData>
 															 <layout:GridData span="XL2 L3 M4 S4" /> 
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVAzione" />
+														</customData>
 													</Input>
 													<Input value="{modelPosFin>/detailAnagrafica/DESC_AZIONE}" editable="false" showValueHelp="false"/>
 													
 													<Toolbar visible="false"/>
 													<Label text="{i18n>Udv}"/>
 													<Input  value="{anagraficaModel>/udv1}" editable="false">
-													<layoutData>
+														<layoutData>
 															<layout:GridData span="XL3 L3 M4 S4" />
 														</layoutData>
 													</Input>
@@ -179,26 +197,37 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												singleContainerFullSize="false" >
 												<form:content>
 													<Label text="{i18n>Tit}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="auto" value="{anagraficaModel>/tit}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
+													<Input width="auto" value="{modelPosFin>/detailAnagrafica/TITOLO}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onHVFormPosFin">
+														<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVTitolo" />
+														</customData>
 													</Input>
-													<Input width="auto" value="{anagraficaModel>/tit}" editable="false"/>
+													<Input width="auto" value="{modelPosFin>/detailAnagrafica/DESC_TITOLO}" editable="false"/>
+
 													<Label text="{i18n>Cat}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="auto" value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
+													<Input width="auto" value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onHVFormPosFin">
+														<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVCategoria" />
+														</customData>
 													</Input>
-													<Input width="auto"  value="{modelPosFin>/detailAnagrafica/CATEGORIA}" editable="false"/> 
+													<Input width="auto"  value="{modelPosFin>/detailAnagrafica/DESC_CATEGORIA}" editable="false"/> 
+													
 													<Label text="{i18n>Cdr}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="auto" value="{anagraficaModel>/cdr}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
+													<Input width="auto" value="{modelPosFin>/detailAnagrafica/CDR}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onHVFormPosFin">
+														<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVCdr" />
+														</customData>
 													</Input>
-													<Input width="auto" showValueHelp="false" value="{anagraficaModel>/cdr}" editable="false"/> 
+													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CDR_DESCR}" editable="false"/> 
 													<Label text="{i18n>Rag}" required="{= !${modelPosFin>/onModify} }"/>
 													<Input width="auto" value="{anagraficaModel>/rag}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>

@@ -17,6 +17,478 @@ sap.ui.define([
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			modelPosFin.setProperty("/CompetenzaAuth", {Auth : null})
 			modelPosFin.setProperty("/formCodingBlock", {checkedPercentAps: false, nuovaAuth: false})
+			modelPosFin.setProperty("/formPosFin", {
+				amministrazioni: [],
+				capitoli: [],
+				pg: [],
+				cdr: [],
+				missioni: [],
+				programmi: [],
+				azioni: [],
+				titoli: [],
+				categorie: []
+			})
+			this.__getDataHVPosFin()
+			var oRouter = this.getOwnerComponent().getRouter();
+			oRouter.getRoute("DetailPosFin").attachPatternMatched(this._onObjectMatched, this);
+		},
+		_onObjectMatched: function (oEvent) {
+			this.__getDataHVPosFin()
+		},
+		sorterAmmByNumericCode: function (a,b) {
+			const subStrAmm1 = Number(a.substring(1, a.length))
+			const subStrAmm2 = Number(b.substring(1, a.length))
+			return subStrAmm1 - subStrAmm2;
+		},
+		sorterHVDomSStr: function (a, b) {
+			return Number(a) - Number(b)
+		},
+		onHVFormPosFin: async function (oEvent) {
+			let {_, value} = oEvent.getSource().getCustomData()[0].mProperties
+			await this.__getDataForHV(value) //estrae i dati filtrati nel caso ci siano selezioni di attributi padre
+			Fragment.load({
+				name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HVPosFin." + value,
+				controller: this
+			}).then(oDialog => {
+				this[value] = oDialog
+				this.getView().addDependent(oDialog);
+				this[value].open()
+			})
+		},
+		__getDataForHV: function name(sHV) {
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let aFilters = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+							new Filter("Fase", FilterOperator.EQ, "DLB"),
+							new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento"))
+						]
+			switch (sHV) {
+				case "HVCapitolo":
+					//se si apre capitolo, controllare che sia stato valorizzata Amministrazione e filtrare per tale valore
+					if(modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE")){
+						aFilters.push(new Filter("Prctr", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE")))
+						modelHana.read("/TipAmministrazioneSet",{
+							filters: aFilters,
+							urlParameters: {
+								$expand: "TipCapitolo"
+							},
+							success: (oData) => {
+								debugger
+								modelPosFin.setProperty("/formPosFin/capitoli", function() {
+									let aCapitoli = []
+									if(oData.results.length === 1) {
+										for(let i = 0; i <  oData.results.length; i++){
+											for(let j = 0; j < oData.results[i].TipCapitolo.results.length; j++)
+												if(aCapitoli.filter(item => (item.Prctr === oData.results[i].TipCapitolo.results[j].Prctr && item.Capitolo === oData.results[i].TipCapitolo.results[j].Capitolo)).length === 0)
+													aCapitoli.push(oData.results[i].TipCapitolo.results[j])
+										}
+									} else {
+										for(let i = 0; i < oData.results.length; i++){
+											for(let j = 0; j < oData.results[i].TipCapitolo.results.length; j++)
+												if(aCapitoli.filter(item => (item.Prctr === oData.results[i].TipCapitolo.results[j].Prctr && item.Capitolo === oData.results[i].TipCapitolo.results[j].Capitolo)).length === 0)
+													aCapitoli.push(oData.results[i].TipCapitolo.results[j])
+										}
+									}
+									return aCapitoli
+								}())
+							},
+							error:  (err) => {
+								debugger
+							}
+						})
+					}
+					break;
+				case "HVPg":
+					//se si apre capitolo, controllare che sia stato valorizzata Amministrazione e filtrare per tale valore
+					if(modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE") && modelPosFin.getProperty("/detailAnagrafica/CAPITOLO")){
+						aFilters.push(new Filter("Prctr", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE")))
+						modelHana.read("/TipAmministrazioneSet",{
+							filters: aFilters,
+							urlParameters: {
+								$expand: "TipCapitolo"
+							},
+							success: (oData) => {
+								debugger
+								modelPosFin.setProperty("/formPosFin/pg", function() {
+									let aCapitoli = []
+									if(oData.results.length === 1) {
+										for(let i = 0; i <  oData.results.length; i++){
+											for(let j = 0; j < oData.results[i].TipCapitolo.results.length; j++)
+												if(oData.results[i].TipCapitolo.results[j].Capitolo === modelPosFin.getProperty("/detailAnagrafica/CAPITOLO"))
+													if(aCapitoli.filter(item => (item.Prctr === oData.results[i].TipCapitolo.results[j].Prctr && item.Capitolo === oData.results[i].TipCapitolo.results[j].Capitolo)).length === 0)
+														aCapitoli.push(oData.results[i].TipCapitolo.results[j])
+										}
+									} else {
+										for(let i = 0; i < oData.results.length; i++){
+											for(let j = 0; j < oData.results[i].TipCapitolo.results.length; j++)
+												if(aCapitoli.filter(item => (item.Prctr === oData.results[i].TipCapitolo.results[j].Prctr && item.Capitolo === oData.results[i].TipCapitolo.results[j].Capitolo)).length === 0)
+													if(oData.results[i].TipCapitolo.results[j].Capitolo === modelPosFin.getProperty("/detailAnagrafica/CAPITOLO"))
+														aCapitoli.push(oData.results[i].TipCapitolo.results[j])
+										}
+									}
+									return aCapitoli
+								}())
+							},
+							error:  (err) => {
+								debugger
+							}
+						})
+					}
+					break
+					case "HVCdr":
+						//se si apre help value di Cdr, controllare che sia stato valorizzata Amministrazione e filtrare per tale valore
+						if(modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE")){
+							aFilters.push(new Filter("Prctr", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE")))
+							modelHana.read("/TipAmministrazioneSet",{
+								filters: aFilters,
+								urlParameters: {
+									$expand: "TipCdr"
+								},
+								success: (oData) => {
+									debugger
+									modelPosFin.setProperty("/formPosFin/cdr", function() {
+										let aCdr = []
+										if(oData.results.length === 1) {
+											for(let i = 0; i <  oData.results.length; i++){
+												aCdr.push(...oData.results[i].TipCdr.results)
+											}
+										} else {
+											for(let i = 0; i < oData.results.length; i++){
+												aCdr.push(...oData.results[i].TipCdr.results)
+											}
+										}
+										return aCdr
+									}())
+								},
+								error:  (err) => {
+									debugger
+								}
+							})
+						}
+					break
+					case "HVProgramma":
+						//se si apre help value di Programma, controllare che sia stato valorizzata Missione e filtrare per tale valore
+						if(modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE"))
+							aFilters.push(new Filter("Prctr", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE")))
+						if(modelPosFin.getProperty("/detailAnagrafica/MISSIONE"))
+							aFilters.push(new Filter("Missione", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/MISSIONE")))
+						modelHana.read("/TipMissioneSet",{
+							filters: aFilters,
+							success: (oData) => {
+								debugger
+								modelPosFin.setProperty("/formPosFin/programmi", function() {
+									let aProgrammi = []
+									for(let i = 0; i < oData.results.length; i++)
+										if(aProgrammi.filter(item => (item.Missione === oData.results[i].Missione &&
+											item.Programma === oData.results[i].Programma)).length === 0)
+											aProgrammi.push(oData.results[i])
+									
+									return aProgrammi
+								}())
+							},
+							error:  (err) => {
+								debugger
+							}
+						})
+					break
+					case "HVAzione":
+						//se si apre help value di Programma, controllare che sia stato valorizzata Missione e filtrare per tale valore
+						if(modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE"))
+							aFilters.push(new Filter("Prctr", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE")))
+						if(modelPosFin.getProperty("/detailAnagrafica/MISSIONE"))
+							aFilters.push(new Filter("Missione", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/MISSIONE")))
+						if(modelPosFin.getProperty("/detailAnagrafica/PROGRAMMA"))
+							aFilters.push(new Filter("Programma", FilterOperator.EQ, modelPosFin.getProperty("/detailAnagrafica/PROGRAMMA")))
+						modelHana.read("/TipMissioneSet",{
+							filters: aFilters,
+							success: (oData) => {
+								debugger
+								modelPosFin.setProperty("/formPosFin/azioni",oData.results)
+							},
+							error:  (err) => {
+								debugger
+							}
+						})
+					break
+				default:
+					break;
+			}
+		},
+		__getDataHVPosFin: function () {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let filtersAmm = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+									  new Filter("Fase", FilterOperator.EQ, "DLB"),
+									  new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+									  new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale"))
+									]
+			let filtersTitolo = [...filtersAmm]
+			//Estrazione Amm, Capitolo, Pg, Azione, Cdr, Programma e Missione
+			if(modelPosFin.getProperty("/infoSottoStrumento/ToAmministrazione/results").length > 0) {
+				let filterComposeAmm = []
+				modelPosFin.getProperty("/infoSottoStrumento/ToAmministrazione/results").map((amm) => {
+					if (amm.Prctr) {
+						filterComposeAmm.push(new Filter({
+							path: "Prctr",
+							operator: FilterOperator.EQ,
+							value1: amm.Prctr
+						}))
+					}   
+				})
+				let afiltersOrAmm = 
+					new Filter({
+						filters: filterComposeAmm,
+						and: false,
+						or : true
+						})
+				filtersAmm.push(afiltersOrAmm)
+			}
+			modelHana.read("/TipAmministrazioneSet",{
+				filters: filtersAmm,
+				urlParameters: {
+					$expand: "TipMissione,TipCapitolo,TipCdr"
+				},
+				success: (oData) => {
+					debugger
+					modelPosFin.setProperty("/formPosFin/amministrazioni", oData.results)
+					if(modelPosFin.getProperty("/infoSottoStrumento/ToAmministrazione/results").length === 1){
+						modelPosFin.setProperty("/detailAnagrafica/AMMINISTAZIONE", oData.results[0].Prctr)
+						modelPosFin.setProperty("/detailAnagrafica/DESC_AMMINISTAZIONE", oData.results[0].DescEstesa)
+					}
+					modelPosFin.setProperty("/formPosFin/capitoli", function() {
+						let aCapitoli = []
+						if(oData.results.length === 1) {
+							for(let i = 0; i <  oData.results.length; i++){
+								for(let j = 0; j < oData.results[i].TipCapitolo.results.length; j++)
+									if(aCapitoli.filter(item => (item.Prctr === oData.results[i].TipCapitolo.results[j].Prctr && item.Capitolo === oData.results[i].TipCapitolo.results[j].Capitolo)).length === 0)
+										aCapitoli.push(oData.results[i].TipCapitolo.results[j])
+							}
+						} else {
+							for(let i = 0; i < oData.results.length; i++){
+								for(let j = 0; j < oData.results[i].TipCapitolo.results.length; j++)
+									if(aCapitoli.filter(item => (item.Prctr === oData.results[i].TipCapitolo.results[j].Prctr && item.Capitolo === oData.results[i].TipCapitolo.results[j].Capitolo)).length === 0)
+										aCapitoli.push(oData.results[i].TipCapitolo.results[j])
+								//aCapitoli.push(...oData.results[i].TipCapitolo.results)
+							}
+						}
+						return aCapitoli
+					}())
+					modelPosFin.setProperty("/formPosFin/pg", function() {
+						let aPg = []
+						if(oData.results.length === 1) {
+							for(let i = 0; i <  oData.results.length; i++){
+								aPg.push(...oData.results[i].TipCapitolo.results)
+							}
+						} else {
+							for(let i = 0; i < oData.results.length; i++){
+								aPg.push(...oData.results[i].TipCapitolo.results)
+							}
+						}
+						return aPg
+					}())
+					modelPosFin.setProperty("/formPosFin/cdr", function() {
+						let aCdr = []
+						if(oData.results.length === 1) {
+							for(let i = 0; i <  oData.results.length; i++){
+								aCdr.push(...oData.results[i].TipCdr.results)
+							}
+						} else {
+							for(let i = 0; i < oData.results.length; i++){
+								aCdr.push(...oData.results[i].TipCdr.results)
+							}
+						}
+						return aCdr
+					}())
+					modelPosFin.setProperty("/formPosFin/missioni", function() {
+						let aMissioni = []
+						if(oData.results.length === 1) {
+							for(let i = 0; i <  oData.results.length; i++){
+								for(let j = 0; j < oData.results[i].TipMissione.results.length; j++)
+									if(aMissioni.filter(item => (item.Missione === oData.results[i].TipMissione.results[j].Missione)).length === 0)
+									aMissioni.push(oData.results[i].TipMissione.results[j])
+							}
+						} else {
+							for(let i = 0; i < oData.results.length; i++){
+								for(let j = 0; j < oData.results[i].TipMissione.results.length; j++)
+									if(aMissioni.filter(item => ( item.Missione === oData.results[i].TipMissione.results[j].Missione)).length === 0)
+										aMissioni.push(oData.results[i].TipMissione.results[j])
+								//aCapitoli.push(...oData.results[i].TipCapitolo.results)
+							}
+						}
+						return aMissioni
+					}())
+					modelPosFin.setProperty("/formPosFin/programmi", function() {
+						let aProgrammi = []
+						if(oData.results.length === 1) {
+							for(let i = 0; i <  oData.results.length; i++){
+								for(let j = 0; j < oData.results[i].TipMissione.results.length; j++)
+									if(aProgrammi.filter(item => (
+											item.Missione === oData.results[i].TipMissione.results[j].Missione &&
+											item.Programma === oData.results[i].TipMissione.results[j].Programma)).length === 0)
+									aProgrammi.push(oData.results[i].TipMissione.results[j])
+							}
+						} else {
+							for(let i = 0; i < oData.results.length; i++){
+								for(let j = 0; j < oData.results[i].TipMissione.results.length; j++)
+									if(aProgrammi.filter(item => (item.Missione === oData.results[i].TipMissione.results[j].Missione &&
+										item.Programma === oData.results[i].TipMissione.results[j].Programma)).length === 0)
+										aProgrammi.push(oData.results[i].TipMissione.results[j])
+							}
+						}
+						return aProgrammi
+					}())
+					modelPosFin.setProperty("/formPosFin/azioni", function() {
+						let aAzioni = []
+						if(oData.results.length === 1) {
+							for(let i = 0; i <  oData.results.length; i++){
+								for(let j = 0; j < oData.results[i].TipMissione.results.length; j++)
+									aAzioni.push(oData.results[i].TipMissione.results[j])
+							}
+						} else {
+							for(let i = 0; i < oData.results.length; i++){
+								for(let j = 0; j < oData.results[i].TipMissione.results.length; j++)
+									aAzioni.push(oData.results[i].TipMissione.results[j])
+							}
+						}
+						return aAzioni
+					}())
+				},
+				error:  (err) => {
+					debugger
+				}
+			})
+			//Fine estrazione Amm, Capitolo, Pg, Azione, Cdr, Programma e Missione
+			modelHana.read("/TipTitoloSet",{
+				filters: filtersTitolo,
+				success: (oData) => {
+					modelPosFin.setProperty("/formPosFin/titoli", function() {
+						let aTitoli = []
+						for(let i = 0; i < oData.results.length; i++)
+							if(aTitoli.filter(item => item.Titolo === oData.results[i].Titolo).length === 0 )
+								aTitoli.push(oData.results[i])
+						return aTitoli
+					})
+					modelPosFin.setProperty("/formPosFin/categorie", function() {
+						let aCategoria = []
+						for(let i = 0; i < oData.results.length; i++)
+							if(aCategoria.filter(item => item.Titolo === oData.results[i].Titolo &&
+													  item.Categoria === oData.results[i].Categoria).length === 0 )
+								aCategoria.push(oData.results[i])
+						return aCategoria
+					})
+					modelPosFin.setProperty("/formPosFin/ce2", function() {
+						let aCe2 = []
+						for(let i = 0; i < oData.results.length; i++)
+							if(aCe2.filter(item => item.Titolo === oData.results[i].Titolo &&
+														 item.Categoria === oData.results[i].Categoria &&
+														 item.Ce2 === oData.results[i].Ce2).length === 0 )
+								aCe2.push(oData.results[i])
+						return aCe2
+					})
+					modelPosFin.setProperty("/formPosFin/ce3", oData.results)
+				}
+			})
+			//Inizio estrazione Titolo, Categoria, Ce2 e Ce3
+
+		},
+		getAmmDescEstesa: function (Prctr) {
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let aAmministrazioni = modelPosFin.getProperty("/formPosFin/amministrazioni")
+			return aAmministrazioni.filter(amm => amm.Prctr === Prctr)[0].DescEstesa
+		},
+		onCloseHVPosFin: function (oEvent) {
+			oEvent.getSource().getParent().close()
+		},
+		onConfirmSelectionPosFin: function (oEvent) {
+			let {_, value} = oEvent.getSource().getCustomData()[0].mProperties
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let sPath, aAmministrazioni
+			switch (value) {
+				case "Amministrazione":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					//check se sono stati selezionati figli; in caso di amministrazione non combaciante, resettare input
+					if(modelPosFin.getProperty(sPath + "/Prctr") !== modelPosFin.getProperty("/detailAnagrafica/AMMINISTAZIONE")) {
+						modelPosFin.setProperty("/detailAnagrafica/CAPITOLO", null)
+						modelPosFin.setProperty("/detailAnagrafica/pg", null)
+						modelPosFin.setProperty("/detailAnagrafica/CDR", null)
+						modelPosFin.setProperty("/detailAnagrafica/CDR_DESCR", null)
+					}
+					modelPosFin.setProperty("/detailAnagrafica/AMMINISTAZIONE", modelPosFin.getProperty(sPath + "/Prctr"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_AMMINISTAZIONE", modelPosFin.getProperty(sPath + "/DescEstesa"))
+
+					break;
+				case "Capitolo":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					//check se sono stati selezionati figli; in caso di capitolo non combaciante, resettare input
+					if(modelPosFin.getProperty(sPath[0] + "/Capitolo") !== modelPosFin.getProperty("/detailAnagrafica/CAPITOLO")) {
+						modelPosFin.setProperty("/detailAnagrafica/pg", null)
+					}
+					aAmministrazioni = modelPosFin.getProperty("/formPosFin/amministrazioni")
+					let oCapitolo = modelPosFin.getProperty(sPath[0])
+					modelPosFin.setProperty("/detailAnagrafica/CAPITOLO", modelPosFin.getProperty(sPath[0] + "/Capitolo"))
+					modelPosFin.setProperty("/detailAnagrafica/AMMINISTAZIONE", aAmministrazioni.filter(amm => amm.Prctr === oCapitolo.Prctr)[0].Prctr)
+					modelPosFin.setProperty("/detailAnagrafica/DESC_AMMINISTAZIONE",aAmministrazioni.filter(amm => amm.Prctr === oCapitolo.Prctr)[0].DescEstesa)
+					break
+				case "Pg":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					aAmministrazioni = modelPosFin.getProperty("/formPosFin/amministrazioni")
+					let oPg = modelPosFin.getProperty(sPath[0])
+					modelPosFin.setProperty("/detailAnagrafica/pg", modelPosFin.getProperty(sPath[0] + "/Pg"))
+					modelPosFin.setProperty("/detailAnagrafica/CAPITOLO", modelPosFin.getProperty(sPath[0] + "/Capitolo"))
+					modelPosFin.setProperty("/detailAnagrafica/AMMINISTAZIONE", aAmministrazioni.filter(amm => amm.Prctr === oPg.Prctr)[0].Prctr)
+					modelPosFin.setProperty("/detailAnagrafica/DESC_AMMINISTAZIONE",aAmministrazioni.filter(amm => amm.Prctr === oPg.Prctr)[0].DescEstesa)
+					break
+				case "Cdr":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					aAmministrazioni = modelPosFin.getProperty("/formPosFin/amministrazioni")
+					let oCdr = modelPosFin.getProperty(sPath[0])
+					modelPosFin.setProperty("/detailAnagrafica/CDR", modelPosFin.getProperty(sPath[0] + "/Cdr"))
+					modelPosFin.setProperty("/detailAnagrafica/CDR_DESCR", modelPosFin.getProperty(sPath[0] + "/DescEstesaCdr"))
+					modelPosFin.setProperty("/detailAnagrafica/AMMINISTAZIONE", aAmministrazioni.filter(amm => amm.Prctr === oCdr.Prctr)[0].Prctr)
+					modelPosFin.setProperty("/detailAnagrafica/DESC_AMMINISTAZIONE",aAmministrazioni.filter(amm => amm.Prctr === oCdr.Prctr)[0].DescEstesa)
+					break
+				case "Missione":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					//check se sono stati selezionati figli; in caso di Missione non combaciante, resettare input
+					if(modelPosFin.getProperty(sPath + "/Missione") !== modelPosFin.getProperty("/detailAnagrafica/MISSIONE")) {
+						modelPosFin.setProperty("/detailAnagrafica/PROGRAMMA", null)
+						modelPosFin.setProperty("/detailAnagrafica/DESC_PROGRAMMA",null)
+						modelPosFin.setProperty("/detailAnagrafica/AZIONE", null)
+						modelPosFin.setProperty("/detailAnagrafica/DESC_AZIONE",null)
+					}
+					modelPosFin.setProperty("/detailAnagrafica/MISSIONE", modelPosFin.getProperty(sPath + "/Missione"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_MISSIONE", modelPosFin.getProperty(sPath + "/DescEstesaMissione"))
+
+					break;
+				case "Programma":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					//check se sono stati selezionati figli; in caso di amministrazione non combaciante, resettare input
+					if(modelPosFin.getProperty(sPath + "/Programma") !== modelPosFin.getProperty("/detailAnagrafica/PROGRAMMA")) {
+						modelPosFin.setProperty("/detailAnagrafica/AZIONE", null)
+						modelPosFin.setProperty("/detailAnagrafica/DESC_AZIONE",null)
+					}
+					modelPosFin.setProperty("/detailAnagrafica/MISSIONE", modelPosFin.getProperty(sPath[0] + "/Missione"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_MISSIONE", modelPosFin.getProperty(sPath[0] + "/DescEstesaMissione"))
+					modelPosFin.setProperty("/detailAnagrafica/PROGRAMMA", modelPosFin.getProperty(sPath[0] + "/Programma"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_PROGRAMMA", modelPosFin.getProperty(sPath[0] + "/DescEstesaProgramma"))
+
+					break;
+				case "Azione":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					modelPosFin.setProperty("/detailAnagrafica/AMMINISTAZIONE", modelPosFin.getProperty(sPath[0] + "/Prctr"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_AMMINISTAZIONE",modelPosFin.getProperty(sPath[0] + "/DescEstesaPrctr"))
+					modelPosFin.setProperty("/detailAnagrafica/MISSIONE", modelPosFin.getProperty(sPath[0] + "/Missione"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_MISSIONE", modelPosFin.getProperty(sPath[0] + "/DescEstesaMissione"))
+					modelPosFin.setProperty("/detailAnagrafica/PROGRAMMA", modelPosFin.getProperty(sPath[0] + "/Programma"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_PROGRAMMA", modelPosFin.getProperty(sPath[0] + "/DescEstesaProgramma"))
+					modelPosFin.setProperty("/detailAnagrafica/AZIONE", modelPosFin.getProperty(sPath[0] + "/Azione"))
+					modelPosFin.setProperty("/detailAnagrafica/DESC_AZIONE", modelPosFin.getProperty(sPath[0] + "/DescEstesaAzione"))
+
+					break;
+				default:
+					break;
+			}
+			oEvent.getSource().getParent().close()
 		},
 		onSottostrumento: function () {
 			var oModel = this.getOwnerComponent().getModel("sapHanaS2");
