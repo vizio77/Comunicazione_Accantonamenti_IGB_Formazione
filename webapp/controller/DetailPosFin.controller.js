@@ -26,7 +26,9 @@ sap.ui.define([
 				programmi: [],
 				azioni: [],
 				titoli: [],
-				categorie: []
+				categorie: [],
+				ragionerie: [],
+				mac: []
 			})
 			this.__getDataHVPosFin()
 			var oRouter = this.getOwnerComponent().getRouter();
@@ -456,6 +458,25 @@ sap.ui.define([
 			})
 			//Inizio estrazione Titolo, Categoria, Ce2 e Ce3
 
+			//Inizio Estrazione Ragioneria
+			modelHana.read("/TipRagioneriaSet", {
+				filters: filtersTitolo,
+				success: (oData) => {
+					debugger
+					modelPosFin.setProperty("/formPosFin/ragionerie", oData.results)
+				}
+			})
+			//Fine Estrazione Ragioneria
+
+			//Inizio Estrazione Mac
+			modelHana.read("/MacSet", {
+				success: (oData) => {
+					debugger
+					modelPosFin.setProperty("/formPosFin/mac", oData.results)
+				}
+			})
+			//Fine Estrazione Mac
+
 		},
 		getAmmDescEstesa: function (Prctr) {
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
@@ -607,6 +628,16 @@ sap.ui.define([
 					modelPosFin.setProperty("/detailAnagrafica/CE3", modelPosFin.getProperty(sPath[0]  + "/Ce3"))
 					modelPosFin.setProperty("/detailAnagrafica/DESC_CE3", modelPosFin.getProperty(sPath[0] + "/DescEstesaCe3"))
 
+					break;
+				case "Ragioneria":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					modelPosFin.setProperty("/detailAnagrafica/DESC_RAG", modelPosFin.getProperty(sPath  + "/DescEstesaRagioneria"))
+					modelPosFin.setProperty("/detailAnagrafica/RAG", modelPosFin.getProperty(sPath  + "/Ragioneria"))
+					break;
+				case "Mac":
+					sPath = oEvent.getSource().getParent().getContent()[0].getSelectedContextPaths()
+					modelPosFin.setProperty("/detailAnagrafica/DESC_MAC", modelPosFin.getProperty(sPath  + "/DescEstesa"))
+					modelPosFin.setProperty("/detailAnagrafica/MAC", modelPosFin.getProperty(sPath  + "/NumeCodDett"))
 					break;
 				default:
 					break;

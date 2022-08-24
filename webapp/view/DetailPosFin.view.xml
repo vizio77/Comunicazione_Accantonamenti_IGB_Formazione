@@ -228,23 +228,30 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														</customData>
 													</Input>
 													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CDR_DESCR}" editable="false"/> 
+
 													<Label text="{i18n>Rag}" required="{= !${modelPosFin>/onModify} }"/>
-													<Input width="auto" value="{anagraficaModel>/rag}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
+													<Input width="auto" value="{modelPosFin>/detailAnagrafica/RAG}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onHVFormPosFin">
+														<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVRagioneria" />
+														</customData>
 													</Input>
-													<Input width="auto"  value="{anagraficaModel>/rag}" editable="false"/> 
+													<Input width="auto"  value="{modelPosFin>/detailAnagrafica/DESC_RAG}" editable="false"/> 
 													
 													<Toolbar visible="false"/>
 
 													<Label text="{i18n>Mac}" required="true"/>
-													<Input width="auto" value="{anagraficaModel>/mac}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
+													<Input width="auto" value="{modelPosFin>/detailAnagrafica/MAC}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onHVFormPosFin">
+														<layoutData>
 															<layout:GridData span="XL2 L3 M4 S4" />
 														</layoutData>
+														<customData>
+															<core:CustomData key="popup" value="HVMac" />
+														</customData>
 													</Input>
-													<Input width="auto" value="{anagraficaModel>/mac}" editable="false"/>
+													<Input width="auto" value="{modelPosFin>/detailAnagrafica/DESC_MAC}" editable="false"/>
 													<!-- <Label text="{i18n>TcrC}"/>
 													<Input width="auto" value="{anagraficaModel>/tctr}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
 													<layoutData>
