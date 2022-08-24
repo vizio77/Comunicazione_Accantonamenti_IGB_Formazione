@@ -5,7 +5,7 @@ sap.ui.getCore().attachInit(function () {
 	"use strict";
 
 	sap.ui.require([
-		"zsap.com.r3.cobi.s4.gestposfin/test/unit/AllTests"
+		"zsap.com.r3.cobi.s4.comaccigb/test/unit/AllTests"
 	], function () {
 		QUnit.start();
 	});

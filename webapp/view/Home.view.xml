@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="zsap.com.r3.cobi.s4.gestposfin.controller.Home"
+    controllerName="zsap.com.r3.cobi.s4.comaccigb.controller.Home"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:f="sap.ui.layout.form"
 	xmlns:core="sap.ui.core"

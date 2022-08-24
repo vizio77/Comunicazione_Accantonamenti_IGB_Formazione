@@ -1,4 +1,4 @@
-<mvc:View controllerName="zsap.com.r3.cobi.s4.gestposfin.controller.DetailPosFin" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:semantic="sap.f.semantic" xmlns:layout="sap.ui.layout" xmlns:f="sap.f"
+<mvc:View controllerName="zsap.com.r3.cobi.s4.comaccigb.controller.DetailPosFin" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:semantic="sap.f.semantic" xmlns:layout="sap.ui.layout" xmlns:f="sap.f"
 xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" >
 <App id="app">
 	<f:DynamicPage id="dynamicPageId" showFooter="true"  preserveHeaderStateOnScroll="true">

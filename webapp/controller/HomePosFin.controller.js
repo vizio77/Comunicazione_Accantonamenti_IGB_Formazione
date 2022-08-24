@@ -9,7 +9,7 @@ sap.ui.define([
 ], function(Controller, JSONModel, Filter, FilterOperator, Fragment, MessageBox, BaseController) {
 	"use strict";
 
-	return BaseController.extend("zsap.com.r3.cobi.s4.gestposfin.controller.HomePosFin", {
+	return BaseController.extend("zsap.com.r3.cobi.s4.comaccigb.controller.HomePosFin", {
 		/**
 		 * @override
 		 */
@@ -144,7 +144,7 @@ sap.ui.define([
 			});
 			if(!this._oDialog){
 				this._oDialog = sap.ui.xmlfragment(
-					"zsap.com.r3.cobi.s4.gestposfin.view.fragment.Sottostrumento",
+					"zsap.com.r3.cobi.s4.comaccigb.view.fragment.Sottostrumento",
 					this);
 				this._oDialog.setModel("sottostrumentiModel");
 				this.getView().addDependent(this._oDialog);
@@ -190,7 +190,7 @@ sap.ui.define([
 		onPosFin: function () {
 			if(!this.oDialogPosFin) {
 				Fragment.load({
-					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.PosFinHelp",
+					name:"zsap.com.r3.cobi.s4.comaccigb.view.fragment.PosFinHelp",
 					controller: this
 				}).then(oDialog => {
 					this.oDialogPosFin = oDialog;
@@ -205,7 +205,7 @@ sap.ui.define([
 			const {key, value} = oEvent.getSource().getCustomData()[0].mProperties
 			if(!this[value]) {
 				Fragment.load({
-					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment." + value,
+					name:"zsap.com.r3.cobi.s4.comaccigb.view.fragment." + value,
 					controller: this
 				}).then(oDialog => {
 					//this.__getValueHelpData(key)
@@ -284,7 +284,7 @@ sap.ui.define([
 		onPressConfPosFin: function () {
 			if(!this.oDialogTabPosFinanziaria) {
 				Fragment.load({
-					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.TablePosizioneFinanziaria",
+					name:"zsap.com.r3.cobi.s4.comaccigb.view.fragment.TablePosizioneFinanziaria",
 					controller: this
 				}).then(oDialog => {
 					this.oDialogTabPosFinanziaria = oDialog;
@@ -368,7 +368,7 @@ sap.ui.define([
 			if (!this._pPopover) {
 				this._pPopover = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverPosizioneFinanziaria",
+					name: "zsap.com.r3.cobi.s4.comaccigb.view.fragment.PopOverPosizioneFinanziaria",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -415,7 +415,7 @@ sap.ui.define([
 			if (!this._pPopoverAction) {
 				this._pPopoverAction = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverInfoGeneral",
+					name: "zsap.com.r3.cobi.s4.comaccigb.view.fragment.PopOverInfoGeneral",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -436,7 +436,7 @@ sap.ui.define([
 			if (!this._pPopoverSottoStr) {
 				this._pPopoverSottoStr = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverSottostrumento",
+					name: "zsap.com.r3.cobi.s4.comaccigb.view.fragment.PopOverSottostrumento",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -455,7 +455,7 @@ sap.ui.define([
 			if (!this._pPopoverMiss) {
 				this._pPopoverMiss = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverMissione",
+					name: "zsap.com.r3.cobi.s4.comaccigb.view.fragment.PopOverMissione",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -474,7 +474,7 @@ sap.ui.define([
 			if (!this._pPopoverProgr) {
 				this._pPopoverProgr = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverProgramma",
+					name: "zsap.com.r3.cobi.s4.comaccigb.view.fragment.PopOverProgramma",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -494,7 +494,7 @@ sap.ui.define([
 			if (!this._pPopoverAction) {
 				this._pPopoverAction = Fragment.load({
 					id: oView.getId(),
-					name: "zsap.com.r3.cobi.s4.gestposfin.view.fragment.PopOverAzione",
+					name: "zsap.com.r3.cobi.s4.comaccigb.view.fragment.PopOverAzione",
 					controller: this
 				}).then(function(oPopover) {
 					oView.addDependent(oPopover);
@@ -524,7 +524,7 @@ sap.ui.define([
 				statoWf		: "Iniziato"
 			})
 			if (!this._handleAddFilter) {
-				this._handleAddFilter = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.FiltriIniziali", this);
+				this._handleAddFilter = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.comaccigb.view.fragment.FiltriIniziali", this);
 				this.getView().addDependent(this._handleAddFilter);
 			}
 			this._handleAddFilter.open();
@@ -547,7 +547,7 @@ sap.ui.define([
 				statoWf		: "Iniziato"
 			})
 			if (!this._handleAddElenco) {
-				this._handleAddElenco = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.AddElenco", this);
+				this._handleAddElenco = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.comaccigb.view.fragment.AddElenco", this);
 				this.getView().addDependent(this._handleAddElenco);
 			}
 			this._handleAddElenco.open();
@@ -576,7 +576,7 @@ sap.ui.define([
 				statoWf		: "Iniziato"
 			})
 			if (!this._handleAddCOFOG) {
-				this._handleAddCOFOG = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.AddCOFOG", this);
+				this._handleAddCOFOG = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.comaccigb.view.fragment.AddCOFOG", this);
 				this.getView().addDependent(this._handleAddCOFOG);
 			}
 			this._handleAddCOFOG.open();
@@ -599,7 +599,7 @@ sap.ui.define([
 
 			
 			if (!this._handleAddCOFOG) {
-				this._handleAddCOFOG = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.gestposfin.view.fragment.AddCOFOG", this);
+				this._handleAddCOFOG = sap.ui.xmlfragment("zsap.com.r3.cobi.s4.comaccigb.view.fragment.AddCOFOG", this);
 				this.getView().addDependent(this._handleAddCOFOG);
 			}
 			this._handleAddCOFOG.open();
@@ -695,7 +695,7 @@ sap.ui.define([
 		onHelpValueSottoStrumento: function () {
 			if(!this.oDialogHVSottoStrumento) {
 				Fragment.load({
-					name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HelpValueSottostrumento",
+					name:"zsap.com.r3.cobi.s4.comaccigb.view.fragment.HelpValueSottostrumento",
 					controller: this
 				}).then(oDialog => {
 					this.oDialogHVSottoStrumento = oDialog;

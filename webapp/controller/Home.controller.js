@@ -12,7 +12,7 @@ sap.ui.define([
     function (Controller, JSONModel, Filter, FilterOperator, Fragment, BaseController) {
         "use strict";
 
-        return BaseController.extend("zsap.com.r3.cobi.s4.gestposfin.controller.Home", {
+        return BaseController.extend("zsap.com.r3.cobi.s4.comaccigb.controller.Home", {
             onInit: function () {
                 this.getView().setModel(new JSONModel({formSottostrumento:{
                     tipologia: null,
@@ -51,7 +51,7 @@ sap.ui.define([
             onHelpValueSottoStrumento: function () {
                 if(!this.oDialogHVSottoStrumento) {
                     Fragment.load({
-                        name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment.HelpValueSottostrumento",
+                        name:"zsap.com.r3.cobi.s4.comaccigb.view.fragment.HelpValueSottostrumento",
                         controller: this
                     }).then(oDialog => {
                         this.oDialogHVSottoStrumento = oDialog;
@@ -261,7 +261,7 @@ sap.ui.define([
                 });
                 if(!this._oDialog){
                     this._oDialog = sap.ui.xmlfragment(
-                        "zsap.com.r3.cobi.s4.gestposfin.view.fragment.Sottostrumento",
+                        "zsap.com.r3.cobi.s4.comaccigb.view.fragment.Sottostrumento",
                         this);
                     this._oDialog.setModel("sottostrumentiModel");
                     this.getView().addDependent(this._oDialog);
@@ -277,7 +277,7 @@ sap.ui.define([
                 }
                 if(!this._oDialog){
                     this._oDialog = sap.ui.xmlfragment(
-                        "zsap.com.r3.cobi.s4.gestposfin.view.fragment.Sottostrumento",
+                        "zsap.com.r3.cobi.s4.comaccigb.view.fragment.Sottostrumento",
                         this);
                         this._oDialog.setModel("sottostrumentiModel");
                         this.getView().addDependent(this._oDialog);
@@ -718,7 +718,7 @@ sap.ui.define([
                 let {key, value} = oEvent.getSource().getCustomData()[0].mProperties
                 var sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
                 Fragment.load({
-                    name:"zsap.com.r3.cobi.s4.gestposfin.view.fragment." + value,
+                    name:"zsap.com.r3.cobi.s4.comaccigb.view.fragment." + value,
                     controller: this
                 }).then(oDialog => {
                     this[value] = oDialog

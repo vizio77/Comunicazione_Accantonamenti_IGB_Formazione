@@ -40,7 +40,7 @@ sap.ui.define([
 								"tileType": "sap.ushell.ui.tile.StaticTile",
 								"properties": {
 									"title": "App Title",
-									"targetURL": "#zsapcomr3cobis4gestposfin-display"
+									"targetURL": "#zsapcomr3cobis4comaccigb-display"
 								}
 							}]
 						}]
@@ -51,8 +51,8 @@ sap.ui.define([
 				"adapter": {
 					"config": {
 						"inbounds": {
-							"zsapcomr3cobis4gestposfin-display": {
-								"semanticObject": "zsapcomr3cobis4gestposfin",
+							"zsapcomr3cobis4comaccigb-display": {
+								"semanticObject": "zsapcomr3cobis4comaccigb",
 								"action": "display",
 								"description": "A Fiori application.",
 								"title": "App Title",
@@ -61,8 +61,8 @@ sap.ui.define([
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
-									"additionalInformation": "SAPUI5.Component=zsap.com.r3.cobi.s4.gestposfin",
-									"url": sap.ui.require.toUrl("zsap/com/r3/cobi/s4/gestposfin")
+									"additionalInformation": "SAPUI5.Component=zsap.com.r3.cobi.s4.comaccigb",
+									"url": sap.ui.require.toUrl("zsap/com/r3/cobi/s4/comaccigb")
 								}
 							}
 						}

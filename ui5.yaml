@@ -2,7 +2,7 @@
 
 specVersion: "2.5"
 metadata:
-  name: zsap.com.r3.cobi.s4.gestposfin
+  name: zsap.com.r3.cobi.s4.comaccigb
 type: application
 server:
   customMiddleware:
@@ -28,5 +28,5 @@ server:
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: zsap.com.r3.cobi.s4.gestposfin
+        component: zsap.com.r3.cobi.s4.comaccigb
         ui5Theme: sap_fiori_3

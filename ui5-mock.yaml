@@ -2,7 +2,7 @@
 
 specVersion: "2.5"
 metadata:
-  name: zsap.com.r3.cobi.s4.gestposfin
+  name: zsap.com.r3.cobi.s4.comaccigb
 type: application
 server:
   customMiddleware:

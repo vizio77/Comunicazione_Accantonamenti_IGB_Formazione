@@ -1,12 +1,12 @@
 sap.ui.define([
         "sap/ui/core/UIComponent",
         "sap/ui/Device",
-        "zsap/com/r3/cobi/s4/gestposfin/model/models"
+        "zsap/com/r3/cobi/s4/comaccigb/model/models"
     ],
     function (UIComponent, Device, models) {
         "use strict";
 
-        return UIComponent.extend("zsap.com.r3.cobi.s4.gestposfin.Component", {
+        return UIComponent.extend("zsap.com.r3.cobi.s4.comaccigb.Component", {
             metadata: {
                 manifest: "json",
                 config: {

@@ -1,7 +1,7 @@
 {
   "_version": "1.17.0",
   "sap.app": {
-    "id": "zsap.com.r3.cobi.s4.gestposfin",
+    "id": "zsap.com.r3.cobi.s4.comaccigb",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -47,7 +47,7 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
     "dependencies": {
       "minUI5Version": "1.71.13",
       "libs": {
@@ -69,7 +69,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "zsap.com.r3.cobi.s4.gestposfin.i18n.i18n"
+          "bundleName": "zsap.com.r3.cobi.s4.comaccigb.i18n.i18n"
         }
       },
       "sapHanaS2": {
@@ -93,7 +93,7 @@
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
         "async": true,
-        "viewPath": "zsap.com.r3.cobi.s4.gestposfin.view",
+        "viewPath": "zsap.com.r3.cobi.s4.comaccigb.view",
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
@@ -153,7 +153,7 @@
       }
     },
     "rootView": {
-      "viewName": "zsap.com.r3.cobi.s4.gestposfin.view.Home",
+      "viewName": "zsap.com.r3.cobi.s4.comaccigb.view.Home",
       "type": "XML",
       "async": true,
       "id": "app",

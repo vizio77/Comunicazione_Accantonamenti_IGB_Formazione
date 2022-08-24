@@ -1,7 +1,7 @@
 /*global QUnit*/
 
 sap.ui.define([
-	"zsap.com.r3.cobi.s4.gestposfin/controller/Home.controller"
+	"zsap.com.r3.cobi.s4.comaccigb/controller/Home.controller"
 ], function (Controller) {
 	"use strict";
 

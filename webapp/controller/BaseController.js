@@ -8,7 +8,7 @@ sap.ui.define([
 ) {
 	"use strict";
 
-	return Controller.extend("zsap.com.r3.cobi.s4.gestposfin.controller.BaseController", {
+	return Controller.extend("zsap.com.r3.cobi.s4.comaccigb.controller.BaseController", {
         getRouter : function () {
             return this.getOwnerComponent().getRouter();
         },

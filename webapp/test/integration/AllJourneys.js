@@ -7,7 +7,7 @@ sap.ui.define([
 
 	Opa5.extendConfig({
 		arrangements: new Startup(),
-		viewNamespace: "zsap.com.r3.cobi.s4.gestposfin.view.",
+		viewNamespace: "zsap.com.r3.cobi.s4.comaccigb.view.",
 		autoWait: true
 	});
 });

@@ -3,7 +3,7 @@ sap.ui.define([
 ], function (Opa5) {
 	"use strict";
 
-	return Opa5.extend("zsap.com.r3.cobi.s4.gestposfin.test.integration.arrangements.Startup", {
+	return Opa5.extend("zsap.com.r3.cobi.s4.comaccigb.test.integration.arrangements.Startup", {
 
 		iStartMyApp: function (oOptionsParameter) {
 			var oOptions = oOptionsParameter || {};
@@ -14,7 +14,7 @@ sap.ui.define([
 			// start the app UI component
 			this.iStartMyUIComponent({
 				componentConfig: {
-					name: "zsap.com.r3.cobi.s4.gestposfin",
+					name: "zsap.com.r3.cobi.s4.comaccigb",
 					async: true
 				},
 				hash: oOptions.hash,
