@@ -36,6 +36,21 @@ sap.ui.define([
 		},
 		_onObjectMatched: function (oEvent) {
 			this.__getDataHVPosFin()
+			
+		},
+		loadIframe: function(){
+			//lt prova recupero iframe
+			var that = this;
+			var oFrame = that.getView().byId("competenzaSac");
+			var url = this.getOwnerComponent().getModel("iframe").getProperty("/link");
+			that.urlSac = url;
+			var oFrameContent = oFrame.$()[0];
+			oFrameContent.setAttribute("src", that.urlSac);
+			that._refresh();
+		},
+		_refresh: function() {
+			var urlSac = this.urlSac;
+			window.frames[0].location = urlSac + (new Date());
 		},
 		sorterAmmByNumericCode: function (a,b) {
 			const subStrAmm1 = Number(a.substring(1, a.length))
@@ -75,7 +90,7 @@ sap.ui.define([
 								$expand: "TipCapitolo"
 							},
 							success: (oData) => {
-								debugger
+								//debugger
 								modelPosFin.setProperty("/formPosFin/capitoli", function() {
 									let aCapitoli = []
 									if(oData.results.length === 1) {
@@ -95,7 +110,7 @@ sap.ui.define([
 								}())
 							},
 							error:  (err) => {
-								debugger
+								//debugger
 							}
 						})
 					}
@@ -110,7 +125,7 @@ sap.ui.define([
 								$expand: "TipCapitolo"
 							},
 							success: (oData) => {
-								debugger
+								//debugger
 								modelPosFin.setProperty("/formPosFin/pg", function() {
 									let aCapitoli = []
 									if(oData.results.length === 1) {
@@ -132,7 +147,7 @@ sap.ui.define([
 								}())
 							},
 							error:  (err) => {
-								debugger
+								//debugger
 							}
 						})
 					}
@@ -147,7 +162,7 @@ sap.ui.define([
 									$expand: "TipCdr"
 								},
 								success: (oData) => {
-									debugger
+									//debugger
 									modelPosFin.setProperty("/formPosFin/cdr", function() {
 										let aCdr = []
 										if(oData.results.length === 1) {
@@ -163,7 +178,7 @@ sap.ui.define([
 									}())
 								},
 								error:  (err) => {
-									debugger
+									//debugger
 								}
 							})
 						}
@@ -177,7 +192,7 @@ sap.ui.define([
 						modelHana.read("/TipMissioneSet",{
 							filters: aFilters,
 							success: (oData) => {
-								debugger
+								//debugger
 								modelPosFin.setProperty("/formPosFin/programmi", function() {
 									let aProgrammi = []
 									for(let i = 0; i < oData.results.length; i++)
@@ -189,7 +204,7 @@ sap.ui.define([
 								}())
 							},
 							error:  (err) => {
-								debugger
+								//debugger
 							}
 						})
 					break
@@ -204,11 +219,11 @@ sap.ui.define([
 						modelHana.read("/TipMissioneSet",{
 							filters: aFilters,
 							success: (oData) => {
-								debugger
+								//debugger
 								modelPosFin.setProperty("/formPosFin/azioni",oData.results)
 							},
 							error:  (err) => {
-								debugger
+								//debugger
 							}
 						})
 					break
@@ -219,7 +234,7 @@ sap.ui.define([
 						modelHana.read("/TipTitoloSet",{
 							filters: aFilters,
 							success: (oData) => {
-								debugger
+								//debugger
 								modelPosFin.setProperty("/formPosFin/categorie", function() {
 									let aCategoria = []
 									for(let i = 0; i < oData.results.length; i++)
@@ -230,7 +245,7 @@ sap.ui.define([
 								})
 							},
 							error:  (err) => {
-								debugger
+								//debugger
 							}
 						})
 					break
@@ -243,7 +258,7 @@ sap.ui.define([
 						modelHana.read("/TipTitoloSet",{
 							filters: aFilters,
 							success: (oData) => {
-								debugger
+								//debugger
 								modelPosFin.setProperty("/formPosFin/ce2", function() {
 									let aCe2 = []
 									for(let i = 0; i < oData.results.length; i++)
@@ -255,7 +270,7 @@ sap.ui.define([
 								})
 							},
 							error:  (err) => {
-								debugger
+								//debugger
 							}
 						})
 					break
@@ -270,11 +285,11 @@ sap.ui.define([
 						modelHana.read("/TipTitoloSet",{
 							filters: aFilters,
 							success: (oData) => {
-								debugger
+								//debugger
 								modelPosFin.setProperty("/formPosFin/ce3", oData.results)
 							},
 							error:  (err) => {
-								debugger
+								//debugger
 							}
 						})
 					break
@@ -317,7 +332,7 @@ sap.ui.define([
 					$expand: "TipMissione,TipCapitolo,TipCdr"
 				},
 				success: (oData) => {
-					debugger
+					//debugger
 					modelPosFin.setProperty("/formPosFin/amministrazioni", oData.results)
 					if(modelPosFin.getProperty("/infoSottoStrumento/ToAmministrazione/results").length === 1){
 						modelPosFin.setProperty("/detailAnagrafica/AMMINISTAZIONE", oData.results[0].Prctr)
@@ -422,7 +437,7 @@ sap.ui.define([
 					}())
 				},
 				error:  (err) => {
-					debugger
+					//debugger
 				}
 			})
 			//Fine estrazione Amm, Capitolo, Pg, Azione, Cdr, Programma e Missione
@@ -462,7 +477,7 @@ sap.ui.define([
 			modelHana.read("/TipRagioneriaSet", {
 				filters: filtersTitolo,
 				success: (oData) => {
-					debugger
+					//debugger
 					modelPosFin.setProperty("/formPosFin/ragionerie", oData.results)
 				}
 			})
@@ -471,7 +486,7 @@ sap.ui.define([
 			//Inizio Estrazione Mac
 			modelHana.read("/MacSet", {
 				success: (oData) => {
-					debugger
+					//debugger
 					modelPosFin.setProperty("/formPosFin/mac", oData.results)
 				}
 			})
@@ -1002,11 +1017,16 @@ sap.ui.define([
 		},
 		onTabChanged: function (oEvent) {
 			let homeModel = this.getOwnerComponent().getModel("modelHome")
-			if(oEvent.getParameter("key") === "info"){
+			 if(oEvent.getParameter("key") === "info"){
 				homeModel.setProperty("/tabAnagrafica", true)
+			} else if (oEvent.getParameter("key") === "attachments"){				
+				this.loadIframe();
+				homeModel.setProperty("/tabAnagrafica", false)
 			} else {
 				homeModel.setProperty("/tabAnagrafica", false)
 			}
+
+			
 		},
 
 		//lt inserisco popup iniziale.
@@ -1252,14 +1272,16 @@ sap.ui.define([
 			}
 		},
 		checkModifiableValue: function () {
-			let bCheck = true
+			/* let bCheck = true
 			const modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			if(modelPosFin.getProperty("/onModify")){
 				if(modelPosFin.getProperty("/infoSottoStrumento/TipoEsposizione") === '2'){
 					bCheck = false
 				}
 			}
-			return bCheck
+			return bCheck; */
+			//lt rendo non modificabile i campi
+			return false
 		}
 	});
 });

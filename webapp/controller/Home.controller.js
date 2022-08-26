@@ -88,7 +88,7 @@ sap.ui.define([
                                     // new Filter("Reale", FilterOperator.EQ, "R")
                                 ],
                             success:  (oData) => {
-                                debugger
+                                //debugger
                                 //Lista Tipologie
                                 let aTipologia = this.__removeDuplicate(oData.results, "tipologia")
                                 aTipologia.unshift({Esposizione: null, DescrEsposizione: "", Fase: null, Anno: null})
@@ -109,7 +109,7 @@ sap.ui.define([
                                 // modelHome.setProperty("/formSottostrumento/visibilitaSet", oData.results[0].ToSHVisibilita.results)
                             },
                             error: function (res) {
-                                debugger
+                                //debugger
                             }
                         })
                     })
@@ -486,7 +486,7 @@ sap.ui.define([
                     this.__resetFiltri()
             },
             onChangeSelect: function (oEvent) {
-                debugger
+                //debugger
                 let oModel = this.getOwnerComponent().getModel("sapHanaS2");
                 let modelHome = this.getView().getModel("modelHome")
                 const sIdChange = oEvent.getParameter("id")
@@ -533,7 +533,7 @@ sap.ui.define([
                     // },
                     filters: aFilter,
                     success:  (oData) => {
-                        debugger
+                        //debugger
                          //Lista Tipologie
                          if(sIdChange !== "idformStTipologia") {
                             let aTipologia = this.__removeDuplicate(oData.results, "tipologia")
@@ -570,7 +570,7 @@ sap.ui.define([
                         // }
                     },
                     error: function (res) {
-                        debugger
+                        //debugger
                     }
                 })
             },
@@ -587,22 +587,22 @@ sap.ui.define([
                     filters: [new Filter("Fase", FilterOperator.EQ, "DLB"),
                               new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio"))],
                     success: (oData, res) => {
-                        debugger
+                        //debugger
                         this.__setPropertyFiltriTitoloDomSStr(oData)
                     },
                     error: (err) => {
-                        debugger
+                        //debugger
                     }
                  })
                  modelHana.read("/Gest_SH1_MissioneSet", {
                     filters: [new Filter("Fase", FilterOperator.EQ, "DLB"),
                               new Filter("Anno", FilterOperator.EQ, modelHome.getProperty("/formSottostrumento/esercizio"))],
                     success: (oData, res) => {
-                        debugger
+                        //debugger
                         this.__setPropertyFiltriMissioneDomSStr(oData)
                     },
                     error: (err) => {
-                        debugger
+                        //debugger
                     }
                  })
                  //sap.ui.core.BusyIndicator.show();		
@@ -936,24 +936,24 @@ sap.ui.define([
                     modelHana.read("/Gest_SH1_TitoloSet", {
                         filters: aFilters,
                         success: (oData, res) => {
-                            debugger
+                            //debugger
                             //this.__setPropertyFiltriTitoloDomSStr(oData)
                             this.__setPropertyHVChildren(aSplitPathDeleted[2], oData)
                         },
                         error: (err) => {
-                            debugger
+                            //debugger
                         }
                     })
                 if(aSplitPathDeleted[2] === "missioni" || aSplitPathDeleted[2] === "programmi" || aSplitPathDeleted[2] === "azioni")
                     modelHana.read("/Gest_SH1_MissioneSet", {
                         filters: aFilters,
                         success: (oData, res) => {
-                            debugger
+                            //debugger
                             //this.__setPropertyFiltriTitoloDomSStr(oData)
                             this.__setPropertyHVChildren(aSplitPathDeleted[2], oData)
                         },
                         error: (err) => {
-                            debugger
+                            //debugger
                         }
                     })
 
@@ -1003,7 +1003,7 @@ sap.ui.define([
                 return  aProgrammi.filter(item => ( item.Missione === missione)).length > 0
             },
             onSelectionChangeMCBDomSStr: function (oEvent) {
-                debugger
+                //debugger
                 let modelHome = this.getView().getModel("modelHome")
                 const bAction = oEvent.getParameter("selected")
                 const sArrayName = oEvent.getSource().getCustomData().find(cd => cd.getKey() === "selezione").getValue()
@@ -1100,7 +1100,7 @@ sap.ui.define([
                     modelHana.read("/Gest_SH1_TitoloSet", {
                         filters: aFilters,
                         success: (oData, res) => {
-                            debugger
+                            //debugger
                             //this.__setPropertyFiltriTitoloDomSStr(oData)
                             this.__setPropertyHVChildren(sPath, oData)
                             let modelHome = this.getView().getModel("modelHome")
@@ -1138,7 +1138,7 @@ sap.ui.define([
                             }
                         },
                         error: (err) => {
-                            debugger
+                            //debugger
                         }
                     })
                 if(sPath === "azioni" || sPath === "programmi" || sPath === "missioni"){
@@ -1172,7 +1172,7 @@ sap.ui.define([
                             }
                         },
                         error: (err) => {
-                            debugger
+                            //debugger
                         }
                     })
                 }

@@ -566,28 +566,29 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 									</Panel>
 								</IconTabFilter>
 								<IconTabFilter icon="sap-icon://process" key="attachments" text="{i18n>competenza}" id="idCompetenzaTab" visible="{= ${modelPosFin>/infoSottoStrumento/TipoEsposizione} !== '2'  &amp;&amp; ${modelPosFin>/onModify} === true }" >
-									<FlexBox justifyContent="SpaceAround" width="40%">
+									<FlexBox justifyContent="SpaceAround" width="20%">
 										<items>
 											<VBox>
 												<Label text="Autorizzazione:" labelFor="idAuthComp"/>
 												<Input value="{modelPosFin>/CompetenzaAuth/Auth}" showValueHelp="true" valueHelpRequest=".onAuth" id="idAuthComp" valueHelpOnly="true" width="130%">
 												</Input>
 											</VBox>
-											<VBox>
+											<!-- <VBox>
 												<Label text="Autorizzazione Collegata:" labelFor="idAuthAssComp"/>
 												<Input value="{modelPosFin>/CompetenzaAuth/AuthAssociata}" showValueHelp="true" valueHelpRequest=".onAuthCollegata" id="idAuthAssComp" valueHelpOnly="true" width="130%">
 												</Input>
-											</VBox>
+											</VBox> -->
 										</items>
 									</FlexBox>
 									<OverflowToolbar id="autorizzazioniCompButton" class="sapUiSmallMarginBottom" style="Clear">
 										<ToolbarSpacer/>
-										<Button text="{i18n>gestCondingBlock}" type="Emphasized" enabled="{= !!${modelPosFin>/CompetenzaAuth/Auth} }" press=".onGestisciCodingBlock"/>
-										<Button text="{i18n>associaNuovaAuth}" type="Emphasized" press=".onNuovaAuth"/>
+										<!-- <Button text="{i18n>gestCondingBlock}" type="Emphasized" enabled="{= !!${modelPosFin>/CompetenzaAuth/Auth} }" press=".onGestisciCodingBlock"/>
+										<Button text="{i18n>associaNuovaAuth}" type="Emphasized" press=".onNuovaAuth"/> -->
 										<Button text="{i18n>resetta}" type="Emphasized" press="onResetAuth"/>
 										<Button text="{i18n>avvia}" type="Emphasized"/>
 									</OverflowToolbar>
-									<html:iframe id ="attachmentframe" height="100%" width="100%" src=""> </html:iframe>
+									<!-- <html:iframe id="linkSac" frameBorder="0" target="_top" width="100%" height="500em"></html:iframe> -->
+									<html:iframe id ="competenzaSac" height="100%" width="100%" src=""> </html:iframe>
 								</IconTabFilter>
 								<IconTabFilter icon="sap-icon://accounting-document-verification" key="people" text="{i18n>cassa}"  id="idCassTab" visible="{= ${modelPosFin>/infoSottoStrumento/TipoEsposizione} !== '2' &amp;&amp; ${modelPosFin>/onModify} === true }"></IconTabFilter>
 								<IconTabFilter icon="sap-icon://commission-check" key="RimOrizzontali" text="{i18n>RimOrizzontali}" visible="{= ${modelPosFin>/infoSottoStrumento/TipoEsposizione} === '2'  &amp;&amp; ${modelPosFin>/onModify} === true }">

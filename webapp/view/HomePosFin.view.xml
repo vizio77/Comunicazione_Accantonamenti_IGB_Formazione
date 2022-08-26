@@ -249,7 +249,7 @@
 			<OverflowToolbar>
 				<ToolbarSpacer/>
 				<Button text="{i18n>rimodulazioniVert}" type="Emphasized" visible="{= ${modelPosFin>/infoSottoStrumento/StatEsposizione} === '8'}"/>
-				<Button text="{i18n>creaPosFin}" press="onCreaPosFin" type="Emphasized"/>
+				<!-- <Button text="{i18n>creaPosFin}" press="onCreaPosFin" type="Emphasized"/> -->
 			</OverflowToolbar>
 		</f:footer>
 	</f:DynamicPage>

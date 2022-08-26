@@ -15,12 +15,9 @@ builder:
       configuration:
         target:
           url: http://l2vs2slass01.mef.gov.it:8000
-          client: "100"
-        credentials:
-          username: env:USER
-          password: env:PSW
+          client: "100"        
         app:
           name: Z_S4_COMACCIGB
           description: Comunicazione Accantonamenti IGB
           package: Z_ALM_S4_COBI_FIORI
-          transport: 
+          transport: S2SK908558

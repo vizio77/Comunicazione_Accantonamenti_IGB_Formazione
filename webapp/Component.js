@@ -29,6 +29,7 @@ sap.ui.define([
                 sap.ui.getCore().getConfiguration().setLanguage("it");
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
+                this.setModel(models.createIframeModel(), "iframe");
             }
         });
     }

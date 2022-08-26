@@ -17,7 +17,7 @@ sap.ui.define([
 			this.getOwnerComponent().setModel(new JSONModel({faseRicerca: true, infoSottoStrumento: {}}),"modelPosFin")
 			this.getOwnerComponent().setModel(new JSONModel({FieldPosEnabled: true, Esercizio:(new Date(new Date().setFullYear(new Date().getFullYear() + 1))).getFullYear().toString()}),"modelFilterHome")
 			// this.getView().getModel("modelPosFin").setProperty("/onAvvio",false)
-			let itemsMock = await this.loadJSONTest("/model/data_mock.json");
+			let itemsMock = this.getPosFin()//let itemsMock = await this.loadJSONTest("/model/data_mock.json");
 			this.getOwnerComponent().getModel("modelPosFin").setProperty("/",itemsMock)
 			this.getOwnerComponent().getModel("modelPosFin").setProperty("/initialDetail",true)
 			this.getOwnerComponent().getModel("modelPosFin").setProperty("/form",{})
