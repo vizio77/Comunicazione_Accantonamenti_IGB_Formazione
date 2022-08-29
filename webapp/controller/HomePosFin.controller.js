@@ -47,7 +47,8 @@ sap.ui.define([
 		},
 		__getSottoStrumento(oKeySStr){
 			//this.getView().setBusy(true)
-			const oModel = this.getView().getModel("sapHanaS2");
+			//const oModel = this.getView().getModel("sapHanaS2");
+			const oModel = this.getOwnerComponent().getModel("sapHanaS2");
 			// let sUrl = `/Gest_fasi_sstrSet(Fikrs='${oKeySStr.Fikrs}',CodiceStrumento='${oKeySStr.CodiceStrumento}'`+
 			// 			`,CodiceStrumentoOri='${oKeySStr.CodiceStrumentoOri}',CodiceSottostrumento='${oKeySStr.CodiceSottostrumento}',Datbis=datetime'${oKeySStr.Datbis}')`
 			oModel.read("/Gest_fasi_sstrSet",{
