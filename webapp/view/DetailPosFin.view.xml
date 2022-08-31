@@ -38,10 +38,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 											<OverflowToolbar>
 												<Title text="{i18n>AnagraficaPS}"/>
 											</OverflowToolbar>
-										</headerToolbar>
-
-										<!-- MODIFICA LAYOUT SECONDO ANTONIO 10/06/2022 -->
-										<!-- AMMINISTRAZIONE - CAPITOLO E PG -->
+										</headerToolbar>									
 											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -117,7 +114,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													</HBox>	
 												</form:content>
 											</form:SimpleForm>	
-											<!-- MISSIONE - PROGRAMMA - AZIONE -UDV -->
+											
 											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -178,7 +175,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<Input value="{anagraficaModel>/udv2}" editable="false"/>
 												</form:content>
 											</form:SimpleForm>		
-											<!-- DA TIT A CAPITOLONE -->
+											
 											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -252,22 +249,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														</customData>
 													</Input>
 													<Input width="auto" value="{modelPosFin>/detailAnagrafica/DESC_MAC}" editable="false"/>
-													<!-- <Label text="{i18n>TcrC}"/>
-													<Input width="auto" value="{anagraficaModel>/tctr}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Input width="auto" value="{anagraficaModel>/tcrc}" editable="false"/>
-													<Label text="{i18n>TcrF}"/>
-													<Input width="auto" value="{anagraficaModel>/tcrf}" editable="{= !${modelPosFin>/onModify} }" showValueHelp="true" valueHelpOnly="true">
-													<layoutData>
-															<layout:GridData span="XL2 L3 M4 S4" />
-														</layoutData>
-													</Input>
-													<Input width="auto" value="{anagraficaModel>/tcrf}" editable="false"/>  -->
 													
-													<!-- <Toolbar visible="false"/> -->
 													<Label text="{i18n>TipoFondo}"/>
 													<Select width="auto" selectedKey="{anagraficaModel>/tipoFondo}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 													<Label text="{i18n>TipoSpesa}"/>
@@ -295,7 +277,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<CheckBox selected="{anagraficaModel>/capitolone}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 												</form:content>
 											</form:SimpleForm>		
-											<!-- CU/IRAP/NON CU - NOIPA - Posizione Finanziaria IRAP -->
+											
 											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -322,13 +304,11 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 														<core:Item key="altro" text="ALTRO"/>
 													</Select>
 													<Label text="{i18n>CapitoloIrap}"/>
-													<!-- <Input width="auto" value="{anagraficaModel>/capitoloIrap}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/> -->
 													<Select width="auto" selectedKey="" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }">
 														
 													</Select>
 												</form:content>
 											</form:SimpleForm>		
-											<!-- Denominazione Capitolo -->
 											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -362,7 +342,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/CAPITOLO/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 												</form:content>
 											</form:SimpleForm>	
-											<!-- Denominazione PG -->
 											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -396,7 +375,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<Input width="auto" showValueHelp="false" value="{modelPosFin>/detailAnagrafica/DESC_PG_ESTESA/DenRid}" visible="{visibleCheckModel>/visibleOnlyCreaPosFin}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>																			
 												</form:content>
 											</form:SimpleForm>	
-											<!-- Anagrafica Piano Di Gestione -->
 											<form:SimpleForm 
 												editable="true"
 												layout="ResponsiveGridLayout"																
@@ -449,7 +427,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 													<CheckBox selected="{anagraficaModel>/ruoliSpesa}" editable="{path: 'modelPosFin>/onModify', formatter: '.checkModifiableValue' }"/>
 												</form:content>
 											</form:SimpleForm>
-										<!-- Elenchi -->
 										<Panel expandable="true" visible="{visibleCheckModel>/visiblePanel}" expanded="false">
 											<headerToolbar>
 												<OverflowToolbar>
@@ -485,7 +462,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												</items>
 											</Table>
 										</Panel>
-										<!-- C.O.F.O.G. -->
 										<Panel expandable="true" visible="{visibleCheckModel>/visiblePanel}" expanded="false">
 											<headerToolbar>
 												<OverflowToolbar>
@@ -529,7 +505,6 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 												</items>
 											</Table>
 										</Panel>															
-										<!-- Visualizza Collegamenti -->
 										<Panel expandable="true" visible="{= ${modelPosFin>/onCreate} === false}" expanded="false">
 											<headerToolbar>
 												<OverflowToolbar>
@@ -588,28 +563,12 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 										<Button text="{i18n>avvia}" type="Emphasized"/>
 									</OverflowToolbar>
 									<!-- <html:iframe id="linkSac" frameBorder="0" target="_top" width="100%" height="500em"></html:iframe> -->
-									<html:iframe id ="competenzaSac" height="100%" width="100%" src=""> </html:iframe>
+									<html:iframe id="competenzaSac" height="1000em" width="100%" allowfullscreen="true"> </html:iframe>
 								</IconTabFilter>
-								<IconTabFilter icon="sap-icon://accounting-document-verification" key="people" text="{i18n>cassa}"  id="idCassTab" visible="{= ${modelPosFin>/infoSottoStrumento/TipoEsposizione} !== '2' &amp;&amp; ${modelPosFin>/onModify} === true }"></IconTabFilter>
-								<IconTabFilter icon="sap-icon://commission-check" key="RimOrizzontali" text="{i18n>RimOrizzontali}" visible="{= ${modelPosFin>/infoSottoStrumento/TipoEsposizione} === '2'  &amp;&amp; ${modelPosFin>/onModify} === true }">
-									<FlexBox justifyContent="Start" width="40%" class="sapUiSmallMarginBegin">
-										<items>
-											<VBox>
-												
-												<Label text="Autorizzazione:" labelFor="idAuthCompRimO"/>
-												<Input value="{modelPosFin>/CompetenzaAuth/Auth}" showValueHelp="true" valueHelpRequest=".onAuth" id="idAuthCompRimO" valueHelpOnly="true" width="130%">
-												</Input>
-											</VBox>
-										</items>
-									</FlexBox>
-									<OverflowToolbar id="autorizzazioniCompButtonRimor" class="sapUiSmallMarginBottom" style="Clear">
-										<ToolbarSpacer/>
-										<Button text="{i18n>associaNuovaAuth}" type="Emphasized" press=".onNuovaAuth"/>
-										<Button text="{i18n>resetta}" type="Emphasized" press="onResetAuth"/>
-										<Button text="{i18n>avvia}" type="Emphasized"/>
-									</OverflowToolbar>
-									<html:iframe id ="attachmentframeRimOr" height="100%" width="100%" src=""> </html:iframe>
+								<IconTabFilter icon="sap-icon://accounting-document-verification" key="people" text="{i18n>cassa}"  id="idCassTab" visible="{= ${modelPosFin>/infoSottoStrumento/TipoEsposizione} !== '2' &amp;&amp; ${modelPosFin>/onModify} === true }">
+									<html:iframe id="cassaSac" height="1000em" width="100%"  allowfullscreen="true" > </html:iframe>
 								</IconTabFilter>
+								
 							</items>
 						</IconTabBar>
 					</VBox>

@@ -38,11 +38,11 @@ sap.ui.define([
 			this.__getDataHVPosFin()
 			
 		},
-		loadIframe: function(){
+		loadIframe: function(typeSac){
 			//lt prova recupero iframe
 			var that = this;
-			var oFrame = that.getView().byId("competenzaSac");
-			var url = this.getOwnerComponent().getModel("iframe").getProperty("/link");
+			var oFrame = that.getView().byId(typeSac);
+			var url = this.getOwnerComponent().getModel("iframe").getProperty("/" + typeSac);
 			that.urlSac = url;
 			var oFrameContent = oFrame.$()[0];
 			oFrameContent.setAttribute("src", that.urlSac);
@@ -1020,10 +1020,11 @@ sap.ui.define([
 			 if(oEvent.getParameter("key") === "info"){
 				homeModel.setProperty("/tabAnagrafica", true)
 			} else if (oEvent.getParameter("key") === "attachments"){				
-				this.loadIframe();
-				homeModel.setProperty("/tabAnagrafica", false)
+				this.loadIframe("competenzaSac");
+				//homeModel.setProperty("/tabAnagrafica", false)
 			} else {
-				homeModel.setProperty("/tabAnagrafica", false)
+				this.loadIframe("cassaSac");
+				//homeModel.setProperty("/tabAnagrafica", false)
 			}
 
 			

@@ -58,9 +58,13 @@
         "sap.ui.comp": {},
         "sap.ui.generic.app": {},
         "sap.ui.table": {},
-        "sap.ushell": {}
+        "sap.ushell": {},
+        "zsap.com.r3.cobi.s4.custposfin.z_s4_zposfin" : {}
       }
     },
+    "resourceRoots" : {
+			"zsap.com.r3.cobi.s4.custposfin.z_s4_zposfin" : "../../sap/bc/ui5_ui5/sap/z_s4_zposfin/src/custposfin/z_s4_zposfin"
+		},
     "contentDensities": {
       "compact": true,
       "cozy": true

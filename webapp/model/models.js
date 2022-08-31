@@ -22,8 +22,8 @@ sap.ui.define([
 
         createIframeModel: function () {
             var oModel = new JSONModel({
-                link : "https://initsac-svil.eu10.hcs.cloud.sap/sap/fpa/ui/app.html#/analyticapp&/aa/7AF01283AE3E6C449CAACA2C308F98EF"
-                //link : "https://initsac-svil.eu10.hcs.cloud.sap/sap/fpa/ui/tenants/f23bc/app.html#/analyticapp?shellMode=embed&/aa/D0803105330307C6DF54F3D17AFCE94B/?url_api=true&mode=present&view_id=appBuilding"
+                competenzaSac : "https://initsac-svil.eu10.hcs.cloud.sap/sap/fpa/ui/tenants/f23bc/app.html#/analyticapp?shellMode=embed&/aa/7AF01283AE3E6C449CAACA2C308F98EF/?url_api=true&mode=present&view_id=appBuilding",
+                cassaSac      : "https://initsac-svil.eu10.hcs.cloud.sap/sap/fpa/ui/tenants/f23bc/app.html#/analyticapp?shellMode=embed&/aa/EE080A83AE3EC5B683F3B241E62A1929/?url_api=true&mode=present&view_id=appBuilding"
                 //link : "https://www.youtube.com/embed/tgbNymZ7vqY"
             });
             
