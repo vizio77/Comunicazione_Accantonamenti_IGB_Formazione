@@ -2,44 +2,28 @@
 	<Popover title="{modelPosFin>/posFin}" class="sapUiContentPadding" placement="Bottom" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
 		<content>
 			<l:VerticalLayout class="sapUiSmallMargin">
-				<!-- <ObjectStatus title="Amministrazione" text="A020" class="textBold"/>
-				<ObjectStatus title="Missione" text="32" class="textBold"/>
-				<ObjectStatus title="Programma" text="07" class="textBold"/>
-				<ObjectStatus title="Azione" text="01" class="textBold"/>
-				<ObjectStatus title="Capitolo" text="1001" class="textBold"/>
-				<ObjectStatus title="PG" text="01" class="textBold"/>
-				<ObjectStatus title="Categoria" text="01" class="textBold"/>
-				<ObjectStatus title="C.E.2" text="01" class="textBold"/>
-				<ObjectStatus title="C.E.3" text="01" class="textBold"/> -->
-                <ObjectStatus title="Amministrazione" text="A020" class="textBold"/>
-                <ObjectStatus title="Capitolo" text="1001" class="textBold"/>
-                <ObjectStatus title="PG" text="01" class="textBold"/>
-                <ObjectStatus title="Missione" text="32" class="textBold"/>
-                <ObjectStatus title="Programma" text="07" class="textBold"/>
-                <ObjectStatus title="Azione" text="01" class="textBold"/>
-                <ObjectStatus title="Categoria" text="01" class="textBold"/>
-                <ObjectStatus title="C.E.2" text="01" class="textBold"/>
-				<ObjectStatus title="C.E.3" text="01" class="textBold"/>
+                <ObjectStatus title="Amministrazione" text="{modelPosFin>/detailAnagrafica/AMMINISTAZIONE}" class="textBold"/>
+                <ObjectStatus title="Capitolo" text="{modelPosFin>/detailAnagrafica/CAPITOLO}" class="textBold"/>
+                <ObjectStatus title="PG" text="{modelPosFin>/detailAnagrafica/pg}" class="textBold"/>
+                <ObjectStatus title="Missione" text="{modelPosFin>/detailAnagrafica/MISSIONE}" class="textBold"/>
+                <ObjectStatus title="Programma" text="{modelPosFin>/detailAnagrafica/PROGRAMMA}" class="textBold"/>
+                <ObjectStatus title="Azione" text="{modelPosFin>/detailAnagrafica/AZIONE}" class="textBold"/>
+                <ObjectStatus title="Titolo" text="{modelPosFin>/detailAnagrafica/TITOLO}" class="textBold"/>
+                <ObjectStatus title="Categoria" text="{modelPosFin>/detailAnagrafica/CATEGORIA}" class="textBold"/>
+                <ObjectStatus title="C.E.2" text="{modelPosFin>/detailAnagrafica/CE2}" class="textBold"/>
+				<ObjectStatus title="C.E.3" text="{modelPosFin>/detailAnagrafica/CE3}" class="textBold"/>
 			</l:VerticalLayout>
 			<l:VerticalLayout class="sapUiSmallMargin">
-                <ObjectStatus title="Desc. Amm" text="MINISTERO DELL'ECONOMIA E DELLE FINANZE" class="textBold"/>
-                <ObjectStatus title="Desc. Capitolo" text="STIPENDI ED ALTRI ASSEGNI FISSI AL MINISTRO E AI S" class="textBold"/>
-                <ObjectStatus title="Desc. PG" text="COMPONENTE NETTA." class="textBold"/>
-                <ObjectStatus title="Desc. Missione" text="Ministro e Sottosegretari di Stato" class="textBold"/>
-                <ObjectStatus title="Desc. Programma" text="Promozione dell'efficienza energetica" class="textBold"/>
-                <ObjectStatus title="Desc. Azione" text="Spese di personale per il programma" class="textBold"/>
-                <ObjectStatus title="Desc. Categoria" text="REDDITI DA LAVORO DIPENDENTE" class="textBold"/>
-                <ObjectStatus title="Desc. Ce2" text="STIPENDI" class="textBold"/>
-				<ObjectStatus title="Desc. Ce3" text="STIPENDI" class="textBold"/>
-				<!-- <ObjectStatus title="Desc. Amm" text="MINISTERO DELL'ECONOMIA E DELLE FINANZE" class="textBold"/>
-				<ObjectStatus title="Desc. Missione" text="Ministro e Sottosegretari di Stato" class="textBold"/>
-				<ObjectStatus title="Desc. Programma" text="Promozione dell'efficienza energetica" class="textBold"/>
-				<ObjectStatus title="Desc. Azione" text="Spese di personale per il programma" class="textBold"/>
-				<ObjectStatus title="Desc. Capitolo" text="STIPENDI ED ALTRI ASSEGNI FISSI AL MINISTRO E AI S" class="textBold"/>
-				<ObjectStatus title="Desc. PG" text="COMPONENTE NETTA." class="textBold"/>
-				<ObjectStatus title="Desc. Categoria" text="REDDITI DA LAVORO DIPENDENTE" class="textBold"/>
-				<ObjectStatus title="Desc. Ce2" text="STIPENDI" class="textBold"/>
-				<ObjectStatus title="Desc. Ce3" text="STIPENDI" class="textBold"/> -->
+                <ObjectStatus title="Desc. Amm" text="{modelPosFin>/detailAnagrafica/DESC_AMMINISTAZIONE}" class="textBold"/>
+                <ObjectStatus title="Desc. Capitolo" text="{modelPosFin>/detailAnagrafica/DESC_CAPITOLO}"  class="textBold"/>
+                <ObjectStatus title="Desc. PG" text="{modelPosFin>/detailAnagrafica/DESC_PG}" class="textBold"/>
+                <ObjectStatus title="Desc. Missione" text="{modelPosFin>/detailAnagrafica/DESC_MISSIONE}" class="textBold"/>
+                <ObjectStatus title="Desc. Programma" text="{modelPosFin>/detailAnagrafica/DESC_PROGRAMMA}"  class="textBold"/>
+                <ObjectStatus title="Desc. Azione" text="{modelPosFin>/detailAnagrafica/DESC_AZIONE}" class="textBold"/>
+                <ObjectStatus title="Desc. Titolo" text="{modelPosFin>/detailAnagrafica/DESC_TITOLO}" class="textBold"/>
+                <ObjectStatus title="Desc. Categoria" text="{modelPosFin>/detailAnagrafica/DESC_CATEGORIA}" class="textBold"/>
+                <ObjectStatus title="Desc. Ce2" text="{modelPosFin>/detailAnagrafica/DESC_CE2}" class="textBold"/>
+				<ObjectStatus title="Desc. Ce3" text="{modelPosFin>/detailAnagrafica/DESC_CE3}" class="textBold"/>
 			</l:VerticalLayout>
 		</content>
 		<footer>
@@ -47,6 +31,5 @@
 				<ToolbarSpacer/>
 			</OverflowToolbar>
 		</footer>
-		<!--<Image src="{ProductPicUrl}" width="15em" densityAware="false"/>-->
 	</Popover>
 </core:FragmentDefinition>

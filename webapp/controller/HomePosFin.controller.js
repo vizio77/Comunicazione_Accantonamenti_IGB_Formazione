@@ -10,6 +10,8 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("zsap.com.r3.cobi.s4.comaccigb.controller.HomePosFin", {
+
+
 		/**
 		 * @override
 		 */
@@ -314,7 +316,8 @@ sap.ui.define([
 			homeModel.setProperty("/faseRicerca", false)
 			homeModel.setProperty("/onModify", true)
 			homeModel.setProperty("/onCreate", false)
-			homeModel.setProperty("/detailAnagrafica", homeModel.getProperty("/selectedPosFin"))
+			//homeModel.setProperty("/detailAnagrafica", homeModel.getProperty("/selectedPosFin"))
+			homeModel.setProperty("/PosFin", homeModel.getProperty("/selectedPosFin"))
 			/* this.getView().byId("idCompetenzaTab").setVisible(true)
 			this.getView().byId("idCassTab").setVisible(true) */
 
@@ -719,8 +722,27 @@ sap.ui.define([
 			this.onSearchSottostrumento()
 		},
 		onPressAvvio: function() {
-			let modelHome = this.getView().getModel("modelPosFin");
-			modelHome.setProperty("/tablePosFin", modelHome.getProperty("/elencoPosFin"))
+			this.getView().setBusy(true)
+			let modelPosFin = this.getView().getModel("modelPosFin")
+			const oModel = this.getView().getModel("sapHanaS2");
+			oModel.read("/PosizioneFinanziariaSet", {
+				filters: [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+							new Filter("Fase", FilterOperator.EQ, "DLB"),
+							new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+							new Filter("Versione", FilterOperator.EQ, "D"),
+							new Filter("Datbis", FilterOperator.GE, new Date()),
+							new Filter("Eos", FilterOperator.EQ, "S")
+						],
+				success: (oData) => {
+					oData.results = oData.results.filter((arr, index, self) =>
+										index === self.findIndex((t) => (t.Fipex === arr.Fipex)))
+					modelPosFin.setProperty("/tablePosFin", oData.results)
+					this.getView().setBusy(false)
+				},
+				error:  (err) => {
+					this.getView().setBusy(false)
+				}
+			})
 
 		},
 		__resetFiltri: function (aResetKeyValue) {

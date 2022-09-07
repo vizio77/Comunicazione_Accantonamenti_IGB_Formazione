@@ -32,7 +32,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 					
 						<IconTabBar id="idIconTabBarMulti" expanded="{device>/isNoPhone}" visible="{visibleCheckModel>/visibleIconTab}" select="onTabChanged">
 							<items>								
-								<IconTabFilter icon="sap-icon://form" key="info" text="{i18n>Anagrafica}">
+								<!-- <IconTabFilter icon="sap-icon://form" key="info" text="{i18n>Anagrafica}">
 									<Panel id="idPanel" visible="{visibleCheckModel>/visiblePanel}">
 										<headerToolbar>
 											<OverflowToolbar>
@@ -539,7 +539,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 											</Table>
 										</Panel>
 									</Panel>
-								</IconTabFilter>
+								</IconTabFilter> -->
 								<IconTabFilter icon="sap-icon://process" key="attachments" text="{i18n>competenza}" id="idCompetenzaTab" visible="{= ${modelPosFin>/infoSottoStrumento/TipoEsposizione} !== '2'  &amp;&amp; ${modelPosFin>/onModify} === true }" >
 									<FlexBox justifyContent="SpaceAround" width="20%">
 										<items>
