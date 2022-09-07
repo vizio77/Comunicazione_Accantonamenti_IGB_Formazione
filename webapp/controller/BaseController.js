@@ -12,6 +12,10 @@ sap.ui.define([
         getRouter : function () {
             return this.getOwnerComponent().getRouter();
         },
+
+        getText: function(text){
+            return this.getOwnerComponent().getModel("i18n").getResourceBundle().getText(text);
+        },
         __getEntityMatchCode: function (key) {
             let oCodificaEntity = {
                 "Amm": "/Gest_PosFin_SH_AmministrazioniSet"

@@ -560,7 +560,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 										<!-- <Button text="{i18n>gestCondingBlock}" type="Emphasized" enabled="{= !!${modelPosFin>/CompetenzaAuth/Auth} }" press=".onGestisciCodingBlock"/>
 										<Button text="{i18n>associaNuovaAuth}" type="Emphasized" press=".onNuovaAuth"/> -->
 										<Button text="{i18n>resetta}" type="Emphasized" press="onResetAuth"/>
-										<Button text="{i18n>avvia}" type="Emphasized"/>
+										<Button text="{i18n>avvia}" type="Emphasized" press="showCompetenzaSAC"/>
 									</OverflowToolbar>
 									<!-- <html:iframe id="linkSac" frameBorder="0" target="_top" width="100%" height="500em"></html:iframe> -->
 									<html:iframe id="competenzaSac" height="1000em" width="100%" allowfullscreen="true"> </html:iframe>

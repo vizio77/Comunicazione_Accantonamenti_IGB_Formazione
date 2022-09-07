@@ -4,12 +4,13 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"sap/ui/core/Fragment",
+    "sap/m/MessageBox",
     "./BaseController"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Filter, FilterOperator, Fragment, BaseController) {
+    function (Controller, JSONModel, Filter, FilterOperator, Fragment, MessageBox, BaseController) {
         "use strict";
 
         return BaseController.extend("zsap.com.r3.cobi.s4.comaccigb.controller.Home", {
@@ -466,6 +467,11 @@ sap.ui.define([
                 let modelHome = this.getView().getModel("modelHome")
                 let oSottostrumento = modelHome.getProperty("/infoSottoStrumento")
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                if(!oSottostrumento) {
+                    MessageBox.warning(this.getText("noSottoStrumentoSelected"));
+                    return;
+                }
+
                 if(oSottostrumento.TipoEsposizione === "0" || oSottostrumento.TipoEsposizione === "2")
                     oRouter.navTo("HomePosFin",{
                         Fikrs: oSottostrumento.Fikrs,

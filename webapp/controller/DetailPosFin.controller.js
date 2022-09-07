@@ -28,14 +28,451 @@ sap.ui.define([
 				titoli: [],
 				categorie: [],
 				ragionerie: [],
-				mac: []
+				mac: [],
+				tipofondo: [],
+				tipoSpesaCapitolo: [],
+				tipoSpesaPG: [],
+				codice_elenco: [],
+				AreaInterventi: [],
+				Noipa: []
 			})
-			this.__getDataHVPosFin()
+			modelPosFin.setProperty("/DominioSStr", {
+				Amministrazione:[],
+				Missione: [],
+				Programma: [],
+				Azione: [],
+				Titolo: [],
+				Categoria: [],
+				Ce2: [],
+				Ce3: []
+			})
+			modelPosFin.setProperty("/detailAnagrafica", {
+				elencoCOFOG:[],
+				elenchiCapitolo: [],
+				lista_cofog: [],
+				codice_elenco:[],
+				PosizioneFinanziariaIrap: []
+			})
+			// this.__removeDuplicateDomSStr()
+			// this.__getDataHVPosFin()
+			
 			var oRouter = this.getOwnerComponent().getRouter();
 			oRouter.getRoute("DetailPosFin").attachPatternMatched(this._onObjectMatched, this);
 		},
 		_onObjectMatched: function (oEvent) {
-			this.__getDataHVPosFin()
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			this.getView().setBusy(true);
+			
+				return new Promise( async function(resolve, reject) {
+					let oPosFin = await this.__getPosFin()
+					modelPosFin.setProperty("/posFin", oPosFin.Fipex)
+					Promise.all([this.__setFieldAmmin(oPosFin), 
+								this.__setFieldCapPg(oPosFin), 
+								this.__setFieldTitolo(oPosFin), 
+								this.__setFieldMissione(oPosFin), 
+								this.__setFieldCdr(oPosFin),
+								this.__setFieldRagioneria(oPosFin),
+								this.__setFieldMac(oPosFin),
+								this.__setFieldPosizioneFinanziariaIrap(oPosFin),
+								this.__getHVMac(), 
+								this.__getTipoFondo(), 
+								this.__getHVCodiceStandard(), 
+								this.__getHVAreaInterventi(),
+								this.__setCofog(oPosFin),
+								this.__setElenchi(oPosFin),
+								this.__getNOIPA()])
+							.then(function(res){
+								this.__setOtherFields(oPosFin)
+								this.getView().setBusy(false)
+							}.bind(this))
+							.catch(err => {
+								this.getView().setBusy(false)
+								let oError = JSON.parse(err.responseText)
+								MessageBox.error(oError.error.message.value)
+							})
+				}.bind(this))
+			
+			
+		},
+
+		__getPosFin: function () {
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			const oPosFin = modelPosFin.getProperty("/PosFin/")
+			return new Promise( function(resolve, reject) {
+				const sUrl = "/" + oPosFin.__metadata.uri.split("/")[oPosFin.__metadata.uri.split("/").length - 1]
+				modelHana.read(sUrl, {
+					success: (oData) => {
+						debugger
+						resolve(oData)
+					},
+					error: function (err) {
+						debugger
+						reject()
+					}
+				})
+			})
+
+		},
+
+		__setFieldAmmin: function (oPosFin) {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let aFiltersAmm = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+								new Filter("Fase", FilterOperator.EQ, "DLB"),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+								new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr)
+							]
+			return new Promise((resolve, reject) => {
+				modelHana.read("/TipAmministrazioneSet", {
+					filters: aFiltersAmm,
+					success: (oData) => {
+						if(oData.results.length > 0) {
+							modelPosFin.setProperty("/detailAnagrafica/AMMINISTAZIONE", oData.results[0].Prctr)
+							modelPosFin.setProperty("/detailAnagrafica/DESC_AMMINISTAZIONE", oData.results[0].DescEstesa)
+						}
+						resolve()
+					}
+				})
+			})
+		},
+
+		__setFieldCapPg(oPosFin){
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let aFiltersCapPg = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+								new Filter("Fase", FilterOperator.EQ, "DLB"),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+								new Filter("Capitolo", FilterOperator.EQ, oPosFin.Capitolo),
+								new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr),
+								new Filter("Pg", FilterOperator.EQ, oPosFin.Pg)
+							]
+			return new Promise((resolve, reject) => {
+				modelHana.read("/TipCapitoloSet", {
+					filters: aFiltersCapPg,
+					success: async (oData) => {
+						if(oData.results.length > 0) {
+							modelPosFin.setProperty("/detailAnagrafica/pg", oData.results[0].Pg)
+							modelPosFin.setProperty("/detailAnagrafica/CAPITOLO", oData.results[0].Capitolo)
+							modelPosFin.setProperty("/detailAnagrafica/DESC_CAPITOLO", oData.results[0].DescEstesaCapitolo)
+							modelPosFin.setProperty("/detailAnagrafica/DESC_PG", oData.results[0].DescEstesaPg)
+							if( oData.results[0].CodiceStdPg !== "000") {
+								await this.__setCodeStandard(oData.results[0], "CodiceStdPg", "CODICE_STANDARD_PG", "CD_PG_DEN_EST", "CD_PG_DEN_BREVE")
+							} else {
+								modelPosFin.setProperty("/detailAnagrafica/CD_PG_DEN_EST", oData.results[0].DescEstesaPg)
+								modelPosFin.setProperty("/detailAnagrafica/CD_PG_DEN_BREVE", oData.results[0].DescBrevePg)
+							}
+							if( oData.results[0].CodiceStdCapitolo !== "000"){
+								await this.__setCodeStandard(oData.results[0], "CodiceStdCapitolo", "CODICE_STANDARD_CAPITOLO", "CD_CAPITOLO_DEN_EST", "CD_CAPITOLO_DEN_BREVE")
+							} else {
+								modelPosFin.setProperty("/detailAnagrafica/CD_CAPITOLO_DEN_EST", oData.results[0].DescEstesaCapitolo)
+								modelPosFin.setProperty("/detailAnagrafica/CD_CAPITOLO_DEN_BREVE", oData.results[0].DescBreveCapitolo)
+							}
+						}
+						resolve()
+					}
+				})
+			})
+		},
+
+		__setFieldTitolo: function (oPosFin) {
+			const modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let filtersTitolo = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+								new Filter("Fase", FilterOperator.EQ, "DLB"),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+								new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
+								new Filter("Titolo", FilterOperator.EQ, oPosFin.Titolo), 
+								new Filter("Categoria", FilterOperator.EQ, oPosFin.Categoria),
+								new Filter("Ce2", FilterOperator.EQ, oPosFin.Ce2),
+								new Filter("Ce3", FilterOperator.EQ, oPosFin.Ce3),
+							]
+			return new Promise(function (resolve, reject) {
+				modelHana.read("/TipTitoloSet", {
+					filters: filtersTitolo,
+					success: function (oData) {
+						if(oData.results.length > 0) {
+							modelPosFin.setProperty("/detailAnagrafica/TITOLO", oData.results[0].Titolo)
+							modelPosFin.setProperty("/detailAnagrafica/DESC_TITOLO",  oData.results[0].DescEstesaTitolo)
+							modelPosFin.setProperty("/detailAnagrafica/CATEGORIA", oData.results[0].Categoria)
+							modelPosFin.setProperty("/detailAnagrafica/DESC_CATEGORIA",  oData.results[0].DescEstesaCategoria)
+							if(modelPosFin.getProperty("/onModify")) {
+								modelPosFin.setProperty("/detailAnagrafica/CE2", oData.results[0].Ce2)
+								modelPosFin.setProperty("/detailAnagrafica/DESC_CE2", oData.results[0].DescEstesaCe2)
+								modelPosFin.setProperty("/detailAnagrafica/CE3", oData.results[0].Ce3)
+								modelPosFin.setProperty("/detailAnagrafica/DESC_CE3", oData.results[0].DescEstesaCe3)
+							}
+						}
+						resolve()
+					}
+				})
+			})
+		},
+
+		__setFieldMissione: function (oPosFin) {
+			const modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let filtersMissione= [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+								new Filter("Fase", FilterOperator.EQ, "DLB"),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+								new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
+								new Filter("Missione", FilterOperator.EQ, oPosFin.Missione), 
+								new Filter("Programma", FilterOperator.EQ, oPosFin.Programma),
+								new Filter("Azione", FilterOperator.EQ, oPosFin.Azione),
+								new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr),
+							]
+			return new Promise(function (resolve, reject) {
+				modelHana.read("/TipMissioneSet", {
+					filters: filtersMissione,
+					success: function (oData) {
+						if(oData.results.length > 0) {
+							modelPosFin.setProperty("/detailAnagrafica/MISSIONE", oData.results[0].Missione)
+							modelPosFin.setProperty("/detailAnagrafica/DESC_MISSIONE", oData.results[0].DescEstesaMissione)
+							modelPosFin.setProperty("/detailAnagrafica/PROGRAMMA", oData.results[0].Programma)
+							modelPosFin.setProperty("/detailAnagrafica/DESC_PROGRAMMA", oData.results[0].DescEstesaProgramma)
+							modelPosFin.setProperty("/detailAnagrafica/AZIONE", oData.results[0].Azione)
+							modelPosFin.setProperty("/detailAnagrafica/DESC_AZIONE", oData.results[0].DescEstesaAzione)
+						}
+						resolve()
+					}
+				})
+			})
+		},
+		__setFieldCdr: function (oPosFin) {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let filtersAmm = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+									  new Filter("Fase", FilterOperator.EQ, "DLB"),
+									  new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+									  new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
+									  new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr)]
+				return new Promise((resolve, reject) => {
+					modelHana.read("/TipAmministrazioneSet",{
+						filters: filtersAmm,
+						urlParameters: {
+							$expand: "TipCdr"
+						},
+						success: (oData) => {
+							if(oData.results.length > 0){
+								let oCdr = oData.results[0].TipCdr.results.filter(item => item.Cdr === oPosFin.Cdr && item.Prctr === oPosFin.Prctr)[0]
+								modelPosFin.setProperty("/detailAnagrafica/CDR", oCdr.Cdr)
+								modelPosFin.setProperty("/detailAnagrafica/CDR_DESCR", oCdr.DescEstesaCdr)
+							}
+							resolve()
+						},
+						error:  (err) => {
+							debugger
+						}
+					})
+			})
+		},
+		__setFieldRagioneria: function (oPosFin) {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let filtersRagioneria = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+									new Filter("Fase", FilterOperator.EQ, "DLB"),
+									new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+									new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
+									new Filter("Ragioneria", FilterOperator.EQ, oPosFin.Ragioneria)
+								]
+			return new Promise((resolve, reject) => {
+				modelHana.read("/TipRagioneriaSet", {
+					filters: filtersRagioneria,
+					success: (oData) => {
+						if(oData.results.length > 0){
+							modelPosFin.setProperty("/detailAnagrafica/DESC_RAG", oData.results[0].DescEstesaRagioneria)
+							modelPosFin.setProperty("/detailAnagrafica/RAG", oData.results[0].Ragioneria)
+						}
+						resolve()
+					}
+				})
+			})
+		},
+		__setFieldMac: function (oPosFin) {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			return new Promise((resolve, reject) => {
+				modelHana.read("/MacSet", {
+					filters: [new Filter("NumeCodDett", FilterOperator.EQ, oPosFin.Mac)],
+					success: (oData) => {
+						if(oData.results.length > 0){
+							modelPosFin.setProperty("/detailAnagrafica/MAC", oData.results[0].NumeCodDett)
+							modelPosFin.setProperty("/detailAnagrafica/DESC_MAC", oData.results[0].DescEstesa)
+						}
+						resolve()
+					}
+				})
+			})
+		},
+		__setFieldPosizioneFinanziariaIrap: function (oPosFin) {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let aFiltersIrap = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+								new Filter("Capitolo", FilterOperator.EQ, oPosFin.Capitolo),
+								new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr)
+							]
+			return new Promise((resolve, reject) => {
+				modelHana.read("/PosizioneFinanziariaIrapSet", {
+					filters: aFiltersIrap,
+					success: (oData) => {
+						modelPosFin.setProperty("/detailAnagrafica/PosizioneFinanziariaIrap", oData.results)
+						resolve()
+					}
+				})
+			})
+		},
+
+		__getHVMac: function () {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			//Inizio Estrazione Mac
+			return new Promise((resolve, reject) => {
+				modelHana.read("/MacSet", {
+					success: (oData) => {
+						modelPosFin.setProperty("/formPosFin/mac", oData.results)
+						resolve()
+					}
+				})
+			})
+			//Fine Estrazione Mac	
+		},
+		__getTipoFondo: function () {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let filterTipoFondo = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+									new Filter("Fase", FilterOperator.EQ, "DLB"),
+									new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+									new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale"))]
+			//Inizio Estrazione Tipo Fondo
+			return new Promise((resolve, reject) => {
+				modelHana.read("/TipoFondoSet", {
+					filters: filterTipoFondo,
+					success: (oData) => {
+						oData.results.unshift({CodiceTipoFondo: null, DescTipoFondo: null})
+						modelPosFin.setProperty("/formPosFin/tipofondo", oData.results)
+						resolve()
+					}
+				})
+			})
+			//Fine Estrazione Tipo Fondo	
+		},
+		__getHVCodiceStandard: function () {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let filterCodiceStandard = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+									new Filter("Fase", FilterOperator.EQ, "DLB"),
+									new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+									new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale"))]
+			//Inizio Estrazione Codici Standard
+			return new Promise((resolve, reject) => {
+				modelHana.read("/CodiceStandardSet", {
+					filters: filterCodiceStandard,
+					success: (oData) => {
+						modelPosFin.setProperty("/formPosFin/codiceStandard", oData.results)
+						resolve()
+					}
+				})
+			})
+			//Fine Estrazione Codici Standard	
+		},
+		__getHVAreaInterventi: function () {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			return new Promise((resolve, reject) => {
+				modelHana.read("/AreaInterventiSet", {
+					success: (oData) => {
+						oData.results.unshift({AreaDestinataria: "", Desc: ""})
+						modelPosFin.setProperty("/formPosFin/AreaInterventi", oData.results)
+						resolve()
+					}
+				})
+			})
+		},
+		__setCofog: function (oPosFin) {
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			return new Promise( (resolve, reject) => {
+				modelHana.read("/DistribuzioneCofogSet", {
+					filters: [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+					new Filter("Fase", FilterOperator.EQ, "DLB"),
+					new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+					new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
+					new Filter("Capitolo", FilterOperator.EQ, oPosFin.Capitolo),
+					new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr)
+				],
+				success:  async (oData) =>  {
+					oData.results = oData.results.filter((arr, index, self) =>
+						index === self.findIndex((t) => (t.CofogL1 === arr.CofogL1 && t.CofogL2 === arr.CofogL2  && t.CofogL3 === arr.CofogL3 )))
+						//estrazione descrizioni cofog
+						for(let i = 0; i < oData.results.length; i++){
+							let sDesc = await this.__getDescCofog(oData.results[i])
+							oData.results[i].Desc = sDesc
+						}
+						//fine descrizioni cofog
+						modelPosFin.setProperty("/detailAnagrafica/elencoCOFOG", oData.results)
+						resolve()
+				}
+				})	
+			})
+		},
+		__setElenchi: function (oPosFin) {
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			return new Promise( (resolve, reject) => {
+				modelHana.read("/CapitoloElencoSet", {
+					filters: [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+					new Filter("Fase", FilterOperator.EQ, "DLB"),
+					new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+					new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
+					new Filter("Capitolo", FilterOperator.EQ, oPosFin.Capitolo),
+					new Filter("PrctrElenco", FilterOperator.EQ, oPosFin.Prctr)
+				],
+				success:  async (oData) =>  {
+					for(let i = 0; i < oData.results.length; i++) {
+						let sDesc = await this.__getDescElenco(oData.results[i])
+						oData.results[i].Desc = sDesc
+					}
+					modelPosFin.setProperty("/detailAnagrafica/elenchiCapitolo", oData.results)
+					resolve()
+				}
+				})
+			})
+		},
+		__getNOIPA: function () {
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			return new Promise( (resolve, reject) => {
+				modelHana.read("/NoipaSet", {
+					success: (oData) =>  {
+						modelPosFin.setProperty("/formPosFin/Noipa", oData.results)
+						resolve()
+					}
+				})
+			})
+		},
+		/* lt setto gli altri campid della pos fin */
+
+		__setOtherFields: function (oPosFin) {
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			modelPosFin.setProperty("/detailAnagrafica/UdvL1", oPosFin.UdvL1)
+			modelPosFin.setProperty("/detailAnagrafica/UdvL2", oPosFin.UdvL2)
+			modelPosFin.setProperty("/detailAnagrafica/tipoFondo", oPosFin.TipoFondo)
+			modelPosFin.setProperty("/detailAnagrafica/tipoSpesaCapitolo", oPosFin.TipoSpesaCapitolo)
+			modelPosFin.setProperty("/detailAnagrafica/CodiceNaturaSpesa", oPosFin.NaturaSpesa)
+			modelPosFin.setProperty("/detailAnagrafica/Memoria", oPosFin.Memoria === "0" ? false : true)
+			modelPosFin.setProperty("/detailAnagrafica/Capitolone", oPosFin.Capitolone)
+			modelPosFin.setProperty("/detailAnagrafica/CuIrapNoncu", oPosFin.CuIrapNoncu)
+			modelPosFin.setProperty("/detailAnagrafica/StatusCapitolo", oPosFin.StatusCapitolo === "1"  ? true : false)
+			modelPosFin.setProperty("/detailAnagrafica/StatusPg", oPosFin.StatusPg === "X"  ? true : false)
+			modelPosFin.setProperty("/detailAnagrafica/Noipa", oPosFin.Noipa)
+			if(modelPosFin.getProperty("/onModify")) {
+				modelPosFin.setProperty("/detailAnagrafica/TipoSpesaPg", oPosFin.TipoSpesaPg)
+				modelPosFin.setProperty("/detailAnagrafica/AreaDestinataria", oPosFin.AreaDestinataria)
+				modelPosFin.setProperty("/detailAnagrafica/ObiettiviMinisteri", oPosFin.ObiettiviMinisteri === ""  ? false : true)
+				modelPosFin.setProperty("/detailAnagrafica/RuoliSpesaFissa", oPosFin.RuoliSpesaFissa === "00"  ? false : true)
+			}
+			modelPosFin.updateBindings(true)
 			
 		},
 		loadIframe: function(typeSac){
@@ -1020,7 +1457,7 @@ sap.ui.define([
 			 if(oEvent.getParameter("key") === "info"){
 				homeModel.setProperty("/tabAnagrafica", true)
 			} else if (oEvent.getParameter("key") === "attachments"){				
-				this.loadIframe("competenzaSac");
+				
 				//homeModel.setProperty("/tabAnagrafica", false)
 			} else {
 				this.loadIframe("cassaSac");
@@ -1028,6 +1465,10 @@ sap.ui.define([
 			}
 
 			
+		},
+
+		showCompetenzaSAC: function (oEvent) {
+			this.loadIframe("competenzaSac");
 		},
 
 		//lt inserisco popup iniziale.
