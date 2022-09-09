@@ -48,12 +48,12 @@ sap.ui.define([
 			this.__getSottoStrumento(oKeySStr)
 		},
 		__getSottoStrumento(oKeySStr){
-			//this.getView().setBusy(true)
-			//const oModel = this.getView().getModel("sapHanaS2");
-			const oModel = this.getOwnerComponent().getModel("sapHanaS2");
-			// let sUrl = `/Gest_fasi_sstrSet(Fikrs='${oKeySStr.Fikrs}',CodiceStrumento='${oKeySStr.CodiceStrumento}'`+
-			// 			`,CodiceStrumentoOri='${oKeySStr.CodiceStrumentoOri}',CodiceSottostrumento='${oKeySStr.CodiceSottostrumento}',Datbis=datetime'${oKeySStr.Datbis}')`
-			oModel.read("/Gest_fasi_sstrSet",{
+			//const oModel = this.getOwnerComponent().getModel("sapHanaS2");
+			 //var serviceUrl = appUrl + "/sap/opu/odata/sap/ZSS4_COBI_ALV_SRV/";
+			 var serviceUrl = "/sap/opu/odata/sap/ZSS4_COBI_ACCANTONAM_FORM_SRV/";
+			 //platformization end
+			 var oModel = new sap.ui.model.odata.v2.ODataModel(serviceUrl);
+			oModel.read("/SottostrumentoSet",{
 				filters: [
 					new Filter("Fikrs", FilterOperator.EQ, oKeySStr.Fikrs),
 					new Filter("CodiceStrumento", FilterOperator.EQ, oKeySStr.CodiceStrumento),
@@ -61,13 +61,14 @@ sap.ui.define([
 					new Filter("CodiceSottostrumento", FilterOperator.EQ, oKeySStr.CodiceSottostrumento)
 					//new Filter("Datbis", FilterOperator.EQ, new Date(oKeySStr.Datbis))
 				],
-				urlParameters: {
-					$expand: "ToTitolo,ToMissione,ToInterno,ToAmministrazione"
-				},
+				// urlParameters: {
+				// 	$expand: "ToTitolo,ToMissione,ToInterno,ToAmministrazione"
+				// },
 				success: (oData, res) => {
 					this.getView().setBusy(false)
 					let modelPosFin = this.getView().getModel("modelPosFin")
-					modelPosFin.setProperty("/Sottostrumento", `${oData.results[0].DescrTipoSottostrumento} - ${oData.results[0].NumeroSottostrumento}`)
+					//modelPosFin.setProperty("/Sottostrumento", `${oData.results[0].DescrTipoSottostrumento} - ${oData.results[0].NumeroSottostrumento}`)
+					modelPosFin.setProperty("/Sottostrumento", `${oData.results[0].FaseSstr} - ${oData.results[0].NumeroSottostrumento}`)
 					modelPosFin.setProperty("/infoSottoStrumento", oData.results[0])
 				},
 				error: function (res) {

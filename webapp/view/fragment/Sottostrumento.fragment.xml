@@ -35,7 +35,7 @@
 						<items>
 							<ColumnListItem vAlign="Middle" visible="{= ${sottostrumentiModel>IdSstr} !== '1487' }">
 								<cells>
-                                    <Text text="{sottostrumentiModel>DescrTipoSottostrumento}"/>
+                                    <Text text="{sottostrumentiModel>FaseSstr}"/>
 									<Text text="{sottostrumentiModel>NumeroSottostrumento}"/>
 									<Text text="{sottostrumentiModel>AnnoSottostrumento}"/>
 									<Text text="{sottostrumentiModel>DescrEstesa}"/>

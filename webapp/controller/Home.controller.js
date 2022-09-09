@@ -272,7 +272,15 @@ sap.ui.define([
                 }
             },
             onSearchSottostrumento: function () {
-                var oModel = this.getOwnerComponent().getModel("sapHanaS2");
+                //var oModel = this.getOwnerComponent().getModel("sapHanaS2");
+                //var oModel = this.getOwnerComponent().getModel("sapHanaS2");
+
+                //var serviceUrl = appUrl + "/sap/opu/odata/sap/ZSS4_COBI_ALV_SRV/";
+                var serviceUrl = "/sap/opu/odata/sap/ZSS4_COBI_ACCANTONAM_FORM_SRV/";
+                //platformization end
+                var oModel = new sap.ui.model.odata.v2.ODataModel(serviceUrl);
+
+
                 if(this.getView().getModel("sottostrumentiModel") !== undefined){
                     this.getView().getModel("sottostrumentiModel").setProperty("/", [])
                 }
@@ -408,17 +416,21 @@ sap.ui.define([
                         and: true
                       })
                 ]
-                oModel.read("/Gest_fasi_sstrSet", {
+                oModel.read("/SottostrumentoSet", {
                     urlParameters: {
-                        $expand: "ToMissione,ToTitolo,ToInterno,ToAmministrazione"
+                //     $expand: "ToMissione,ToTitolo,ToInterno,ToAmministrazione"
                     },
-                    filters: _filters,
-                    sorters: [new sap.ui.model.Sorter("TipoSottostrumento", false),
-                              new sap.ui.model.Sorter("NumeroSottostrumento", false)],//new sap.ui.model.Sorter("NumeroSottostrumento", false),
+               //     filters: _filters,
+                    // sorters: [new sap.ui.model.Sorter("TipoSottostrumento", false),
+                    //           new sap.ui.model.Sorter("NumeroSottostrumento", false)],//new sap.ui.model.Sorter("NumeroSottostrumento", false),
                     success: (oData, response) => {
                         //Filtro per Dominio Sottostrumento
                         let arrDataResults = []
                         for(let i =0; i < oData.results.length;  i ++){
+                            arrDataResults.push(oData.results[i])
+                        }
+
+                        /* for(let i =0; i < oData.results.length;  i ++){
                             if(oData.results[i].ToTitolo.results.length === 0 && oData.results[i].ToMissione.results.length === 0 &&
                                  oData.results[i].ToAmministrazione.results.length === 0) {
                                 arrDataResults.push(oData.results[i])
@@ -434,7 +446,7 @@ sap.ui.define([
                                 || modelHome.getProperty("/formSottostrumento/OI") === true) ) {
                             arrDataResults = arrDataResults.filter(item => item.ToAmministrazione.results.length !== 0 &&
                                             item.ToMissione.results.length !== 0 && item.ToInterno.results.length !== 0 && item.ToTitolo.results.length !== 0)     
-                        }
+                        } */
                         sottostrumentiModel.setData(arrDataResults);
                         sottostrumentiModel.setSizeLimit(2000);
                         oView.setModel(sottostrumentiModel, "sottostrumentiModel");
@@ -452,7 +464,7 @@ sap.ui.define([
                 let selectedPath = sap.ui.getCore().byId("idTableSottostrumento2").getSelectedContextPaths()[0]
                 let selectedItem = modelSottoStrumenti.getProperty(selectedPath)
     
-                modelHome.setProperty("/Sottostrumento", `${selectedItem.DescrTipoSottostrumento} - ${selectedItem.NumeroSottostrumento}`)
+                modelHome.setProperty("/Sottostrumento", `${selectedItem.FaseSstr} - ${selectedItem.NumeroSottostrumento}`)
                 modelHome.setProperty("/infoSottoStrumento", selectedItem)
                 modelHome.setProperty("/esercizio", selectedItem.AnnoSottostrumento)
     
@@ -471,7 +483,7 @@ sap.ui.define([
                     MessageBox.warning(this.getText("noSottoStrumentoSelected"));
                     return;
                 }
-
+                
                 if(oSottostrumento.TipoEsposizione === "0" || oSottostrumento.TipoEsposizione === "2")
                     oRouter.navTo("HomePosFin",{
                         Fikrs: oSottostrumento.Fikrs,
