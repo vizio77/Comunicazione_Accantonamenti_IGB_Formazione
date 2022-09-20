@@ -35,15 +35,14 @@
 						<items>
 							<ColumnListItem vAlign="Middle" visible="{= ${sottostrumentiModel>IdSstr} !== '1487' }">
 								<cells>
-                                    <Text text="{sottostrumentiModel>FaseSstr}"/>
-									<Text text="{sottostrumentiModel>NumeroSottostrumento}"/>
-									<Text text="{sottostrumentiModel>AnnoSottostrumento}"/>
-									<Text text="{sottostrumentiModel>DescrEstesa}"/>
-									<Text text="Aperto"/>
-									<Text text="Bilancio"/>
-									<Text text="{sottostrumentiModel>DescrTipoEsposizione}"/>
-									<!-- <Text text="{path: 'sottostrumentiModel>TipoEsposizione', formatter: '.onFormatTipoEsposizione' }"/>  -->
-									<Text text="{sottostrumentiModel>DescrGiust}"/>
+									<Text text="{sottostrumentiModel>DescTipoSstr}"/>
+										<Text text="{sottostrumentiModel>NumeroSstr}"/>
+										<Text text="{sottostrumentiModel>AnnoSstr}"/>
+										<Text text="{sottostrumentiModel>DescEstesa}"/>
+										<Text text="{= ${sottostrumentiModel>StatoSstr} === '1' ? 'Aperto' : 'Chiuso'}"/>
+										<Text text="{= ${sottostrumentiModel>Reale} === 'R' ? 'Reale' : 'Simulato'}"/>
+										<Text text="{sottostrumentiModel>DescTipoEsposizione}"/>
+										<Text text="{sottostrumentiModel>GiustTx}"/>
 								</cells>
 							</ColumnListItem>
 						</items>

@@ -58,8 +58,8 @@ sap.ui.define([
 					new Filter("Fikrs", FilterOperator.EQ, oKeySStr.Fikrs),
 					new Filter("CodiceStrumento", FilterOperator.EQ, oKeySStr.CodiceStrumento),
 					new Filter("CodiceStrumentoOri", FilterOperator.EQ, oKeySStr.CodiceStrumentoOri),
-					new Filter("CodiceSottostrumento", FilterOperator.EQ, oKeySStr.CodiceSottostrumento)
-					//new Filter("Datbis", FilterOperator.EQ, new Date(oKeySStr.Datbis))
+					new Filter("CodiceSottostrumento", FilterOperator.EQ, oKeySStr.CodiceSottostrumento),
+					new Filter("Datbis", FilterOperator.EQ, new Date(oKeySStr.Datbis))
 				],
 				// urlParameters: {
 				// 	$expand: "ToTitolo,ToMissione,ToInterno,ToAmministrazione"
@@ -68,7 +68,7 @@ sap.ui.define([
 					this.getView().setBusy(false)
 					let modelPosFin = this.getView().getModel("modelPosFin")
 					//modelPosFin.setProperty("/Sottostrumento", `${oData.results[0].DescrTipoSottostrumento} - ${oData.results[0].NumeroSottostrumento}`)
-					modelPosFin.setProperty("/Sottostrumento", `${oData.results[0].FaseSstr} - ${oData.results[0].NumeroSottostrumento}`)
+					modelPosFin.setProperty("/Sottostrumento", `${oData.results[0].FaseSstr} - ${oData.results[0].NumeroSstr}`)
 					modelPosFin.setProperty("/infoSottoStrumento", oData.results[0])
 				},
 				error: function (res) {
@@ -729,7 +729,7 @@ sap.ui.define([
 			oModel.read("/PosizioneFinanziariaSet", {
 				filters: [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 							new Filter("Fase", FilterOperator.EQ, "DLB"),
-							new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+							new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 							new Filter("Versione", FilterOperator.EQ, "D"),
 							new Filter("Datbis", FilterOperator.GE, new Date()),
 							new Filter("Eos", FilterOperator.EQ, "S")
