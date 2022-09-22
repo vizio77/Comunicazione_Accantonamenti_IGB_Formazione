@@ -78,9 +78,10 @@ sap.ui.define([
 								this.__getTipoFondo(), 
 								this.__getHVCodiceStandard(), 
 								this.__getHVAreaInterventi(),
-								this.__setCofog(oPosFin),
-								this.__setElenchi(oPosFin),
-								this.__getNOIPA()])
+								//this.__setCofog(oPosFin),
+								//this.__setElenchi(oPosFin),
+								//this.__getNOIPA()
+							])
 							.then(function(res){
 								this.__setOtherFields(oPosFin)
 								this.getView().setBusy(false)
@@ -120,7 +121,7 @@ sap.ui.define([
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			let aFiltersAmm = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 								new Filter("Fase", FilterOperator.EQ, "DLB"),
-								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 								new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr)
 							]
 			return new Promise((resolve, reject) => {
@@ -142,7 +143,7 @@ sap.ui.define([
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			let aFiltersCapPg = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 								new Filter("Fase", FilterOperator.EQ, "DLB"),
-								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 								new Filter("Capitolo", FilterOperator.EQ, oPosFin.Capitolo),
 								new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr),
 								new Filter("Pg", FilterOperator.EQ, oPosFin.Pg)
@@ -180,7 +181,7 @@ sap.ui.define([
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			let filtersTitolo = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 								new Filter("Fase", FilterOperator.EQ, "DLB"),
-								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 								new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
 								new Filter("Titolo", FilterOperator.EQ, oPosFin.Titolo), 
 								new Filter("Categoria", FilterOperator.EQ, oPosFin.Categoria),
@@ -214,7 +215,7 @@ sap.ui.define([
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			let filtersMissione= [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 								new Filter("Fase", FilterOperator.EQ, "DLB"),
-								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 								new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
 								new Filter("Missione", FilterOperator.EQ, oPosFin.Missione), 
 								new Filter("Programma", FilterOperator.EQ, oPosFin.Programma),
@@ -243,7 +244,7 @@ sap.ui.define([
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			let filtersAmm = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 									  new Filter("Fase", FilterOperator.EQ, "DLB"),
-									  new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+									  new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 									  new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
 									  new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr)]
 				return new Promise((resolve, reject) => {
@@ -271,7 +272,7 @@ sap.ui.define([
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			let filtersRagioneria = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 									new Filter("Fase", FilterOperator.EQ, "DLB"),
-									new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+									new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 									new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
 									new Filter("Ragioneria", FilterOperator.EQ, oPosFin.Ragioneria)
 								]
@@ -308,7 +309,7 @@ sap.ui.define([
 			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			let aFiltersIrap = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
-								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 								new Filter("Capitolo", FilterOperator.EQ, oPosFin.Capitolo),
 								new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr)
 							]
@@ -342,7 +343,7 @@ sap.ui.define([
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			let filterTipoFondo = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 									new Filter("Fase", FilterOperator.EQ, "DLB"),
-									new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+									new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 									new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale"))]
 			//Inizio Estrazione Tipo Fondo
 			return new Promise((resolve, reject) => {
@@ -362,7 +363,7 @@ sap.ui.define([
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			let filterCodiceStandard = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 									new Filter("Fase", FilterOperator.EQ, "DLB"),
-									new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+									new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 									new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale"))]
 			//Inizio Estrazione Codici Standard
 			return new Promise((resolve, reject) => {
@@ -396,7 +397,7 @@ sap.ui.define([
 				modelHana.read("/DistribuzioneCofogSet", {
 					filters: [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 					new Filter("Fase", FilterOperator.EQ, "DLB"),
-					new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+					new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 					new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
 					new Filter("Capitolo", FilterOperator.EQ, oPosFin.Capitolo),
 					new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr)
@@ -423,7 +424,7 @@ sap.ui.define([
 				modelHana.read("/CapitoloElencoSet", {
 					filters: [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 					new Filter("Fase", FilterOperator.EQ, "DLB"),
-					new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+					new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 					new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
 					new Filter("Capitolo", FilterOperator.EQ, oPosFin.Capitolo),
 					new Filter("PrctrElenco", FilterOperator.EQ, oPosFin.Prctr)
@@ -514,7 +515,7 @@ sap.ui.define([
 			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
 			let aFilters = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 							new Filter("Fase", FilterOperator.EQ, "DLB"),
-							new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento"))
+							new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr"))
 						]
 			switch (sHV) {
 				case "HVCapitolo":
@@ -739,7 +740,7 @@ sap.ui.define([
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			let filtersAmm = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
 									  new Filter("Fase", FilterOperator.EQ, "DLB"),
-									  new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSottostrumento")),
+									  new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
 									  new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale"))
 									]
 			let filtersTitolo = [...filtersAmm]

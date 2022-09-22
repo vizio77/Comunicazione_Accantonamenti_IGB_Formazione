@@ -28,12 +28,10 @@ sap.ui.define([
 			const aSubHashes = router.getHashChanger().getHash().split("/")
 			const oKeySStr = {
 				Fikrs: aSubHashes[1],
-				Anno: aSubHashes[2],
-				Fase: aSubHashes[3],
-				Reale: aSubHashes[4],
-				CodiceStrumento: aSubHashes[5],
-				CodiceStrumentoOri: aSubHashes[6],
-				CodiceSottostrumento: aSubHashes[7]
+				CodiceStrumento: aSubHashes[2],
+				CodiceStrumentoOri: aSubHashes[3],
+				CodiceSottostrumento: aSubHashes[4],
+				Datbis: aSubHashes[5]
 			}
 			this.__getSottoStrumento(oKeySStr)
 			var oRouter = this.getOwnerComponent().getRouter();

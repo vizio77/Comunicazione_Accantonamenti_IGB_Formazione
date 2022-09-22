@@ -16,6 +16,41 @@ sap.ui.define([
         getText: function(text){
             return this.getOwnerComponent().getModel("i18n").getResourceBundle().getText(text);
         },
+
+        //lt -> ancora da tenere in standby
+        writeAndRetrive: async function(item){
+
+			var accantonamentoSelected = this.getOwnerComponent().getModel("modelHome").getProperty("/AccantonamentoSelected");
+			var payload = {
+				"SchedaSac" : "GESTIONE",
+				"Zuser": "L.TARTAGGIA",
+				"Esercizio": item.Esercizio,
+				"Stato": parseInt(accantonamentoSelected.Stato),
+				"ProgSessLavoro" : parseInt(item.ProgSessLavoro),
+				"NomeSessione" : item.NomeSessione,
+				"SemObj" : "ACCMASS"
+				};
+
+			return new Promise((resolve, reject) => {
+			//lt creo il payload
+				var oModel = this.getOwnerComponent().getModel("accantonamenti");
+				var that = this;
+				oModel.create("/UrlSacSet", payload, {
+					success: function(oData, response) {
+
+						//salvo il link che mi ritorna dalla funzione
+						that.creaModelloLinkSAC(oData.Url);
+						resolve();
+					},
+					error: function(error) {
+						console.log(error);	
+						reject(error);
+					}
+				});
+			});
+		},
+
+
         __getEntityMatchCode: function (key) {
             let oCodificaEntity = {
                 "Amm": "/Gest_PosFin_SH_AmministrazioniSet"
