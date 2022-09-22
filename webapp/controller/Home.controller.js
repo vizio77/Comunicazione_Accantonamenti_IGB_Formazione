@@ -106,6 +106,8 @@ sap.ui.define([
                                 let aVisibilita = this.__removeDuplicate(oData.results, "visibilita")
                                 aVisibilita.unshift({Reale: null, DescrReale: "", Fase: null, Anno: null})
                                 modelHome.setProperty("/formSottostrumento/visibilitaSet", aVisibilita)
+
+                                modelHome.setProperty("/formSottostrumento/esposizione_contabile" , "0-");
                                 // oData.results[0].ToSHVisibilita.results.unshift({Fase: null, Anno: null})
                                 // modelHome.setProperty("/formSottostrumento/visibilitaSet", oData.results[0].ToSHVisibilita.results)
                             },

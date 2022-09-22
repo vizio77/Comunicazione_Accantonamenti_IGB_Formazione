@@ -12,30 +12,30 @@
             <f:content>
                 <Label text="{i18n>formSottostrumento}" labelFor="idformSottoStr"/>
 				<Input id="idformSottoStr" value="{modelHome>/formSottostrumento/codice_sstr}" width="70%" showValueHelp="false"/>
-                <Label text="{i18n>TipoSottoStr}" labelFor="idformStTipologia"/>
+                <Label text="{i18n>TipoSottoStr}" labelFor="idformStTipologia" visible="false"/>
 				<!-- <Input id="idformStTipologia" value="{modelHome>/formSottostrumento/tipologia}" width="70%" showValueHelp="true"/> -->
-                <Select id="idformStTipologia"  width="70%"  selectedKey="{modelHome>/formSottostrumento/tipologia}" items="{
+                <Select id="idformStTipologia"  width="70%"  selectedKey="{modelHome>/formSottostrumento/tipologia}" visible="false" items="{
                     path: 'modelHome>/formSottostrumento/tipologieSet/'
                 }" change=".onChangeSelect($event)">
                     <c:Item key="{modelHome>Tipologia}" text="{modelHome>DescrTipologia}" />
                 </Select>
                 <Label text="{i18n>EspContabile}" labelFor="idformStEspCont"/>
                     <!-- value="{modelHome>/formSottostrumento/esposizione_contabile}" -->
-				<Select id="idformStEspCont"  width="70%"  selectedKey="{modelHome>/formSottostrumento/esposizione_contabile}" items="{
-                    path:'modelHome>/formSottostrumento/esposizione_contabileSet/'}" forceSelection="false" change=".onChangeSelect($event)">
+				<Select id="idformStEspCont"  width="70%"  selectedKey="{modelHome>/formSottostrumento/esposizione_contabile}"  editable="false"
+                    items="{path:'modelHome>/formSottostrumento/esposizione_contabileSet/'}" forceSelection="false" change=".onChangeSelect($event)">
                     <c:Item key="{modelHome>Esposizione}-{modelHome>Progr}" text="{modelHome>DescrEsposizione}" />
                 </Select>
                 <Label text="{i18n>descrizione}" labelFor="idFormStDescr"/>
 				<Input id="idFormStDescr" value="{modelHome>/formSottostrumento/descrizione_sstr}" width="70%"/>
-                <Label text="{i18n>Visibilita}" labelFor="idFormStVisibilita"/>
+                <Label text="{i18n>Visibilita}" labelFor="idFormStVisibilita" visible="false"/>
                 <!-- value="{modelHome>/formSottostrumento/visibilita}" -->
-				<Select id="idFormStVisibilita" selectedKey="{modelHome>/formSottostrumento/visibilita}" width="70%"
+				<Select id="idFormStVisibilita" selectedKey="{modelHome>/formSottostrumento/visibilita}" width="70%" visible="false" 
                     items="{
                         path:'modelHome>/formSottostrumento/visibilitaSet/'}" forceSelection="false" change=".onChangeSelect($event)">
                     <c:Item key="{modelHome>Reale}" text="{modelHome>DescrReale}" />
                 </Select>
-                <Label text="{i18n>authgiust}" labelFor="id_auth_giust"/>
-                <Input id="id_auth_giust" width="70%" value="{modelHome>/formSottostrumento/auth_giust}">
+                <Label text="{i18n>authgiust}" labelFor="id_auth_giust" visible="false"/>
+                <Input id="id_auth_giust" width="70%" value="{modelHome>/formSottostrumento/auth_giust}" visible="false">
                     <!-- <tokens>
                         <Token
                             editable="true"
@@ -50,7 +50,7 @@
                     </customData> -->
                 </Input>
                 <Toolbar visible="false"/>
-                <Panel expandable="true" width="100%" class="marginHeaderSStr">
+                <!-- <Panel expandable="true" width="100%" class="marginHeaderSStr">
                     <headerToolbar>
                         <OverflowToolbar>
                             <Label text="Dominio Sottostrumento:"/>
@@ -196,21 +196,13 @@
                             <CheckBox text="E" enabled="false"/>
                         </FlexBox>
                         <Label text="{i18n>dom_tipo_var}" labelFor="id_dom_tipo_var"/>
-                        <!-- <RadioButtonGroup id="id_dom_tipo_var" columns="6" selectedIndex="2">
-                            <buttons>
-                                <RadioButton text="Solo variazioni struttura" selected="{modelHome>/formSottostrumento/solo_struttura}" enabled="{= !!${modelHome>/formSottostrumento/esposizione_contabile} &amp;&amp; ${modelHome>/formSottostrumento/esposizione_contabile}.split('-')[0] === '0'}"/>
-                                <RadioButton text="Solo variazioni contabili"  selected="{modelHome>/formSottostrumento/solo_contabili}"/>
-                                <RadioButton text="Nessuna Restrizione"  selected="{modelHome>/formSottostrumento/nessuna_restrizione}"/>
-                            </buttons>
-                        </RadioButtonGroup> -->
                         <FlexBox id="id_dom_tipo_var" justifyContent="SpaceAround" width="60%">
                             <CheckBox text="Solo variazioni struttura" selected="{modelHome>/formSottostrumento/var_struttura}" enabled="{= !!${modelHome>/formSottostrumento/esposizione_contabile} &amp;&amp; ${modelHome>/formSottostrumento/esposizione_contabile}.split('-')[0] === '0'}"/>
                             <CheckBox text="Solo variazioni contabili" selected="{modelHome>/formSottostrumento/var_contabili}"/>
-                            <!-- <CheckBox text="Solo variazioni contabili" selected="{= ${modelHome>/formSottostrumento/tipologia} === '53'}"/> -->
                         </FlexBox>
                     </f:content>
                 </f:SimpleForm>
-                </Panel>
+                </Panel> -->
             </f:content>
         </f:SimpleForm>
     </content>

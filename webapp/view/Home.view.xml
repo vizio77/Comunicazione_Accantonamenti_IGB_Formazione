@@ -33,7 +33,7 @@
                                 >
                                 <f:toolbar>
                                     <Toolbar id="TB1">
-                                        <Title id="Title1" text="Scegli il Sottostrumento"/>
+                                        <Title id="Title1" text="{i18n>scegliIlSottostrumento}"/>
                                         <ToolbarSpacer />
                                         <!-- <Button icon="sap-icon://search" text="Avvio" type="Emphasized"/>
                                         <Button icon="sap-icon://reset" text="Resetta"  type="Emphasized"/> -->
@@ -42,7 +42,7 @@
                                 <f:content>
                                     <Label text="Esercizio"/>
                                     <Text text="{modelHome>/formSottostrumento/esercizio}"/>
-                                    <Label text="Sottostrumento" />
+                                    <Label text="{i18n>sottostrumento} {i18n>stac}" />
                                     <Input value="{modelHome>/Sottostrumento}" showValueHelp="true" valueHelpRequest="onHelpValueSottoStrumento"/>
                                     <!-- <Label text="Autorizzazione"  id="labelAuth" visible="{modelFilterHome>/visibleAuth}"/>
                                     <Input value="{Street}" id="inputAuth" visible="{modelFilterHome>/visibleAuth}" showValueHelp="true" >

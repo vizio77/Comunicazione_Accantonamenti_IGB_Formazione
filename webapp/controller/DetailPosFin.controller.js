@@ -70,7 +70,7 @@ sap.ui.define([
 								this.__setFieldCapPg(oPosFin), 
 								this.__setFieldTitolo(oPosFin), 
 								this.__setFieldMissione(oPosFin), 
-								this.__setFieldCdr(oPosFin),
+								//this.__setFieldCdr(oPosFin),
 								this.__setFieldRagioneria(oPosFin),
 								this.__setFieldMac(oPosFin),
 								this.__setFieldPosizioneFinanziariaIrap(oPosFin),
