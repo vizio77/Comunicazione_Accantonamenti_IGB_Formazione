@@ -184,12 +184,12 @@ sap.ui.define([
                 var sottostrumentiModel = new JSONModel();
 
                 var aFiltersComposeStac = [new Filter("AnnoSstr", FilterOperator.EQ, annoSStr.getFullYear().toString()),
-                                       new Filter("Fase", FilterOperator.Contains, "STAC")];
+                                       new Filter("FaseSstr", FilterOperator.Contains, "STAC")];
 
 
                 var oView = this.getView();
                 var aFiltersCompose = [new Filter("AnnoSstr", FilterOperator.EQ, annoSStr.getFullYear().toString()),
-                                       new Filter("Fase", FilterOperator.Contains, "STAC")];
+                                       new Filter("FaseSstr", FilterOperator.Contains, "STAC")];
 
                 let modelHome = this.getView().getModel("modelHome")
                 //Autorizzazione Giustificativa
@@ -519,113 +519,7 @@ sap.ui.define([
                         //debugger
                     }
                  })
-                 //sap.ui.core.BusyIndicator.show();		
-                // var sapHanaS2Tipologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche");
-
-                // var entityArray = [
-                //     "/ZES_AMMINISTRAZIONE_SET",
-                //     "/ZES_PROGRAMMA_SET",
-                //     "/ZES_CATEGORIA_SET",
-                //     "/ZES_AZIONE_SET",
-                //     "/ZES_MISSIONE_SET",
-                //     "/ZES_ECONOMICA2_SET",
-                //     "/ZES_ECONOMICA3_SET" /*,
-                //     "/ZES_PG_SET",
-                //     "/ZES_CAPITOLO_SET"*/			
-                // ];
-               
-                // sapHanaS2Tipologiche.read("/ZES_PROGRAMMA_SET", {
-                //     filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
-                //               new Filter("FASE", FilterOperator.EQ, "DLB"), 
-                //               new Filter("ANNO", FilterOperator.EQ, "2023"),
-                //               new Filter("ATTIVO", FilterOperator.EQ, "X"),
-                //         ],
-                //     success: (oData, res ) => {
-                //         debugger
-                //         modelHome.setProperty("/formSottostrumento/programma_set", oData.results)
-                //     },
-                //     error: function(res){
-                //         debugger
-                //     }
-                // })
-                // sapHanaS2Tipologiche.read("/ZES_AZIONE_SET", {
-                //     filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
-                //               new Filter("FASE", FilterOperator.EQ, "DLB"), 
-                //               new Filter("ANNO", FilterOperator.EQ, "2023"),
-                //               new Filter("ATTIVO", FilterOperator.EQ, "X"),
-                //         ],
-                //     success: (oData, res ) => {
-                //         modelHome.setProperty("/formSottostrumento/azione_set", oData.results)
-                //     },
-                //     error: function(res){
-                //         debugger
-                //     }
-                // })
-                // sapHanaS2Tipologiche.read("/ZES_MISSIONE_SET", {
-                //     filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
-                //               new Filter("FASE", FilterOperator.EQ, "DLB"), 
-                //               new Filter("ANNO", FilterOperator.EQ, "2023"),
-                //               new Filter("ATTIVO", FilterOperator.EQ, "X"),
-                //         ],
-                //     success: (oData, res ) => {
-                //         modelHome.setProperty("/formSottostrumento/missione_set", oData.results)
-                //     },
-                //     error: function(res){
-                //         debugger
-                //     }
-                // })
-                // sapHanaS2Tipologiche.read("/ZES_ECONOMICA3_SET", {
-                //     filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
-                //               new Filter("FASE", FilterOperator.EQ, "DLB"), 
-                //               new Filter("ANNO", FilterOperator.EQ, "2023"),
-                //               new Filter("ATTIVO", FilterOperator.EQ, "X"),
-                //         ],
-                //     success: (oData, res ) => {
-                //         modelHome.setProperty("/formSottostrumento/economica3_set", oData.results)
-                //     },
-                //     error: function(res){
-                //         debugger
-                //     }
-                // })
-                // sapHanaS2Tipologiche.read("/ZES_ECONOMICA2_SET", {
-                //     filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
-                //               new Filter("FASE", FilterOperator.EQ, "DLB"), 
-                //               new Filter("ANNO", FilterOperator.EQ, "2023"),
-                //               new Filter("ATTIVO", FilterOperator.EQ, "X"),
-                //         ],
-                //     success: (oData, res ) => {
-                //         modelHome.setProperty("/formSottostrumento/economica2_set", oData.results)
-                //     },
-                //     error: function(res){
-                //         debugger
-                //     }
-                // })
-                // sapHanaS2Tipologiche.read("/ZES_CATEGORIA_SET", {
-                //     filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
-                //               new Filter("FASE", FilterOperator.EQ, "DLB"), 
-                //               new Filter("ANNO", FilterOperator.EQ, "2023"),
-                //               new Filter("ATTIVO", FilterOperator.EQ, "X"),
-                //         ],
-                //     success: (oData, res ) => {
-                //         modelHome.setProperty("/formSottostrumento/categoria_set", oData.results)
-                //     },
-                //     error: function(res){
-                //         debugger
-                //     }
-                // })
-                // sapHanaS2Tipologiche.read("/ZES_TITOLO_SET", {
-                //     filters: [new Filter("FIKRS", FilterOperator.EQ, "S001"),
-                //               new Filter("FASE", FilterOperator.EQ, "DLB"), 
-                //               new Filter("ANNO", FilterOperator.EQ, "2023"),
-                //               new Filter("ATTIVO", FilterOperator.EQ, "X"),
-                //         ],
-                //     success: (oData, res ) => {
-                //         modelHome.setProperty("/formSottostrumento/titolo_set", oData.results)
-                //     },
-                //     error: function(res){
-                //         debugger
-                //     }
-                // })
+                
 
             },
             onHRDomSStr: function (oEvent) {
