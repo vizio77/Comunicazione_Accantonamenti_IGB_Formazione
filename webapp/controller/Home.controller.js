@@ -88,7 +88,7 @@ sap.ui.define([
                                     // new Filter("TipoEsposizione", FilterOperator.EQ, "2"),
                                     // new Filter("Reale", FilterOperator.EQ, "R")
                                 ],
-                            success:  (oData) => {
+                            success: (oData) => {
                                 //debugger
                                 //Lista Tipologie
                                 let aTipologia = this.__removeDuplicate(oData.results, "tipologia")
