@@ -2,11 +2,11 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
 >
-<Dialog title="Cerca PG" contentHeight="90%">
+<Dialog title="Pg già associati a Amministrazione e Capitolo" contentHeight="90%">
 		<content>
             <Table
                 growing="true"
-                mode="SingleSelectLeft"
+                mode="None"
                 growingScrollToLoad="true"
                 items="{path: 'modelPosFin>/formPosFin/pg/', length: '10000', sorter: [{path: 'Prctr', comparator: '.sorterAmmByNumericCode'},
                                                                                                     {path: 'Capitolo', comparator: '.sorterHVDomSStr'},
@@ -19,9 +19,10 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
-                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVDomSStr" width="50%">
+                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchDescr" width="50%">
                                 <customData>
-                                    <c:CustomData key="azione" value="AzioneDescr"/>
+                                    <c:CustomData key="pg" value="DescEstesaPg"/>
+                                    <c:CustomData key="pg" value="Pg"/>
                                 </customData>
                             </SearchField>
                         </content>
@@ -69,11 +70,11 @@
             </Table>
         </content>
         <buttons>
-            <Button text="Seleziona" press="onConfirmSelectionPosFin" type="Emphasized">
+            <!-- <Button text="Seleziona" press="onConfirmSelectionPosFin" type="Emphasized">
                 <customData>
                     <c:CustomData key="selezioni" value="Pg" writeToDom="false" />
                 </customData>
-            </Button>
+            </Button> -->
             <Button text="Annulla" press="onCloseHVPosFin" type="Emphasized"/>
         </buttons>
     </Dialog>

@@ -17,28 +17,58 @@
     verticalScrolling="true"
 >
     <content>
-        <List
-        mode="SingleSelectLeft"
-		items="{
-			path: 'modelPosFin>/formPosFin/ragionerie', sorter: [{path: 'Ragioneria', comparator: '.sorterHVDomSStr'}]
-		}" >
-        <headerToolbar>
-            <OverflowToolbar>
-                <content>
-                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVDomSStr" width="65%" >
-                        <customData>
-                            <c:CustomData key="amm" value="DescrBreve"/>
-                        </customData>
-                    </SearchField>
-                </content>
-            </OverflowToolbar>
-        </headerToolbar>
-		<StandardListItem
-			title="{modelPosFin>Ragioneria}"
-			description="{modelPosFin>DescEstesaRagioneria}"
-			iconDensityAware="false"
-			iconInset="false"/>
-	</List>
+     <Table
+                growing="true"
+                mode="SingleSelectLeft"
+                growingScrollToLoad="true"
+                items="{path: 'modelPosFin>/formPosFin/ragionerie/', length: '5000', sorter: [{path: 'Prctr', comparator: '.sorterAmmByNumericCode'},
+                                                                                            {path: 'Ragioneria', comparator: '.sorterHVDomSStr'}
+                                                                                            ]}"
+                sticky="InfoToolbar,HeaderToolbar,ColumnHeaders"
+                updateStarted="onUpdateStartedHVDomSStr"
+                updateFinished="onUpdateFinishedHVDomSStr"
+            >
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <content>
+                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchDescr" width="50%">
+                                <customData>
+                                    <c:CustomData key="ragioneria" value="DescrEstesaRagioneria"/>
+                                    <c:CustomData key="ragioneria" value="Ragioneria"/>
+                                </customData>
+                            </SearchField>
+                        </content>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column  width="6rem">
+                        <Text text="Amm."/>
+                    </Column>
+                    <Column  width="12rem">
+                        <Text text="Descr. Ammin."/>
+                    </Column>
+                    <Column  width="8rem">
+                        <Text text="Ragioneria"/>
+                    </Column>
+                    <Column  width="12rem">
+                        <Text text="Descr. Ragioneria"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Active">
+                        <cells>
+                            <Text text="{modelPosFin>Prctr}"/>
+                            <Text text="{modelPosFin>DescrEstesaAmmin}"/>
+                            <Text text="{modelPosFin>Ragioneria}"/>
+                            <Text text="{modelPosFin>DescrEstesaRagioneria}"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                <customData>
+                    <c:CustomData key="AZIONE" value="Azione" writeToDom="false" />
+                    <c:CustomData key="selezioni" value="azioni" writeToDom="false" />
+                </customData>
+            </Table>
     </content>
     <customHeader>
     </customHeader>

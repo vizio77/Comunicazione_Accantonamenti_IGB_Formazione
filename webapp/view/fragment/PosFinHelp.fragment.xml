@@ -8,101 +8,139 @@
 				<f:content>
 					<core:Title/>
 					<Label text="{i18n>labelPosFin}" labelFor="idAmmPosizioneFin"/>
-					<Input id="idAmmPosizioneFin" value="{modelPosFin>/form/POSIZIONE_FINANZIARIA}" width="70%" showValueHelp="false"/>
+					<Input id="idAmmPosizioneFin" value="{modelPosFin>/posFinHelp/fipex}" width="70%" showValueHelp="false"/>
+					<!-- Amministrazione -->
 					<Label text="{i18n>Amministrazione}" labelFor="idAmmFraa"/>
-					<Input id="idAmmFraa" value="{modelPosFin>/form/AMMINISTRAZIONE}" width="70%" showValueHelp="true"
-						valueHelpRequest="onPressMatchCodeFragment">
+					<Input id="idAmmFraa" value="{modelPosFin>/posFinHelp/Prctr}" width="70%" showValueHelp="true" valueHelpOnly="true"
+						valueHelpRequest="onHVAdattaFiltri">
                         <customData>
-                            <core:CustomData
-                                key="Amm"
-                                value="HelpValueAmm"
-                                writeToDom="false"
-                            >
-                                
-                            </core:CustomData>
-                        </customData>
+							<core:CustomData key="posFinHelp" value="HVAmmin" />
+						</customData>
                     </Input>
+					<!-- Centro di Responsabilità -->
+					<Label text="{i18n>centroDiResp}"/>
+					<Input  value="{modelPosFin>/posFinHelp/Cdr}" width="70%" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onHVAdattaFiltri">
+						<customData>
+							<core:CustomData key="posFinHelp" value="HVCdr" />
+						</customData>
+					</Input>
+					<!-- Ragioneria -->
+					<Label text="{i18n>ragioneria}"/>
+					<Input id="idRagioneria" value="{modelPosFin>/posFinHelp/Ragioneria}" width="70%" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onHVAdattaFiltri">
+						<customData>
+							<core:CustomData key="posFinHelp" value="HVRagioneria" />
+						</customData>
+					</Input>
+					<!-- Missione -->
 					<Label text="{i18n>mission}" labelFor="idMiss"/>
-					<Input id="idMiss" value="{modelPosFin>/form/MISSIONE}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
+					<Input id="idMiss" value="{modelPosFin>/posFinHelp/Missione}" width="70%" showValueHelp="true" valueHelpRequest="onHVAdattaFiltri" valueHelpOnly="true">
                         <customData>
-                            <core:CustomData key="Miss" value="HelpValueMissioni" writeToDom="false"/>
+                            <core:CustomData key="posFinHelp" value="HVMissione" writeToDom="false"/>
                         </customData>
                     </Input>
+					<!-- Programma -->
 					<Label text="{i18n>programma}" labelFor="idProgFs"/>
-					<Input id="idProgFs" value="{modelPosFin>/form/PROGRAMMA}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
+					<Input id="idProgFs" value="{modelPosFin>/posFinHelp/Programma}" width="70%" showValueHelp="true" valueHelpRequest="onHVAdattaFiltri" valueHelpOnly="true">
                         <customData>
-                            <core:CustomData key="Prog" value="HelpValueProgramma" writeToDom="false"/>
+                            <core:CustomData key="posFinHelp" value="HVProgramma" writeToDom="false"/>
                         </customData>
                     </Input>
+					<!-- Azione -->
 					<Label text="{i18n>azione}" labelFor="idAzioneF"/>
-					<Input id="idAzioneF" value="{modelPosFin>/form/AZIONE}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
+					<Input id="idAzioneF" value="{modelPosFin>/posFinHelp/Azione}" width="70%" showValueHelp="true" valueHelpRequest="onHVAdattaFiltri" valueHelpOnly="true">
                     <customData>
-                            <core:CustomData key="Azione" value="HelpValueAzione" writeToDom="false"/>
+                            <core:CustomData key="posFinHelp" value="HVAzione" writeToDom="false"/>
                         </customData>
                     </Input>
+					<!-- Capitolo -->
 					<Label text="{i18n>Capitolo}" labelFor="idCapitoloF"/>
-					<Input id="idCapitoloF" value="{modelPosFin>/form/CAPITOLO}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
-                    <customData>
-                            <core:CustomData key="Capitolo" value="HelpValueCapitolo" writeToDom="false"/>
+					<Input id="idCapitoloF" value="{modelPosFin>/posFinHelp/Capitolo}" width="70%" showValueHelp="true" valueHelpRequest="onHVAdattaFiltri" valueHelpOnly="true">
+                    	<customData>
+                            <core:CustomData key="posFinHelp" value="HVCapitolo" writeToDom="false"/>
                         </customData>
                     </Input>
+					<!-- PG -->
 					<Label text="{i18n>Pg}" labelFor="idPgF"/>
-					<Input id="idPgF" value="{modelPosFin>/form/PG}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
-                    <customData>
-                            <core:CustomData key="PG" value="HelpValuePg" writeToDom="false"/>
+					<Input id="idPgF" value="{modelPosFin>/posFinHelp/Pg}" width="70%" showValueHelp="true" valueHelpRequest="onHVAdattaFiltri">
+                    	<customData>
+                            <core:CustomData key="posFinHelp" value="HVPgChoice" writeToDom="false"/>
                         </customData>
                     </Input>
+					<!-- Titolo -->
+					<Label text="{i18n>dom_titolo}"/>
+					<Input id="idTitolo" value="{modelPosFin>/posFinHelp/Titolo}" width="70%" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="onHVAdattaFiltri">
+						<customData>
+							<core:CustomData key="posFinHelp" value="HVTitolo" />
+						</customData>
+					</Input>
+					<!-- Categoria -->
 					<Label text="{i18n>categoria}" labelFor="idCategoriaF"/>
-					<Input id="idCategoriaF" value="{modelPosFin>/form/CATEGORIA}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragment">
+					<Input id="idCategoriaF" value="{modelPosFin>/posFinHelp/Categoria}" width="70%" showValueHelp="true" valueHelpRequest="onHVAdattaFiltri" valueHelpOnly="true" >
 						<customData>
-                            <core:CustomData key="Categoria" value="HelpValueCategoria" writeToDom="false"/>
+                            <core:CustomData key="posFinHelp" value="HVCategoria" writeToDom="false"/>
                         </customData>
                     </Input>
+					<!-- Ce2 -->
 					<Label text="{i18n>ce}" labelFor="idCeF"/>
-					<Input id="idCeF" value="{modelPosFin>/form/CE2}" width="70%" showValueHelp="true" valueHelpRequest="onPressMatchCodeFragmentTable"/>
-					<Label text="{i18n>ce3}" labelFor="idCe3F"/>
-					<Input id="idCe3F" value="{modelPosFin>/form/CE3}" width="70%" showValueHelp="true"/>
-					<!-- <Label text="{i18n>gestContratto}" labelFor="idGestContrF"/>
-					<Input id="idGestContrF" value="{modelPosFin>/form/GEST_CONTRATTO}" width="70%" showValueHelp="true"
-						valueHelpRequest="onPressMatchCodeFragment">
+					<Input id="idCeF" value="{modelPosFin>/posFinHelp/Ce2}" width="70%" showValueHelp="true" valueHelpRequest="onHVAdattaFiltri" valueHelpOnly="true" >
 						<customData>
-                            <core:CustomData key="GestioneContratto" value="HelpValueGestioneContratto" writeToDom="false"/>
-                        </customData>
-                    </Input> -->
+							<core:CustomData key="posFinHelp" value="HVCe2" />
+						</customData>
+					</Input>
+					<!-- Ce3 -->
+					<Label text="{i18n>ce3}" labelFor="idCe3F"/>
+					<Input id="idCe3F" value="{modelPosFin>/posFinHelp/Ce3}" width="70%" showValueHelp="true" valueHelpRequest="onHVAdattaFiltri" valueHelpOnly="true" >
+						<customData>
+							<core:CustomData key="posFinHelp" value="HVCe3" />
+						</customData>
+					</Input>
+
+					
 					<core:Title/>
-					<Label text="{i18n>maxRis}" labelFor="idMaxRis"/>
-					<Input id="idMaxRis" value="{modelPosFin>/form/MAX_RICERCA}" width="80%"/>
+					<Text />
+					<!-- Desc Amministrazione -->
 					<Label text="{i18n>descAmm}" labelFor="idDescAmmF"/>
-					<Input id="idDescAmmF" value="{modelPosFin>/form/DESCRIZIONE_AMM}" width="80%" editable="true"/>
+					<Input id="idDescAmmF" value="{modelPosFin>/posFinHelp/AmministrazioneDesc}" width="80%" editable="false"/>
+					<!-- Descr Cdr -->
+					<Label text="Desc. CdR"/> 
+					<Input  value="{modelPosFin>/posFinHelp/CdrDesc}" width="80%" editable="false"/>
+					<!-- Descr Ragioneria -->
+					<Label text="Desc. Ragioneria"/> 
+					<Input  value="{modelPosFin>/posFinHelp/RagioneriaDesc}" width="80%" editable="false"/>
+					<!-- Desc Missione -->
 					<Label text="{i18n>descrMissione}" labelFor="idDescMissF"/>
-					<Input id="idDescMissF" value="{modelPosFin>/form/DESCRIZIONE_MISSIONE}" width="80%" editable="true"/>
+					<Input id="idDescMissF" value="{modelPosFin>/posFinHelp/MissioneDesc}" width="80%" editable="false"/>
+					<!-- Desc Programma -->
 					<Label text="{i18n>descrProgramma}" labelFor="idDescProgF"/>
-					<Input id="idDescProgF" value="{modelPosFin>/form/DESC_PROGRAMMA}" width="80%" editable="true"/>
+					<Input id="idDescProgF" value="{modelPosFin>/posFinHelp/ProgrammaDesc}" width="80%" editable="false"/>
+					<!-- Desc Azione -->
 					<Label text="{i18n>descrAzione}" labelFor="idDescAzioneF"/>
-					<Input id="idDescAzioneF" value="{modelPosFin>/form/DESC_AZIONE}" width="80%" editable="true"/>
+					<Input id="idDescAzioneF" value="{modelPosFin>/posFinHelp/AzioneDesc}" width="80%" editable="false"/>
+					<!-- Desc Capitolo -->
 					<Label text="{i18n>descrCapitolo}" labelFor="idDescCapitoloF"/>
-					<Input id="idDescCapitoloF" value="{modelPosFin>/form/DESC_CAPITOLO}" width="80%" editable="true"/>
+					<Input id="idDescCapitoloF" value="{modelPosFin>/posFinHelp/CapitoloDesc}" width="80%" editable="false"/>
+					<!-- Desc Pg -->
 					<Label text="{i18n>descrPg}" labelFor="idDescrPgF"/>
-					<Input id="idDescrPgF" value="{modelPosFin>/form/DESC_PG}" width="80%" editable="true"/>
+					<Input id="idDescrPgF" value="{modelPosFin>/posFinHelp/PgDesc}" width="80%" editable="false"/>
+					<!-- Desc Titolo -->
+					<Label text="{i18n>descrTitolo}"/>
+					<Input  value="{modelPosFin>/posFinHelp/TitoloDesc}" width="80%" editable="false"/>
+					<!-- Desc Categoria -->
 					<Label text="{i18n>descrCategoria}" labelFor="idDescCategoria"/>
-					<Input id="idDescCategoria" value="{modelPosFin>/form/DESCR_CATEGORIA}" width="80%" editable="true"/>
+					<Input id="idDescCategoria" value="{modelPosFin>/posFinHelp/CategoriaDesc}" width="80%" editable="false"/>
+					<!-- Desc Ce2 -->
 					<Label text="{i18n>descrCe}" labelFor="idDescCeF"/>
-					<Input id="idDescCeF" value="{modelPosFin>/form/DESC_CE2}" width="80%" editable="true"/>
+					<Input id="idDescCeF" value="{modelPosFin>/posFinHelp/Ce2Desc}" width="80%" editable="false"/>
+					<!-- Desc Ce3 -->
 					<Label text="{i18n>descrCe3}" labelFor="idDescCe3F"/>
-					<Input id="idDescCe3F" value="{modelPosFin>/form/DESC_CE3}" width="80%" editable="true"/>
+					<Input id="idDescCe3F" value="{modelPosFin>/posFinHelp/Ce3Desc}" width="80%" editable="false"/>
 				</f:content>
 			</f:SimpleForm>
 		</content>
-		<!-- <beginButton>
-			<Button press="onClose" type="Emphasized" text="{i18n>close}"></Button>
-		</beginButton>
-		<endButton>
-			<Button press="onPressConfPosFin" type="Emphasized" text="{i18n>Cerca}"/>
-		</endButton> -->
 		<buttons>
-			<Button press="onClose" type="Emphasized" text="{i18n>close}"></Button>
-			<Button press="onClose" type="Emphasized" text="{i18n>Resetta}"></Button>
 			<Button press="onPressConfPosFin" type="Emphasized" text="{i18n>Cerca}"/>
+			<Button press="onResetPosFinHelp" type="Emphasized" text="{i18n>Resetta}"></Button>
+			<Button press="onClose" type="Emphasized" text="{i18n>close}"></Button>
 		</buttons>
 	</Dialog>
 </core:FragmentDefinition>

@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<TableSelectDialog title="Cerca" search="handleSearchFinan" confirm="handleCloseFinan" cancel="handleCloseFinan"
+	<TableSelectDialog title="Cerca" search="handleSearchFinan" confirm="onConfirmTablePosFin" cancel="handleCloseFinan"
 		items="{modelPosFin>/elencoPosFin/}">
 		<columns>
 			<Column width="14rem">
@@ -100,24 +100,29 @@
 		</columns>
 		<ColumnListItem>
 			<cells>
-				<Text text="{modelPosFin>POSIZIONE_FINANZIARIA}"/>
-				<Text text="{modelPosFin>AMMINISTAZIONE}"/>
+				<Text text="{modelPosFin>Fipex}"/>
+				<Text text="{modelPosFin>Prctr}"/>
 				<Text text="{modelPosFin>DESC_AMMINISTAZIONE}"/>
-				<Text text="{modelPosFin>MISSIONE}"/>
+				<Text text="{modelPosFin>Cdr}"/>
+				<Text text="{modelPosFin>Ragioneria}"/>
+				<Text text="{modelPosFin>DescRagioneria}"/>
+				<Text text="{modelPosFin>Missione}"/>
 				<Text text="{modelPosFin>DESC_MISSIONE}"/>
-				<Text text="{modelPosFin>PROGRAMMA}"/>
+				<Text text="{modelPosFin>Programma}"/>
 				<Text text="{modelPosFin>DESC_PROGRAMMA}"/>
-				<Text text="{modelPosFin>AZIONE}"/>
+				<Text text="{modelPosFin>Azione}"/>
 				<Text text="{modelPosFin>DESC_AZIONE}"/>
-				<Text text="{modelPosFin>CAPITOLO}"/>
+				<Text text="{modelPosFin>Capitolo}"/>
 				<Text text="{modelPosFin>DESC_CAPITOLO}"/>
-				<Text text="{modelPosFin>PG}"/>
+				<Text text="{modelPosFin>Pg}"/>
 				<Text text="{modelPosFin>DESC_PG_ESTESA}"/>
-				<Text text="{modelPosFin>CATEGORIA}"/>
+				<Text text="{modelPosFin>Titolo}"/>
+				<Text text="{modelPosFin>DescTitolo}"/>
+				<Text text="{modelPosFin>Categoria}"/>
 				<Text text="{modelPosFin>DESC_CATEGORIA}"/>
-				<Text text="{modelPosFin>CE2}"/>
+				<Text text="{modelPosFin>Ce2}"/>
 				<Text text="{modelPosFin>DESC_CE2}"/>
-				<Text text="{modelPosFin>CE3}"/>
+				<Text text="{modelPosFin>Ce3}"/>
 				<Text text="{modelPosFin>DESC_CE3}"/>
 			</cells>
 		</ColumnListItem>

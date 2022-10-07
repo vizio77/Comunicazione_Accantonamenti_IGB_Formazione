@@ -19,9 +19,10 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
-                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVDomSStr" width="65%">
+                            <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchDescr" width="65%">
                                 <customData>
-                                    <c:CustomData key="azione" value="AzioneDescr"/>
+                                    <c:CustomData key="azione" value="DescEstesaAzione"/>
+                                    <c:CustomData key="azione" value="Azione"/>
                                 </customData>
                             </SearchField>
                         </content>

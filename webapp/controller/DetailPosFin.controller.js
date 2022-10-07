@@ -116,6 +116,31 @@ sap.ui.define([
 
 		},
 
+		__setCodeStandard: function (oCapitolo, sPath, sCodice, sEstesa, sRidotta) {
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			const aFilterCS = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+								new Filter("Fase", FilterOperator.EQ, "DLB"),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
+								new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
+								new Filter("CodiceStd", FilterOperator.EQ, oCapitolo[sPath])
+							]
+			return new Promise((resolve, reject) => {
+				modelHana.read("/CodiceStandardSet", {
+					filters: aFilterCS,
+					success: (oData) => {
+						if(oData.results.length > 0) {
+							modelPosFin.setProperty("/detailAnagrafica/" + sCodice, oData.results[0].CodiceStd)
+							modelPosFin.setProperty("/detailAnagrafica/" + sEstesa, oData.results[0].DescEstesa)
+							modelPosFin.setProperty("/detailAnagrafica/" + sRidotta, oData.results[0].DescBreve)
+							modelPosFin.updateBindings(true)
+						}
+						resolve()
+					}
+				})
+			})
+		},
+
 		__setFieldAmmin: function (oPosFin) {
 			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
@@ -1270,6 +1295,11 @@ sap.ui.define([
 		},
 		handleCloseFinan: function (oEvent) {
 			let homeModel = this.getOwnerComponent().getModel("modelHome")
+
+			if(!oEvent.getParameter("selectedItem")){
+				return;
+			}
+			
 			let oSelectedItem = homeModel.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath())
 			homeModel.setProperty("/posFin", oSelectedItem.POSIZIONE_FINANZIARIA)
 			homeModel.setProperty("/selectedPosFin", oSelectedItem)

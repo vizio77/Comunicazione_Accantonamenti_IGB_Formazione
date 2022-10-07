@@ -23,15 +23,18 @@
 			path: 'modelPosFin>/formPosFin/amministrazioni', sorter: [{path: 'Prctr', comparator: '.sorterAmmByNumericCode'}]
 		}" >
         <headerToolbar>
-            <OverflowToolbar>
-                <content>
-                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVDomSStr" width="65%" >
+            <!-- <OverflowToolbar>
+                <content> width="65%" -->
+                <Toolbar width="100%">
+                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchDescr" width="auto" >
                         <customData>
-                            <c:CustomData key="amm" value="DescrBreve"/>
+                            <c:CustomData key="amm" value="DescEstesa"/>
+                            <c:CustomData key="amm" value="Prctr"/>
                         </customData>
                     </SearchField>
-                </content>
-            </OverflowToolbar>
+                </Toolbar>
+                <!-- </content>
+            </OverflowToolbar> -->
         </headerToolbar>
 		<StandardListItem
 			title="{modelPosFin>Prctr}"

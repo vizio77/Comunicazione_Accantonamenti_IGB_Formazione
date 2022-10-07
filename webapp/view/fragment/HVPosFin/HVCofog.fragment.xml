@@ -2,16 +2,15 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
 >
-<Dialog title="Cerca" contentHeight="90%">
+<Dialog title="Cerca C.O.F.O.G" contentHeight="90%" >
 		<content>
             <Table
                 growing="true"
                 mode="SingleSelectLeft"
                 growingScrollToLoad="true"
-                items="{path: 'modelPosFin>/formPosFin/categorie/', length: '1000', sorter: [
-                    {path: 'Categoria', comparator: '.sorterHVDomSStr'},
-                    {path: 'Titolo', comparator: '.sorterHVDomSStr'}
-                  ]}"
+                items="{path: 'modelPosFin>/detailAnagrafica/lista_cofog/', length: '5000', sorter: [{path: 'CofogL1', comparator: '.sorterHVDomSStr'},
+                                                                                                        {path: 'CofogL2', comparator: '.sorterHVDomSStr'},
+                                                                                                        {path: 'CofogL3', comparator: '.sorterHVDomSStr'}]}"
                 sticky="InfoToolbar,HeaderToolbar,ColumnHeaders"
                 updateStarted="onUpdateStartedHVDomSStr"
                 updateFinished="onUpdateFinishedHVDomSStr"
@@ -21,46 +20,46 @@
                         <content>
                             <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchDescr" width="50%" >
                                 <customData>
-                                    <c:CustomData key="categoria" value="DescEstesaCategoria"/>
-                                    <c:CustomData key="categoria" value="Categoria"/>
+                                    <c:CustomData key="cofog" value="Desc"/>
+                                    <c:CustomData key="cofog" value="CofogL3"/>
                                 </customData>
                             </SearchField>
                         </content>
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>
-                    <Column width="8rem">
-                        <Text text="{i18n>dom_titolo}"/>
+                    <Column  width="6rem">
+                        <Text text="{i18n>liv1}"/>
                     </Column>
-                    <Column width="12rem">
-                        <Text text="{i18n>descr_titolo}"/>
+                    <Column  width="12rem">
+                        <Text text="{i18n>liv2}"/>
                     </Column>
-                    <Column width="8rem">
-                        <Text text="{i18n>dom_categoria}" />
+                    <Column  width="6rem">
+                        <Text text="{i18n>liv3}"/>
                     </Column>
-                    <Column width="12rem">
-                        <Text text="{i18n>descrCategoria}"/>
+                    <Column width="auto">
+                        <Text text="{i18n>Descrizione}"/>
                     </Column>
                 </columns>
                 <items>
                     <ColumnListItem type="Active">
                         <cells>          
-                            <Text text="{modelPosFin>Titolo}"/>
-                            <Text text="{modelPosFin>DescEstesaTitolo}"/>
-                            <Text text="{modelPosFin>Categoria}"/>
-                            <Text text="{modelPosFin>DescEstesaCategoria}"/>
+                            <Text text="{modelPosFin>CofogL1}"/>
+                            <Text text="{modelPosFin>CofogL2}"/>
+                            <Text text="{modelPosFin>CofogL3}"/>
+                            <Text text="{modelPosFin>Desc}"/>
                         </cells>
                     </ColumnListItem>
                 </items>
                 <customData>
-                    <c:CustomData key="selezioni" value="categoria" writeToDom="false" />
+                    <c:CustomData key="selezioni" value="Cofog" writeToDom="false" />
                 </customData>
             </Table>
         </content>
         <buttons>
-            <Button text="Selezionali" press="onConfirmSelectionPosFin" type="Emphasized">
+            <Button text="Seleziona" press="onConfirmSelectionPosFin" type="Emphasized">
                 <customData>
-                        <c:CustomData key="selezioni" value="Categoria" writeToDom="false" />
+                        <c:CustomData key="selezioni" value="Cofog" writeToDom="false" />
                 </customData>
             </Button>
             <Button text="Annulla" press="onCloseHVPosFin" type="Emphasized"/>

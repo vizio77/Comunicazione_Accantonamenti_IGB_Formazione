@@ -17,6 +17,18 @@ sap.ui.define([
             return this.getOwnerComponent().getModel("i18n").getResourceBundle().getText(text);
         },
 
+        __getAnnoFase: function () {
+            let modelTopologiche = this.getOwnerComponent().getModel("sapHanaS2Tipologiche")  
+            return new Promise((resolve, reject) => {
+              modelTopologiche.read("/ZES_CAL_FIN_SET",{
+                  filters: [new Filter("FASE", FilterOperator.EQ, "F")],
+                  success: (oData) => {
+                      resolve(oData.results[0].ANNO)
+                  }
+              })
+            })
+          },
+
         //lt -> ancora da tenere in standby
         writeAndRetrive: async function(item){
 
@@ -50,6 +62,92 @@ sap.ui.define([
 			});
 		},
 
+        openMessageBox: function(sType, sTitle, sMessage, onYesAction, onNoAction){                
+            let that = this;
+            
+            if(!this._oDialog){
+                let bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+                let oSettings = {
+                    type: sap.m.DialogType.Message,
+                    styleClass: bCompact ? "sapUiSizeCompact" : "",
+                };
+            
+                this._oDialog = new sap.m.Dialog(oSettings);
+                this.getView().addDependent(this._oDialog);
+            }                
+            
+            this._oDialog.destroyContent();
+            this._oDialog.destroyButtons();
+            
+            this._oDialog.setState(sap.ui.core.ValueState[sType]);
+            this._oDialog.setTitle(sTitle);
+            this._oDialog.addContent( 
+                new sap.m.Text({
+                    text: sMessage
+                }) 
+            );
+            
+            that._oDialog.addButton(					
+                new sap.m.Button({
+                    text:"{i18n>Ok}",
+                    type: sap.m.ButtonType.Emphasized,
+                    press: (oEvent) => {
+                        if(onYesAction)
+                            onYesAction(oEvent);
+                        that._oDialog.close();
+                    },
+                })
+            );
+            if(["Warning"].includes(sType)){
+                that._oDialog.addButton(
+                    new sap.m.Button({
+                        text:"{i18n>Annulla}",
+                        type: sap.m.ButtonType.Emphasized,
+                        press: (oEvent) => {
+                            if(onNoAction) 
+                                onNoAction(oEvent);
+                            that._oDialog.close();
+                        }
+                    })
+                );
+            }
+            
+            that._oDialog.open();    
+        },
+
+        __getHVAmministrazione: function (modelHana, modelPosFin, aDomAmministrazione) {
+            let filtersAmm = [new Filter("Fikrs", FilterOperator.EQ, "S001"),
+							new Filter("Fase", FilterOperator.EQ, "DLB"),
+							new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
+							new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale"))
+							]
+            if(aDomAmministrazione.results.length > 0)
+                filtersAmm.push(this.__getFiltersOR(aDomAmministrazione.results, "Prctr"))
+
+			return new Promise((resolve, reject) => {
+				modelHana.read("/TipAmministrazioneSet",{
+					filters: filtersAmm,
+					success: (oData) => {
+						//debugger
+						modelPosFin.setProperty("/formPosFin/amministrazioni", oData.results)
+						resolve()
+					},
+					error:  (err) => {
+						//debugger
+						resolve(err)
+					}
+				})
+			})
+		},
+
+        sorterHVDomSStr: function (a, b) {
+			return Number(a) - Number(b)
+		},
+        sorterAmmByNumericCode: function (a,b) {
+			const subStrAmm1 = Number(a.substring(1, a.length))
+			const subStrAmm2 = Number(b.substring(1, a.length))
+			return subStrAmm1 - subStrAmm2;
+		},
 
         __getEntityMatchCode: function (key) {
             let oCodificaEntity = {

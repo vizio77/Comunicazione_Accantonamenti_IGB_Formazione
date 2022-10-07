@@ -23,15 +23,18 @@
 			path: 'modelPosFin>/formPosFin/titoli', sorter: [{path: 'Titolo', comparator: '.sorterHVDomSStr'}]
 		}" >
         <headerToolbar>
-            <OverflowToolbar>
-                <content>
-                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search=".onSearchHVDomSStr" width="65%">
+            <!-- <OverflowToolbar>
+                <content> -->
+                <Toolbar width="100%">
+                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search=".onSearchDescr" width="65%">
                         <customData>
-                            <c:CustomData key="titoli" value="TitoloDescr"/>
+                            <c:CustomData key="titolo" value="DescEstesaTitolo"/>
+                            <c:CustomData key="titolo" value="Titolo"/>
                         </customData>
                     </SearchField>
-                </content>
-            </OverflowToolbar>
+                </Toolbar>
+                <!-- </content>
+            </OverflowToolbar> -->
         </headerToolbar>
 		<StandardListItem
 			title="{modelPosFin>Titolo}"

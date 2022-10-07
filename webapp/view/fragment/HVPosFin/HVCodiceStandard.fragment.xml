@@ -2,51 +2,46 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
 >
-<Dialog title="Cerca Programma" contentHeight="90%">
+<Dialog title="Cerca Codice Standard" contentHeight="90%">
 		<content>
             <Table
                 growing="true"
                 mode="SingleSelectLeft"
                 growingScrollToLoad="true"
-                items="{path: 'modelPosFin>/formPosFin/programmi/', length: '2000', sorter: [{path: 'Missione', comparator: '.sorterHVDomSStr'},
-                                                                                            {path: 'Programma', comparator: '.sorterHVDomSStr'}]}"
+                items="{path: 'modelPosFin>/formPosFin/codiceStandard/', length: '5000', sorter: [
+                                                                                            {path: 'CodiceStd', comparator: '.sorterHVDomSStr'}
+                                                                                            ]}"
                 sticky="InfoToolbar,HeaderToolbar,ColumnHeaders"
-                updateStarted="onUpdateStartedHVDomSStr"
-                updateFinished="onUpdateFinishedHVDomSStr"
             >
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
                             <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchDescr" width="50%">
                                 <customData>
-                                    <c:CustomData key="programma" value="DescEstesaProgramma"/>
-                                    <c:CustomData key="programma" value="Programma"/>
+                                    <c:CustomData key="codestd" value="DescEstesa"/>
+                                    <c:CustomData key="codestd" value="CodiceStd"/>
                                 </customData>
                             </SearchField>
                         </content>
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>
-                     <Column width="8rem">
-                            <Text text="Missione" />
+                    <Column  width="6rem">
+                        <Text text="Codice Standard"/>
                     </Column>
-                    <Column width="12rem">
-                        <Text text="Descr. Missione"/>
+                    <Column  width="12rem">
+                        <Text text="Denominazione Ridotta"/>
                     </Column>
-                    <Column width="8rem">
-                        <Text text="Programma"/>
-                    </Column>
-                    <Column width="12rem">
-                        <Text text="Descr. Programma"/>
+                    <Column  width="12rem">
+                        <Text text="Denominazione Integrale"/>
                     </Column>
                 </columns>
                 <items>
                     <ColumnListItem type="Active">
                         <cells>
-                            <Text text="{modelPosFin>Missione}"/>
-                            <Text text="{modelPosFin>DescEstesaMissione}"/>
-                            <Text text="{modelPosFin>Programma}"/>
-                            <Text text="{modelPosFin>DescEstesaProgramma}"/>
+                            <Text text="{modelPosFin>CodiceStd}"/>
+                            <Text text="{modelPosFin>DescBreve}"/>
+                            <Text text="{modelPosFin>DescEstesa}"/>
                         </cells>
                         <!-- <customData>
                             <c:CustomData key="{homeModel>VALORE}" value="{homeModel>DESCRIZIONE}" writeToDom="false" />
@@ -54,15 +49,15 @@
                     </ColumnListItem>
                 </items>
                 <customData>
-                    <c:CustomData key="PROGRAMMA" value="Programma" writeToDom="false" />
-                    <c:CustomData key="selezioni" value="programmi"/>
+                    <c:CustomData key="AZIONE" value="Azione" writeToDom="false" />
+                    <c:CustomData key="selezioni" value="azioni" writeToDom="false" />
                 </customData>
             </Table>
         </content>
         <buttons>
             <Button text="Seleziona" press="onConfirmSelectionPosFin" type="Emphasized">
                 <customData>
-                    <c:CustomData key="selezioni" value="Programma" writeToDom="false" />
+                    <c:CustomData key="selezioni" value="{modelPosFin>/CodStd_HV}" writeToDom="false" />
                 </customData>
             </Button>
             <Button text="Annulla" press="onCloseHVPosFin" type="Emphasized"/>

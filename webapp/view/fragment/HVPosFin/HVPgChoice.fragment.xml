@@ -2,15 +2,16 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core"
 >
-<Dialog title="Cerca Capitolo" contentHeight="90%">
+<Dialog title="Cerca PG" contentHeight="90%">
 		<content>
             <Table
                 growing="true"
                 mode="SingleSelectLeft"
                 growingScrollToLoad="true"
-                items="{path: 'modelPosFin>/formPosFin/capitoli/', length: '5000', sorter: [{path: 'Prctr', comparator: '.sorterAmmByNumericCode'},
-                                                                                            {path: 'Capitolo', comparator: '.sorterHVDomSStr'}
-                                                                                            ]}"
+                items="{path: 'modelPosFin>/formPosFin/pg/', length: '10000', sorter: [{path: 'Prctr', comparator: '.sorterAmmByNumericCode'},
+                                                                                                    {path: 'Capitolo', comparator: '.sorterHVDomSStr'},
+                                                                                                    {path: 'Pg', comparator: '.sorterHVDomSStr'}
+                                                                                                    ]}"
                 sticky="InfoToolbar,HeaderToolbar,ColumnHeaders"
                 updateStarted="onUpdateStartedHVDomSStr"
                 updateFinished="onUpdateFinishedHVDomSStr"
@@ -20,8 +21,8 @@
                         <content>
                             <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchDescr" width="50%">
                                 <customData>
-                                    <c:CustomData key="capitolo" value="DescEstesaCapitolo"/>
-                                    <c:CustomData key="capitolo" value="Capitolo"/>
+                                    <c:CustomData key="pg" value="DescEstesaPg"/>
+                                    <c:CustomData key="pg" value="Pg"/>
                                 </customData>
                             </SearchField>
                         </content>
@@ -40,6 +41,12 @@
                     <Column  width="12rem">
                         <Text text="Descr. Capitolo"/>
                     </Column>
+                    <Column  width="8rem">
+                        <Text text="Pg"/>
+                    </Column>
+                    <Column  width="12rem">
+                        <Text text="Descr. Pg"/>
+                    </Column>
                 </columns>
                 <items>
                     <ColumnListItem type="Active">
@@ -48,6 +55,8 @@
                             <Text text="{path: 'modelPosFin>Prctr', formatter: '.getAmmDescEstesa'}"/>
                             <Text text="{modelPosFin>Capitolo}"/>
                             <Text text="{modelPosFin>DescEstesaCapitolo}"/>
+                            <Text text="{modelPosFin>Pg}"/>
+                            <Text text="{modelPosFin>DescEstesaPg}"/>
                         </cells>
                         <!-- <customData>
                             <c:CustomData key="{homeModel>VALORE}" value="{homeModel>DESCRIZIONE}" writeToDom="false" />
@@ -63,7 +72,7 @@
         <buttons>
             <Button text="Seleziona" press="onConfirmSelectionPosFin" type="Emphasized">
                 <customData>
-                    <c:CustomData key="selezioni" value="Capitolo" writeToDom="false" />
+                    <c:CustomData key="selezioni" value="Pg" writeToDom="false" />
                 </customData>
             </Button>
             <Button text="Annulla" press="onCloseHVPosFin" type="Emphasized"/>

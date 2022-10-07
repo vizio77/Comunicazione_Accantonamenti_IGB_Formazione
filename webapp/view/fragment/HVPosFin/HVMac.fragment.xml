@@ -25,9 +25,10 @@
         <headerToolbar>
             <OverflowToolbar>
                 <content>
-                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchHVDomSStr" width="65%" >
+                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchDescr" width="65%" >
                         <customData>
-                            <c:CustomData key="amm" value="DescrBreve"/>
+                            <c:CustomData key="mac" value="DescEstesa"/>
+                            <c:CustomData key="mac" value="NumeCodDett"/>
                         </customData>
                     </SearchField>
                 </content>

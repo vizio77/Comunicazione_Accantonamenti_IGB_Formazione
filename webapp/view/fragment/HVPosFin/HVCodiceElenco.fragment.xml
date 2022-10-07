@@ -12,7 +12,7 @@
     showHeader="true"
     state="None"
     stretch="false"
-    title="Cerca Missioni"
+    title="Cerca Codice Elenco"
     type="Standard"
     verticalScrolling="true"
 >
@@ -20,29 +20,27 @@
         <List
         mode="SingleSelectLeft"
 		items="{
-			path: 'modelPosFin>/formPosFin/missioni', sorter: {path:'Missione', comparator: '.sorterHVDomSStr'}
+			path: 'modelPosFin>/formPosFin/codice_elenco/', sorter: [{path: 'NumeroElenco', comparator: '.sorterHVDomSStr'}]
 		}" >
         <headerToolbar>
-            <!-- <OverflowToolbar>
-                <content> -->
-                <Toolbar width="100%">
-                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchDescr" width="65%">
+            <OverflowToolbar>
+                <content>
+                    <SearchField class="sapUiMarginEnd sapUiMarginBegin" search="onSearchDescr" width="65%" >
                         <customData>
-                            <c:CustomData key="missione" value="DescEstesaMissione"/>
-                            <c:CustomData key="missione" value="Missione"/>
+                            <c:CustomData key="elenco" value="DescEstesa"/>
+                            <c:CustomData key="elenco" value="NumeroElenco"/>
                         </customData>
                     </SearchField>
-                </Toolbar>
-                <!-- </content>
-            </OverflowToolbar> -->
+                </content>
+            </OverflowToolbar>
         </headerToolbar>
 		<StandardListItem
-			title="{modelPosFin>Missione}"
-			description="{modelPosFin>DescEstesaMissione}"
+			title="{modelPosFin>NumeroElenco}"
+			description="{modelPosFin>DescEstesa}"
 			iconDensityAware="false"
-			iconInset="false" />
+			iconInset="false"/>
         <customData>
-            <c:CustomData key="selezioni" value="missioni" writeToDom="false" />
+            <c:CustomData key="selezioni" value="CodiceElenco" writeToDom="false" />
         </customData>
 	</List>
     </content>
@@ -50,9 +48,9 @@
     </customHeader>
     <buttons>
         <Button text="Seleziona" press="onConfirmSelectionPosFin" type="Emphasized">
-         <customData>
-            <c:CustomData key="selezioni" value="Missione" writeToDom="false" />
-        </customData>
+            <customData>
+                <c:CustomData key="selezioni" value="CodiceElenco" writeToDom="false" />
+            </customData>
         </Button>
         <Button text="Annulla" press="onCloseHVPosFin" type="Emphasized"/>
     </buttons>
