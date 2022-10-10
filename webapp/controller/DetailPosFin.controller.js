@@ -1408,6 +1408,7 @@ sap.ui.define([
 			homeModel.setProperty("/onModify", true)
 			homeModel.setProperty("/onCreate", false)
 			homeModel.setProperty("/detailAnagrafica", homeModel.getProperty("/selectedPosFin"))
+			homeModel.setProperty("/PosFin", homeModel.getProperty("/selectedPosFin"))
 			this.getView().byId("idCompetenzaTab").setVisible(true)
 			this.getView().byId("idCassTab").setVisible(true)
 
@@ -1790,7 +1791,11 @@ sap.ui.define([
 			}
 					
 		},
-		onAuth: function (oEvent) {
+		onAuth: async function (oEvent) {
+			const modelPosFin = this.getView().getModel("modelPosFin")
+			await this.__getLabels()
+			modelPosFin.setProperty("/busyAuth", true)
+			this.__getAuthorizzazioni()
 			if(!this.oDialogAutorizzazioni) {
 				Fragment.load({
 					name:"zsap.com.r3.cobi.s4.comaccigb.view.fragment.HVAutorizzazioni",
@@ -1803,6 +1808,30 @@ sap.ui.define([
 			} else {
 				this.oDialogAutorizzazioni.open();
 			}
+		},
+		__getAuthorizzazioni: function () {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let aFilters = [
+				new Filter("Fikrs", FilterOperator.EQ, modelPosFin.getProperty("/PosFin/Fikrs")),
+				new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/PosFin/Anno")),
+				new Filter("Fase", FilterOperator.EQ,modelPosFin.getProperty("/PosFin/Fase")),
+				new Filter("Reale", FilterOperator.EQ,modelPosFin.getProperty("/PosFin/Reale")),
+				//new Filter("Versione", FilterOperator.EQ,modelPosFin.getProperty("/PosFin/Versione")),
+				new Filter("Fipex", FilterOperator.EQ,modelPosFin.getProperty("/PosFin/Fipex"))
+			]
+			modelHana.read("/AutorizzazioniSet",{
+				filters: aFilters,
+				success: (oData) =>{
+					debugger
+					modelPosFin.setProperty("/busyAuth", false)
+					modelPosFin.setProperty("/elencoAuth", oData.results)
+				},
+				error: (res) => {
+					debugger
+					modelPosFin.setProperty("/busyAuth", false)
+				}
+			})
 		},
 		onAuthCollegata: function (oEvent) {
 			if(!this.oDialogAutorizzazioniCollegate) {
@@ -1817,6 +1846,27 @@ sap.ui.define([
 			} else {
 				this.oDialogAutorizzazioniCollegate.open();
 			}
+		},
+		__getLabels: function () {
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+
+			return new Promise((resolve, reject) => {
+				modelHana.read("/TriennioCalendarioFinSet",{
+					filters: [
+							new Filter("FaseCal", FilterOperator.EQ, "DLB")
+							],
+					success: (oData) =>{
+						modelPosFin.setProperty("/dispAnnoFaseLabel", oData.results[0].DispAnnoFase)
+						modelPosFin.setProperty("/dispAnnoPlusOneLabel", oData.results[0].DispAnnoPlusOne)
+						modelPosFin.setProperty("/dispAnnoPlusTwoLabel", oData.results[0].DispAnnoPlusTwo)
+						resolve()
+					},
+					error: (res) => {
+						resolve()
+					}
+				})
+			})
 		},
 		handleConfirmAuth: function (oEvent) {
 			let modelHome = this.getView().getModel("modelHome")
