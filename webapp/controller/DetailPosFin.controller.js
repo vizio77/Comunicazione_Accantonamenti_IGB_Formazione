@@ -1875,12 +1875,12 @@ sap.ui.define([
 			if(modelPosFin.getProperty("/formCodingBlock/nuovaAuth"))
 				modelPosFin.setProperty("/formCodingBlock/Auth", selectedItem.desc)
 			else
-				modelPosFin.setProperty("/CompetenzaAuth/Auth",selectedItem.desc)
+				modelPosFin.setProperty("/CompetenzaAuth/Auth",selectedItem)
 		},
 		handleConfirmAuthCollegata: function (oEvent) {
 			let modelHome = this.getOwnerComponent().getModel("modelHome")
 			let selectedItem = modelHome.getProperty(oEvent.getParameter("selectedItem").getBindingContextPath());
-			modelHome.setProperty("/CompetenzaAuth/AuthAssociata", selectedItem.desc)
+			modelHome.setProperty("/CompetenzaAuth/AuthAssociata", selectedItem)
 		},
 		onResetAuth: function() {
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")

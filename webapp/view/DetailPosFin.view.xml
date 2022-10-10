@@ -545,7 +545,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 										<items>
 											<VBox>
 												<Label text="Autorizzazione:" labelFor="idAuthComp"/>
-												<Input value="{modelPosFin>/CompetenzaAuth/Auth}" showValueHelp="true" valueHelpRequest=".onAuth" id="idAuthComp" valueHelpOnly="true" width="130%">
+												<Input value="{modelPosFin>/CompetenzaAuth/Auth/DescrizioneCompatta}" showValueHelp="true" valueHelpRequest=".onAuth" id="idAuthComp" valueHelpOnly="true" width="130%">
 												</Input>
 											</VBox>
 											<!-- <VBox>
