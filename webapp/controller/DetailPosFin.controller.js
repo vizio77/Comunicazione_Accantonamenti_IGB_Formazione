@@ -501,7 +501,101 @@ sap.ui.define([
 			modelPosFin.updateBindings(true)
 			
 		},
-		loadIframe: function(typeSac){
+
+		_getSemObject: function(){
+			return "COM_ACC_IGB";
+		},
+
+		_getSchermataSac: function(sTypeSac){
+			let sSchermata = null;
+			switch(sTypeSac){
+				case "cassaSac":
+					sSchermata = "CASSA";
+				break;
+				case "competenzaSac":
+					sSchermata = "COMPETENZA";
+				break;
+				default: 
+					break;
+			}
+			return sSchermata;
+		},
+
+		_getSacParams: function(sSchermata){
+			let oModelPosFin = this.getOwnerComponent().getModel("modelPosFin");
+			let oPosFin = oModelPosFin.getProperty("/PosFin/");
+			let oSst = oModelPosFin.getProperty("/infoSottoStrumento");
+			let oAut = oModelPosFin.getProperty("/CompetenzaAuth");
+			let oAmResp = oModelPosFin.getProperty("/strutturaAmminCentrale/Fictr");
+
+			let oParams = {
+				"Ammin" : oPosFin.Prctr || "",
+				"Aut" : "",
+				"AutColl" : "",
+				"Cap" : oPosFin.Capitolo || "",
+				"PosFin" : oPosFin.Fipex.replace(".","").replace(".","") || "",
+				//"PosFin" : oPosFin.Fipex || "",
+				"Sstr" : oSst.CodiceSottostrumento || "",
+				"Str" : oSst.CodiceStrumento || "",
+				"StrOri" : oSst.CodiceStrumentoOri || "",
+				"StAmResp" : oAmResp || ""
+			};
+
+			if(sSchermata === "COMPETENZA"){
+				oParams.Aut = oAut.Auth ? oAut.Auth : "";
+				oParams.AutColl = oAut.AuthAssociata ? oAut.AuthAssociata : "";
+			}
+			return oParams;
+		},	
+
+		_getIFrameUrlPromise: function(oPayload){
+
+			let that = this;
+
+			return { 
+				oPayload,
+				mPromise: oData => new Promise((res,rej)=>{
+					
+					var serviceUrl = "/sap/opu/odata/sap/ZSS4_COBI_ACCANTONAM_FORM_SRV/";
+					var oModel = new sap.ui.model.odata.v2.ODataModel(serviceUrl);
+					//let oModel = that.getOwnerComponent().getModel("sapHanaS2");
+
+					oModel.create(
+						"/VarSingSet",
+						oData,
+						{
+							success: oRes => res({oResponse: oRes, oPayload: oData}),
+							error: oRes => rej({oResponse: oRes, oPayload: oData})
+						}
+					);
+				})
+			};
+		},
+
+		loadIframe: async function(typeSac){
+			//lt prova recupero iframe
+			let that = this;
+			let oModel = that.getOwnerComponent().getModel("sapHanaS2");
+			let sSemObj = this._getSemObject();
+			let sSchermata = this._getSchermataSac(typeSac);
+			let oFields = this._getSacParams(sSchermata);
+			
+			let oPayload = {
+				"SemObj": sSemObj,
+				"SchedaSac": sSchermata,
+				...oFields
+			};
+
+			// BusyIndicator.show();
+			let oPromise = this._getIFrameUrlPromise(oPayload);
+			await oPromise.mPromise(oPromise.oPayload)
+				.then(
+					oRes => that.getOwnerComponent().getModel("iframe").setProperty("/" + typeSac, oRes.oResponse.Url),
+					oRes => that.openMessageBox("Error","Errore","Errore recupero scheda SAC")
+				);
+			// BusyIndicator.hide();
+		},
+		/* loadIframe: function(typeSac){
 			//lt prova recupero iframe
 			var that = this;
 			var oFrame = that.getView().byId(typeSac);
@@ -510,7 +604,7 @@ sap.ui.define([
 			var oFrameContent = oFrame.$()[0];
 			oFrameContent.setAttribute("src", that.urlSac);
 			that._refresh();
-		},
+		}, */
 		_refresh: function() {
 			var urlSac = this.urlSac;
 			window.frames[0].location = urlSac + (new Date());
@@ -1491,15 +1585,51 @@ sap.ui.define([
 				
 				//homeModel.setProperty("/tabAnagrafica", false)
 			} else {
-				this.loadIframe("cassaSac");
+				this.showCassaSAC(oEvent);
+				//this.loadIframe("cassaSac");
 				//homeModel.setProperty("/tabAnagrafica", false)
 			}
 
 			
 		},
 
-		showCompetenzaSAC: function (oEvent) {
+		/* showCompetenzaSAC: function (oEvent) {
 			this.loadIframe("competenzaSac");
+		}, */
+
+		showCassaSAC: async function (oEvent) {
+			let that = this;
+			await this.loadIframe("cassaSac");
+			var url = that.getOwnerComponent().getModel("iframe").getProperty("/cassaSac");
+			that.urlSac = url;
+
+			let oCassaSac = this.getView().byId("cassaSac");
+			document.getElementById(oCassaSac.getId()).setAttribute("src", that.urlSac);
+			window.frames[0].location = that.urlSac + (new Date());
+		},
+		showCompetenzaSAC: async function (oEvent) {
+			let that = this;
+			//lt controllo prima che l'autorizzazione ci sia
+			let oModelPosFin = this.getOwnerComponent().getModel("modelPosFin");
+			let oAut = oModelPosFin.getProperty("/CompetenzaAuth");
+			/* LT DECOMMENTARE QUANDO LA SI VUOLE USARE
+			 if(!oAut || !oAut.Auth || !oAut.AuthAssociata || oAut.Auth !== "" || oAut.AuthAssociata !== ""){
+				this.openMessageBox("Error", "Errore campo Obbligatorio", "Manca l'autorizzazione per la competenza");
+				return;
+			}  */
+			await this.loadIframe("competenzaSac");
+			// var oFrame = that.getView().byId(typeSac);
+			var url = that.getOwnerComponent().getModel("iframe").getProperty("/competenzaSac");
+			that.urlSac = url;
+			// var oFrameContent = oFrame.$()[0];
+			// oFrameContent.setAttribute("src", that.urlSac);
+			// that._refresh();
+
+			let oCompetenzaSac = this.getView().byId("competenzaSac");
+			document.getElementById(oCompetenzaSac.getId()).setAttribute("src", that.urlSac);
+			window.frames[0].location = that.urlSac + (new Date());
+			// document.getElementById(oCompetenzaSac.getId()).setAttribute("src", 'https://initsac-svil.eu10.hcs.cloud.sap/sap/fpa/ui/app.html#/analyticapp&/aa/7AF01283AE3E6C449CAACA2C308F98EF')
+			// window.frames[0].location = 'https://initsac-svil.eu10.hcs.cloud.sap/sap/fpa/ui/app.html#/analyticapp&/aa/7AF01283AE3E6C449CAACA2C308F98EF' + (new Date());
 		},
 
 		//lt inserisco popup iniziale.
