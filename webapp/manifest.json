@@ -114,6 +114,13 @@
           ]
         },
         {
+          "name": "Home",
+          "pattern": "Home",
+          "target": [
+            "TargetHome"
+          ]
+        },
+        {
           "name": "HomePosFin",
           "pattern": "HomePosFin/{Fikrs}/{CodiceStrumento}/{CodiceStrumentoOri}/{CodiceSottostrumento}/{Datbis}",
           "target": [

@@ -60,6 +60,12 @@ sap.ui.define([
 			var oRouter = this.getOwnerComponent().getRouter();
 			oRouter.getRoute("DetailPosFin").attachPatternMatched(this._onObjectMatched, this);
 		},
+		onNavToHome: function () {		
+			var oHistory = History.getInstance();
+			var oRouter = this.getOwnerComponent().getRouter();
+			oRouter.navTo("Home");			
+					
+		},
 		_onObjectMatched: function (oEvent) {
 			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
 			this.getView().setBusy(true);
@@ -67,7 +73,9 @@ sap.ui.define([
 				return new Promise( async function(resolve, reject) {
 					let oPosFin = await this.__getPosFin()
 					modelPosFin.setProperty("/posFin", oPosFin.Fipex)
-					Promise.all([this.__setFieldAmmin(oPosFin), 
+					Promise.all([
+								this.__getStrutturaAmminCentrale(oPosFin),
+								this.__setFieldAmmin(oPosFin), 
 								this.__setFieldCapPg(oPosFin), 
 								this.__setFieldTitolo(oPosFin), 
 								this.__setFieldMissione(oPosFin), 
@@ -1459,6 +1467,47 @@ sap.ui.define([
 			this._pPopover.then(function(oPopover) {
 				oPopover.openBy(oButton);
 			});
+		},
+		onExpandPopOverDettStruttCentr: function (oEvent) {
+			var oButton = oEvent.getSource(),
+			oView = this.getView();
+
+			if (!this._pPopoverStruttAmmCentr) {
+				this._pPopoverStruttAmmCentr = Fragment.load({
+					id: oView.getId(),
+					name: "zsap.com.r3.cobi.s4.comaccigb.view.fragment.HVPosFin.PopOverStruttAmmCentrale",
+					controller: this
+				}).then(function(oPopover) {
+					oView.addDependent(oPopover);
+					return oPopover;
+				});
+			}
+			this._pPopoverStruttAmmCentr.then(function(oPopover) {
+				oPopover.openBy(oButton);
+			});
+		},
+		__getStrutturaAmminCentrale: function (oPosFin) {
+			let modelPosFin = this.getOwnerComponent().getModel("modelPosFin")
+			let modelHana = this.getOwnerComponent().getModel("sapHanaS2")
+			return new Promise( (resolve, reject) => {
+				modelHana.read("/StrutturaAmministrativaCentraleSet", {
+					filters: [	new Filter("Fikrs", FilterOperator.EQ, oPosFin.Fikrs),
+								new Filter("Fase", FilterOperator.EQ, oPosFin.Fase),
+								new Filter("Anno", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/AnnoSstr")),
+								new Filter("Reale", FilterOperator.EQ, modelPosFin.getProperty("/infoSottoStrumento/Reale")),
+								new Filter("Eos", FilterOperator.EQ, oPosFin.Eos),
+								new Filter("Datbis", FilterOperator.GE,  new Date()),
+								new Filter("Prctr", FilterOperator.EQ, oPosFin.Prctr),
+								new Filter("CodiceCdr", FilterOperator.EQ, oPosFin.Cdr),
+								new Filter("CodiceRagioneria", FilterOperator.EQ, oPosFin.Ragioneria),
+								new Filter("CodiceUfficio", FilterOperator.EQ, '0000'),
+					],
+					success: (oData) =>  {
+						modelPosFin.setProperty("/strutturaAmminCentrale", oData.results[0])
+						resolve()
+					}
+				})
+			})
 		},
 		onPressRipristinaRicerca: function (oEvent) {
 			let homeModel = this.getOwnerComponent().getModel("modelHome")

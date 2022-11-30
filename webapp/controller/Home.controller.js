@@ -15,6 +15,16 @@ sap.ui.define([
 
         return BaseController.extend("zsap.com.r3.cobi.s4.comaccigb.controller.Home", {
             onInit: function () {
+                
+                this.initModel();
+                var oRouter = this.getOwnerComponent().getRouter();
+                this.getOwnerComponent().getRouter().getRoute("Home").attachPatternMatched(function () {
+				
+                    this.initModel();
+    
+                }.bind(this), this);
+            },
+            initModel: async function(){
                 this.getView().setModel(new JSONModel({formSottostrumento:{
                     tipologia: null,
                     tipologieSet: [],
@@ -44,10 +54,8 @@ sap.ui.define([
                     OI: false,
                     FB: false,
                     FL: false,
-                    esercizio: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear().toString()
+                    esercizio: await this.__getAnnoFase()
                 }}), "modelHome")
-                //this.getView().setModel(new JSONModel({Sottostrumento: null, visibleAuth: false}), "modelFilterHome")
-                //this.initData();
             },
             onHelpValueSottoStrumento: function () {
                 if(!this.oDialogHVSottoStrumento) {

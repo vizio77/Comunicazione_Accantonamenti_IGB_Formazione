@@ -11,6 +11,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 		<f:header>
 			<f:DynamicPageHeader pinnable="true">
 				<f:content>
+					<FlexBox alignItems="Start" justifyContent="SpaceBetween">
 					 <FlexBox > 
 						<items>
 							<Label text="{i18n>Esercizio}" design="Bold" class="sapUiTinyMarginEnd"/>
@@ -21,8 +22,18 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 								<Label text="{i18n>labelPosFin}" design="Bold"  class="sapUiTinyMarginEnd"/>
 								<Link text="{modelPosFin>/posFin}" press="onExpandPopOverPosFin"  class="sapUiSmallMarginEnd"/>
 							</HBox>
+							<HBox visible="{= ${modelPosFin>/onCreate} === false}">
+								<Label text="{i18n>dettStruttAmmCentr}" design="Bold"  class="sapUiTinyMarginEnd"/>
+								<Link text="{modelPosFin>/strutturaAmminCentrale/Fictr}" press="onExpandPopOverDettStruttCentr"  class="sapUiSmallMarginEnd"/>
+							</HBox>
 						</items>
 					</FlexBox> 
+					<FlexBox > 
+						<items>
+							<Button text="{i18n>pulsanteHome}" press="onNavToHome" type="Emphasized" />
+						</items>
+					</FlexBox>
+				</FlexBox> 
 				</f:content>
 			</f:DynamicPageHeader>
 		</f:header>
@@ -576,7 +587,7 @@ xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar"  xmlns:core="sa
 		<f:footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>
-				<Button text="Torna Indietro" press="onNavBack" type="Emphasized" visible="true"/>
+				<!-- <Button text="Torna Indietro" press="onNavBack" type="Emphasized" visible="true"/> -->
 				<Button text="Salva" type="Emphasized" visible="{= ${modelPosFin>/onAvvio} === true  &amp;&amp; ${modelPosFin>/tabAnagrafica} === true}"/>
 			</OverflowToolbar>
 		</f:footer>
