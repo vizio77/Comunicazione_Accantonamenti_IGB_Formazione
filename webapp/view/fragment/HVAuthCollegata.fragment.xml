@@ -23,9 +23,9 @@
 		</columns>
 		<ColumnListItem>
 			<cells>
-				<Text text="{modelPosFin>desc}"/>
-                <Text text="{modelPosFin>codeCls}"/>
-				<Text text="{modelPosFin>tipo}"/>
+				<Text text="{modelPosFin>DescrizioneCompatta}"/>
+					<Text text="{modelPosFin>Classificazione}"/>
+					<Text text="{modelPosFin>DescrTipoLegame}"/>
 			</cells>
 		</ColumnListItem>
 	</TableSelectDialog>

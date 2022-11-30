@@ -53,15 +53,17 @@
 		</columns>
 		<ColumnListItem>
 			<cells>
-				<Text text="{modelPosFin>desc}"/>
-				<Text text="{modelPosFin>attivazione}"/>
-				<Text text="{modelPosFin>scadenza}"/>
-				<Text text="{modelPosFin>classificazione}"/>
-				<Text text="{modelPosFin>natura}"/>
-				<Text text="{modelPosFin>DISP1}"/>
-				<Text text="{modelPosFin>DISP2}"/>
-				<Text text="{modelPosFin>DISP3}"/>
-				<Text text="{modelPosFin>BASE}"/>
+				<Text text="{modelPosFin>DescrizioneCompatta}"/>
+					<Text text="{modelPosFin>DescNickname}"/>
+					<Text text="{modelPosFin>Attivazione}"/>
+					<Text text="{modelPosFin>Scadenza}"/>
+					<Text text="{modelPosFin>DescClassificazione}"/>
+					<Text text="{modelPosFin>Natura}"/>
+					<Text text="{modelPosFin>ImpoDispCurrent}"/>
+					<Text text="{modelPosFin>ImpoDispPlusOne}"/>
+					<Text text="{modelPosFin>ImpoDispPlusTwo}"/>
+					<Text text="{modelPosFin>Tipologia}"/>
+					<Text text="{modelPosFin>IndicatMonit}"/>
 			</cells>
 		</ColumnListItem>
 	</TableSelectDialog>

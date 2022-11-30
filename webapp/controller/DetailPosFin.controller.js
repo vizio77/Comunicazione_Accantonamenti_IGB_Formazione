@@ -5,11 +5,12 @@ sap.ui.define([
 	"sap/ui/model/FilterOperator",
 	"sap/ui/core/Fragment",
 	"sap/m/MessageBox",
-	"sap/ui/core/routing/History"
-], function(Controller, JSONModel, Filter, FilterOperator, Fragment, MessageBox, History) {
+	"sap/ui/core/routing/History",
+	"./BaseController"
+], function(Controller, JSONModel, Filter, FilterOperator, Fragment, MessageBox, History,BaseController) {
 	"use strict";
 
-	return Controller.extend("zsap.com.r3.cobi.s4.comaccigb.controller.DetailPosFin", {
+	return BaseController.extend("zsap.com.r3.cobi.s4.comaccigb.controller.DetailPosFin", {
 		/**
 		 * @override
 		 */
@@ -510,10 +511,10 @@ sap.ui.define([
 			let sSchermata = null;
 			switch(sTypeSac){
 				case "cassaSac":
-					sSchermata = "CASSA";
+					sSchermata = "CASSA_IGB";
 				break;
 				case "competenzaSac":
-					sSchermata = "COMPETENZA";
+					sSchermata = "COMPETENZA_IGB";
 				break;
 				default: 
 					break;
@@ -541,9 +542,9 @@ sap.ui.define([
 				"StAmResp" : oAmResp || ""
 			};
 
-			if(sSchermata === "COMPETENZA"){
-				oParams.Aut = oAut.Auth ? oAut.Auth : "";
-				oParams.AutColl = oAut.AuthAssociata ? oAut.AuthAssociata : "";
+			if(sSchermata === "COMPETENZA_IGB"){
+				oParams.Aut = oAut.Auth.IdAutorizzazione ? oAut.Auth.IdAutorizzazione : "";
+				oParams.AutColl = oAut.Auth.AuthAssociata ? oAut.Auth.AuthAssociata : "";
 			}
 			return oParams;
 		},	
@@ -578,6 +579,16 @@ sap.ui.define([
 			let oModel = that.getOwnerComponent().getModel("sapHanaS2");
 			let sSemObj = this._getSemObject();
 			let sSchermata = this._getSchermataSac(typeSac);
+			let oModelPosFin = this.getOwnerComponent().getModel("modelPosFin");
+			/* if(sSchermata === "COMPETENZA_IGB"){
+				let oAut = oModelPosFin.getProperty("/CompetenzaAuth");
+				if(!oAut || !oAut.Auth || !oAut.AuthAssociata || oAut.Auth !== "" || oAut.AuthAssociata !== ""){
+					this.openMessageBox("Error", "Errore campo Obbligatorio", "Manca l'autorizzazione per la competenza");
+					return;
+				}  
+			} */
+
+
 			let oFields = this._getSacParams(sSchermata);
 			
 			let oPayload = {
@@ -1613,11 +1624,11 @@ sap.ui.define([
 			//lt controllo prima che l'autorizzazione ci sia
 			let oModelPosFin = this.getOwnerComponent().getModel("modelPosFin");
 			let oAut = oModelPosFin.getProperty("/CompetenzaAuth");
-			/* LT DECOMMENTARE QUANDO LA SI VUOLE USARE
-			 if(!oAut || !oAut.Auth || !oAut.AuthAssociata || oAut.Auth !== "" || oAut.AuthAssociata !== ""){
+			// LT DECOMMENTARE QUANDO LA SI VUOLE USARE
+			 if(!oAut || !oAut.Auth || oAut.Auth === ""){
 				this.openMessageBox("Error", "Errore campo Obbligatorio", "Manca l'autorizzazione per la competenza");
 				return;
-			}  */
+			}  
 			await this.loadIframe("competenzaSac");
 			// var oFrame = that.getView().byId(typeSac);
 			var url = that.getOwnerComponent().getModel("iframe").getProperty("/competenzaSac");
